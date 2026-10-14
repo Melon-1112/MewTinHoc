@@ -1,503 +1,398 @@
 import React, { useState, useEffect } from 'react';
 import {
   Search,
-  BookOpen,
+  FileText,
+  Download,
+  Eye,
+  Database,
+  RefreshCw,
+  Code2,
+  Copy,
+  Check,
+  X,
+  File,
+  FileSpreadsheet,
+  FileImage,
+  FolderOpen,
+  HardDrive,
   Clock,
-  HelpCircle,
-  Award,
-  Users,
-  Star,
-  Play,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  RotateCcw,
-  Sparkles,
-  X
+  AlertCircle,
+  Loader2
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
-import { MOCK_EXAM_LIST, SAMPLE_EXAM_QUESTIONS } from '../mockData';
+import { supabase } from '../../lib/supabase';
+
+// ---- Cấu hình Storage ----
+const BUCKET = 'KhoTaiLieuTinHocThiThu';
+const FOLDER = 'DeThiThu';
+// true  = bucket Public  -> dùng getPublicUrl
+// false = bucket Private -> dùng signed URL (tự hết hạn)
+const IS_PUBLIC_BUCKET = true;
+const SIGNED_URL_TTL = 3600; // giây (chỉ dùng khi bucket private)
+// Loại file có thể xem trực tiếp trên trình duyệt
+const PREVIEWABLE = ['pdf', 'png', 'jpg', 'jpeg', 'webp', 'gif'];
+
+// Icon and color based on file extension
+const getFileIcon = (type) => {
+  const t = (type || '').toLowerCase();
+  if (t === 'pdf') return { icon: FileText, color: '#DC2626', bg: '#FEE2E2', label: 'PDF' };
+  if (t === 'docx' || t === 'doc') return { icon: File, color: '#2563EB', bg: '#DBEAFE', label: 'DOCX' };
+  if (t === 'xlsx' || t === 'xls') return { icon: FileSpreadsheet, color: '#16A34A', bg: '#DCFCE7', label: 'XLSX' };
+  if (['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(t)) return { icon: FileImage, color: '#9333EA', bg: '#F3E8FF', label: t.toUpperCase() };
+  if (t === 'zip' || t === 'rar') return { icon: FolderOpen, color: '#D97706', bg: '#FEF3C7', label: 'ZIP' };
+  return { icon: File, color: '#6B7280', bg: '#F3F4F6', label: t.toUpperCase() || 'FILE' };
+};
+
+const formatDate = (dateStr) => {
+  if (!dateStr) return '';
+  try {
+    return new Date(dateStr).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  } catch { return dateStr; }
+};
+
+const formatBytes = (bytes) => {
+  if (!bytes && bytes !== 0) return '';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
+
+const extractExt = (filename) => {
+  const parts = (filename || '').split('.');
+  return parts.length > 1 ? parts.pop().toLowerCase() : '';
+};
+
+// Tên hiển thị: bỏ đuôi file, đổi - và _ thành khoảng trắng
+const prettyName = (filename) =>
+  filename.replace(/\.[^/.]+$/, '').replace(/[_]+/g, ' ');
 
 export default function ExamRepoTab() {
-  const [filterType, setFilterType] = useState('all');
+  const [docs, setDocs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeExam, setActiveExam] = useState(null); // When exam runner modal is active
+  const [showSqlModal, setShowSqlModal] = useState(false);
+  const [copiedSql, setCopiedSql] = useState(false);
 
-  // Exam runner state
-  const [currentQIndex, setCurrentQIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState({}); // { qId: answer }
-  const [userTfAnswers, setUserTfAnswers] = useState({}); // { `${qId}_${subId}`: bool }
-  const [userShortAnswers, setUserShortAnswers] = useState({}); // { qId: string }
-  const [timeLeft, setTimeLeft] = useState(50 * 60); // 50 mins in seconds
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [scoreResult, setScoreResult] = useState(null);
+  const [activeFolder, setActiveFolder] = useState(FOLDER);
 
-  // Timer countdown
-  useEffect(() => {
-    let timer = null;
-    if (activeExam && !isSubmitted && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            handleSubmitExam();
-            return 0;
-          }
-          return prev - 1;
+  // Lấy danh sách file trong bucket/folder (tự động kiểm tra folder con hoặc thư mục gốc)
+  const fetchDocs = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      if (!supabase) throw new Error('Supabase client chưa được cấu hình.');
+
+      // 1. Thử lấy trong FOLDER ('DeThiThu')
+      let targetFolder = FOLDER;
+      let { data, error: listError } = await supabase.storage
+        .from(BUCKET)
+        .list(FOLDER, {
+          limit: 200,
+          offset: 0,
+          sortBy: { column: 'created_at', order: 'desc' }
         });
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [activeExam, isSubmitted, timeLeft]);
 
-  const formatTimer = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
+      if (listError) throw listError;
 
-  const handleStartExam = (exam) => {
-    setActiveExam(exam);
-    setCurrentQIndex(0);
-    setUserAnswers({});
-    setUserTfAnswers({});
-    setUserShortAnswers({});
-    setTimeLeft(exam.durationMinutes * 60);
-    setIsSubmitted(false);
-    setScoreResult(null);
-  };
+      let files = (data || []).filter(
+        (f) => f.id && f.name !== '.emptyFolderPlaceholder'
+      );
 
-  const handleCloseExam = () => {
-    if (!isSubmitted) {
-      if (window.confirm('Bạn có chắc muốn thoát bài thi? Tiến trình làm bài sẽ không được lưu.')) {
-        setActiveExam(null);
+      // 2. Nếu trong folder không có file, tự động kiểm tra thư mục gốc của bucket
+      if (files.length === 0) {
+        const rootRes = await supabase.storage
+          .from(BUCKET)
+          .list('', {
+            limit: 200,
+            offset: 0,
+            sortBy: { column: 'created_at', order: 'desc' }
+          });
+        
+        const rootFiles = (rootRes.data || []).filter(
+          (f) => f.id && f.name !== '.emptyFolderPlaceholder'
+        );
+
+        if (rootFiles.length > 0) {
+          files = rootFiles;
+          targetFolder = '';
+        }
       }
-    } else {
-      setActiveExam(null);
-    }
-  };
 
-  const handleSelectOption = (qId, optionKey) => {
-    if (isSubmitted) return;
-    setUserAnswers({ ...userAnswers, [qId]: optionKey });
-  };
+      setActiveFolder(targetFolder);
 
-  const handleSelectTF = (qId, subId, val) => {
-    if (isSubmitted) return;
-    setUserTfAnswers({ ...userTfAnswers, [`${qId}_${subId}`]: val });
-  };
+      const storage = supabase.storage.from(BUCKET);
 
-  const handleShortAnswerChange = (qId, val) => {
-    if (isSubmitted) return;
-    setUserShortAnswers({ ...userShortAnswers, [qId]: val });
-  };
+      const result = await Promise.all(
+        files.map(async (f) => {
+          const path = targetFolder ? `${targetFolder}/${f.name}` : f.name;
+          let viewUrl = null;
+          let downloadUrl = null;
 
-  const handleSubmitExam = () => {
-    // Grade exam based on SAMPLE_EXAM_QUESTIONS
-    let correctCount = 0;
-    const totalQuestions = SAMPLE_EXAM_QUESTIONS.length;
-
-    SAMPLE_EXAM_QUESTIONS.forEach((q) => {
-      if (q.type === 'single_choice') {
-        if (userAnswers[q.id] === q.correctAnswer) correctCount++;
-      } else if (q.type === 'true_false') {
-        // All 4 sub-items must be correct or weighted
-        let tfCorrect = 0;
-        q.subQuestions.forEach((sub) => {
-          if (userTfAnswers[`${q.id}_${sub.id}`] === sub.isTrue) {
-            tfCorrect++;
+          if (IS_PUBLIC_BUCKET) {
+            viewUrl = storage.getPublicUrl(path).data.publicUrl;
+            downloadUrl = storage.getPublicUrl(path, { download: f.name }).data.publicUrl;
+          } else {
+            const [view, dl] = await Promise.all([
+              storage.createSignedUrl(path, SIGNED_URL_TTL),
+              storage.createSignedUrl(path, SIGNED_URL_TTL, { download: f.name })
+            ]);
+            viewUrl = view.data?.signedUrl || null;
+            downloadUrl = dl.data?.signedUrl || null;
           }
-        });
-        if (tfCorrect === q.subQuestions.length) correctCount++;
-        else if (tfCorrect >= 3) correctCount += 0.5;
-      } else if (q.type === 'short_answer') {
-        const userAns = (userShortAnswers[q.id] || '').trim();
-        if (userAns === q.correctAnswer) correctCount++;
-      }
-    });
 
-    const calculatedScore = ((correctCount / totalQuestions) * 10).toFixed(2);
-    setScoreResult({
-      score: calculatedScore,
-      correctCount,
-      totalQuestions
-    });
-    setIsSubmitted(true);
+          return {
+            id: f.id,
+            ten_file: prettyName(f.name),
+            file_name: f.name,
+            loai_file: extractExt(f.name),
+            dung_luong: formatBytes(f.metadata?.size),
+            view_url: viewUrl,
+            download_url: downloadUrl,
+            created_at: f.created_at || f.updated_at || null
+          };
+        })
+      );
 
-    if (calculatedScore >= 7) {
-      confetti({
-        particleCount: 100,
-        spread: 80,
-        origin: { y: 0.5 },
-        colors: ['#EA580C', '#FBBF24', '#22C55E']
-      });
+      setDocs(result);
+    } catch (err) {
+      console.warn('Supabase Storage error:', err);
+      setError(err.message || 'Không thể kết nối Supabase Storage');
+      setDocs([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Filter exams
-  const filteredExams = MOCK_EXAM_LIST.filter((exam) => {
-    const matchesFilter =
-      filterType === 'all' ||
-      (filterType === 'bo' && exam.type.includes('Bộ GD&ĐT')) ||
-      (filterType === 'chuyen' && (exam.type.includes('Chuyên KHTN') || exam.type.includes('Chuyên Sư Phạm'))) ||
-      (filterType === 'topic' && exam.type.includes('Chuyên đề'));
+  useEffect(() => { fetchDocs(); }, []);
 
-    const matchesSearch =
-      exam.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      exam.source.toLowerCase().includes(searchQuery.toLowerCase());
+  const handleDownload = (doc) => {
+    if (doc.download_url) window.open(doc.download_url, '_blank');
+  };
 
-    return matchesFilter && matchesSearch;
-  });
+  // Filter by search
+  const filtered = docs.filter((d) =>
+    (d.ten_file || '').toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  const currentQ = SAMPLE_EXAM_QUESTIONS[currentQIndex];
+  const sqlCode = `-- ====================================================
+-- Cho phép đọc (liệt kê + tải) TOÀN BỘ file trong bucket "${BUCKET}"
+-- Chạy trong Supabase Dashboard > SQL Editor > New query
+-- ====================================================
+
+CREATE POLICY "public_read_${BUCKET.toLowerCase()}"
+ON storage.objects
+FOR SELECT TO anon, authenticated
+USING (bucket_id = '${BUCKET}');
+
+-- Ghi chú:
+-- 1) Policy này cho phép hiển thị danh sách file cả trong folder con "${FOLDER}"
+--    lẫn ở thư mục gốc của bucket "${BUCKET}".
+-- 2) Không cấp quyền INSERT/UPDATE/DELETE cho anon để bảo mật.`;
+
+  const handleCopySql = () => {
+    navigator.clipboard.writeText(sqlCode);
+    setCopiedSql(true);
+    setTimeout(() => setCopiedSql(false), 2000);
+  };
+
+  const errorHint = (() => {
+    if (!error) return null;
+    if (/not found|bucket/i.test(error)) {
+      return `Không tìm thấy bucket "${BUCKET}". Kiểm tra lại tên bucket (phân biệt hoa thường).`;
+    }
+    return error;
+  })();
 
   return (
     <div className="exam-repo-container">
-      {/* Top Filter Bar */}
-      <div className="exam-filters-bar">
-        <div className="filter-pills">
-          <button
-            className={`filter-btn ${filterType === 'all' ? 'active' : ''}`}
-            onClick={() => setFilterType('all')}
-          >
-            Tất cả đề thi ({MOCK_EXAM_LIST.length})
+
+      {/* ── Status bar ── */}
+      <div className="doc-status-bar" data-source={error ? 'mock' : 'supabase'}>
+        <div className="doc-status-left">
+          <Database size={18} />
+          <div>
+            <div className="doc-status-title">
+              {error
+                ? '🔴 Không đọc được Supabase Storage'
+                : `🟢 Supabase Storage — ${BUCKET}${activeFolder ? '/' + activeFolder : ' (Gốc)'} (${docs.length} tài liệu)`}
+            </div>
+            {errorHint && <div className="doc-status-error">{errorHint}</div>}
+          </div>
+        </div>
+        <div className="doc-status-actions">
+          <button className="doc-btn-secondary" onClick={() => setShowSqlModal(true)}>
+            <Code2 size={14} /><span>Policy</span>
           </button>
-          <button
-            className={`filter-btn ${filterType === 'bo' ? 'active' : ''}`}
-            onClick={() => setFilterType('bo')}
-          >
-            Đề minh họa Bộ GD&ĐT
-          </button>
-          <button
-            className={`filter-btn ${filterType === 'chuyen' ? 'active' : ''}`}
-            onClick={() => setFilterType('chuyen')}
-          >
-            Các trường Chuyên
-          </button>
-          <button
-            className={`filter-btn ${filterType === 'topic' ? 'active' : ''}`}
-            onClick={() => setFilterType('topic')}
-          >
-            Đề theo chuyên đề trọng tâm
+          <button className="doc-btn-primary" onClick={fetchDocs} disabled={isLoading}>
+            <RefreshCw size={14} className={isLoading ? 'spin-icon' : ''} />
+            <span>{isLoading ? 'Đang tải...' : 'Làm mới'}</span>
           </button>
         </div>
+      </div>
 
-        {/* Search */}
+      {/* ── Header + Search ── */}
+      <div className="doc-header-section">
+        <div>
+          <h2 className="doc-page-title">
+            <FolderOpen size={24} />
+            Kho Tài Liệu Đề Thi Thử
+          </h2>
+          <p className="doc-page-subtitle">Tải về các đề thi thử, tài liệu ôn tập chuẩn THPTQG mới nhất</p>
+        </div>
         <div className="search-input-wrap">
           <Search size={16} />
           <input
             type="text"
-            placeholder="Tìm kiếm đề thi, trường ra đề..."
+            placeholder="Tìm kiếm tài liệu..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
 
-      {/* Exam Cards Grid */}
-      <div className="exams-grid">
-        {filteredExams.map((exam) => (
-          <div key={exam.id} className="exam-card">
-            <div>
-              <div className="exam-badge-top">
-                <span
-                  className="exam-type-tag"
-                  style={{
-                    background: exam.tagColor === 'orange' ? 'var(--color-cream)' : '#FEF3C7',
-                    color: 'var(--color-deep)',
-                    border: '1px solid var(--color-border)'
-                  }}
-                >
-                  {exam.type}
-                </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-amber-dark)' }}>
-                  <Star size={14} fill="var(--color-amber)" stroke="none" />
-                  {exam.rating}
-                </span>
+      {/* ── Loading indicator ── */}
+      {isLoading && (
+        <div className="doc-loading">
+          <Loader2 size={28} className="spin-icon" />
+          <span>Đang tải danh sách tài liệu...</span>
+        </div>
+      )}
+
+      {/* ── Documents list ── */}
+      {!isLoading && filtered.length > 0 && (
+        <div className="doc-list">
+          {filtered.map((doc) => {
+            const fi = getFileIcon(doc.loai_file);
+            const IconComp = fi.icon;
+            const canPreview = PREVIEWABLE.includes(doc.loai_file);
+            return (
+              <div key={doc.id} className="doc-row">
+                {/* File type icon */}
+                <div className="doc-icon-wrap" style={{ background: fi.bg }}>
+                  <IconComp size={22} color={fi.color} />
+                </div>
+
+                {/* Info */}
+                <div className="doc-info">
+                  <div className="doc-filename">{doc.ten_file}</div>
+                  <div className="doc-meta">
+                    <span className="doc-file-badge" style={{ background: fi.bg, color: fi.color }}>
+                      {fi.label}
+                    </span>
+                    {doc.dung_luong && (
+                      <span><HardDrive size={12} /> {doc.dung_luong}</span>
+                    )}
+                    {doc.created_at && (
+                      <span><Clock size={12} /> {formatDate(doc.created_at)}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="doc-actions">
+                  {doc.download_url ? (
+                    <>
+                      {canPreview && doc.view_url && (
+                        <a
+                          href={doc.view_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="doc-btn-view"
+                          title="Xem trước"
+                        >
+                          <Eye size={16} />
+                        </a>
+                      )}
+                      <button
+                        className="doc-btn-download"
+                        onClick={() => handleDownload(doc)}
+                        title="Tải về"
+                      >
+                        <Download size={16} />
+                        <span>Tải về</span>
+                      </button>
+                    </>
+                  ) : (
+                    <span className="doc-no-link">
+                      <AlertCircle size={14} />
+                      Không tạo được link
+                    </span>
+                  )}
+                </div>
               </div>
+            );
+          })}
+        </div>
+      )}
 
-              <h3 className="exam-card-title">{exam.title}</h3>
-              <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginTop: '0.35rem' }}>
-                Nguồn: <strong>{exam.source}</strong>
+      {/* ── Empty state ── */}
+      {!isLoading && filtered.length === 0 && (
+        <div className="doc-empty">
+          <FolderOpen size={40} strokeWidth={1.5} />
+          {docs.length === 0 && !error ? (
+            <>
+              <p>Chưa có tài liệu nào trong bucket <strong>"{BUCKET}"</strong>.</p>
+              <p style={{ fontSize: '0.85rem', maxWidth: '520px', lineHeight: 1.5 }}>
+                Nếu bạn đã tải file lên Supabase, nguyên nhân là <strong>chưa có RLS Policy</strong> để cho phép khách đọc file.
               </p>
+              <button
+                className="doc-btn-primary"
+                onClick={() => setShowSqlModal(true)}
+                style={{ marginTop: '0.5rem' }}
+              >
+                <Code2 size={15} />
+                <span>Xem & Sao chép mã SQL Policy</span>
+              </button>
+            </>
+          ) : (
+            <p>Không tìm thấy tài liệu nào phù hợp.</p>
+          )}
+        </div>
+      )}
 
-              <div className="exam-card-meta">
-                <span>
-                  <Clock size={14} color="var(--color-primary)" />
-                  {exam.durationMinutes} phút
-                </span>
-                <span>
-                  <HelpCircle size={14} color="var(--color-deep)" />
-                  {exam.questionCount} câu hỏi
-                </span>
-                <span>
-                  <Users size={14} />
-                  {exam.participants.toLocaleString()} lượt thi
-                </span>
-              </div>
-
-              <p style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', marginTop: '0.75rem', lineHeight: 1.4 }}>
-                {exam.description}
-              </p>
-            </div>
-
-            <button
-              className="exam-btn-start"
-              onClick={() => handleStartExam(exam)}
-            >
-              <Play size={16} />
-              <span>Làm bài thi ngay</span>
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {/* FULLSCREEN EXAM TAKER MODAL */}
-      {activeExam && (
-        <div className="exam-taker-modal-backdrop">
-          <div className="exam-taker-window">
-            {/* Exam Runner Header */}
-            <div className="exam-taker-header">
-              <div>
-                <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-primary)', textTransform: 'uppercase' }}>
-                  {activeExam.type}
-                </span>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-deep)' }}>
-                  {activeExam.title}
+      {/* ── Policy modal ── */}
+      {showSqlModal && (
+        <div className="exam-taker-modal-backdrop" style={{ zIndex: 1100 }}>
+          <div className="exam-taker-window" style={{ maxWidth: '720px', maxHeight: '85vh', overflowY: 'auto', padding: '1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Database size={20} color="var(--color-primary)" />
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--color-deep)', margin: 0 }}>
+                  SQL phân quyền đọc Storage
                 </h3>
               </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div className="exam-timer-chip">
-                  <Clock size={16} />
-                  <span>{formatTimer(timeLeft)}</span>
-                </div>
-                <button onClick={handleCloseExam} style={{ color: '#6B7280', padding: '6px' }}>
-                  <X size={20} />
-                </button>
-              </div>
+              <button onClick={() => setShowSqlModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6B7280' }}>
+                <X size={20} />
+              </button>
             </div>
 
-            {/* Exam Runner Body */}
-            <div className="exam-taker-body">
-              {/* Question Area */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                {/* Result Announcement if submitted */}
-                {isSubmitted && scoreResult && (
-                  <div style={{ background: '#FFF7ED', border: '2px solid var(--color-primary)', borderRadius: 'var(--radius-md)', padding: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-deep)', textTransform: 'uppercase' }}>
-                        Kết quả bài thi của bạn
-                      </div>
-                      <div style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--color-primary)' }}>
-                        {scoreResult.score} / 10.0 Điểm
-                      </div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
-                        Đúng {scoreResult.correctCount}/{scoreResult.totalQuestions} câu hỏi chuẩn cấu trúc THPTQG
-                      </div>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <span style={{ fontSize: '0.8rem', background: '#DCFCE7', color: '#15803D', padding: '0.3rem 0.8rem', borderRadius: '999px', fontWeight: 700 }}>
-                        {scoreResult.score >= 8 ? '🎉 Đạt yêu cầu xuất sắc!' : '⚠️ Cần củng cố thêm kiến thức'}
-                      </span>
-                    </div>
-                  </div>
-                )}
+            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '1rem', lineHeight: 1.5 }}>
+              Mở <strong>Supabase Dashboard → SQL Editor</strong> và chạy đoạn mã bên dưới. Sau đó nhấn <strong>Làm mới</strong> trên giao diện.
+            </p>
 
-                {/* Question Box */}
-                {currentQ && (
-                  <div className="question-box">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-primary)', textTransform: 'uppercase', background: 'var(--color-cream)', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
-                        {currentQ.part}
-                      </span>
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-deep)' }}>
-                        Câu {currentQ.id} / {SAMPLE_EXAM_QUESTIONS.length}
-                      </span>
-                    </div>
+            <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
+              <pre style={{
+                background: '#1E293B', color: '#F8FAFC', padding: '1rem', borderRadius: '8px',
+                fontSize: '0.78rem', lineHeight: 1.5, overflowX: 'auto', fontFamily: 'Consolas, monospace'
+              }}>
+                <code>{sqlCode}</code>
+              </pre>
+              <button onClick={handleCopySql} style={{
+                position: 'absolute', top: '10px', right: '10px',
+                display: 'flex', alignItems: 'center', gap: '0.35rem',
+                background: copiedSql ? '#16A34A' : '#334155', color: '#FFF', border: 'none',
+                padding: '0.35rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer'
+              }}>
+                {copiedSql ? <Check size={14} /> : <Copy size={14} />}
+                <span>{copiedSql ? 'Đã sao chép!' : 'Sao chép'}</span>
+              </button>
+            </div>
 
-                    <div className="question-text">{currentQ.question}</div>
-
-                    {currentQ.code && (
-                      <pre className="code-snippet">
-                        <code>{currentQ.code}</code>
-                      </pre>
-                    )}
-
-                    {/* Question Type: Single Choice */}
-                    {currentQ.type === 'single_choice' && (
-                      <div className="options-list">
-                        {currentQ.options.map((opt) => {
-                          const isSelected = userAnswers[currentQ.id] === opt.key;
-                          const isCorrect = isSubmitted && currentQ.correctAnswer === opt.key;
-                          const isWrong = isSubmitted && isSelected && !isCorrect;
-
-                          return (
-                            <button
-                              key={opt.key}
-                              className={`option-btn ${isSelected ? 'selected' : ''}`}
-                              onClick={() => handleSelectOption(currentQ.id, opt.key)}
-                              style={{
-                                background: isCorrect ? '#DCFCE7' : isWrong ? '#FEE2E2' : undefined,
-                                borderColor: isCorrect ? '#22C55E' : isWrong ? '#EF4444' : undefined
-                              }}
-                            >
-                              <div className="option-key">{opt.key}</div>
-                              <span style={{ flex: 1 }}>{opt.text}</span>
-                              {isCorrect && <CheckCircle2 size={18} color="#16A34A" />}
-                              {isWrong && <XCircle size={18} color="#DC2626" />}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {/* Question Type: True / False */}
-                    {currentQ.type === 'true_false' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                        {currentQ.subQuestions.map((sub) => {
-                          const userVal = userTfAnswers[`${currentQ.id}_${sub.id}`];
-                          return (
-                            <div
-                              key={sub.id}
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                padding: '0.75rem 1rem',
-                                background: '#FFFFFF',
-                                border: '1.5px solid var(--color-border-subtle)',
-                                borderRadius: 'var(--radius-md)',
-                                gap: '1rem'
-                              }}
-                            >
-                              <div style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--color-deep)' }}>
-                                <strong>Ý {sub.id})</strong> {sub.text}
-                              </div>
-                              <div style={{ display: 'flex', gap: '0.4rem', flexShrink: 0 }}>
-                                <button
-                                  onClick={() => handleSelectTF(currentQ.id, sub.id, true)}
-                                  disabled={isSubmitted}
-                                  style={{
-                                    padding: '0.35rem 0.85rem',
-                                    borderRadius: '6px',
-                                    fontSize: '0.78rem',
-                                    fontWeight: 700,
-                                    background: userVal === true ? '#22C55E' : '#F3F4F6',
-                                    color: userVal === true ? '#FFFFFF' : '#4B5563'
-                                  }}
-                                >
-                                  ĐÚNG
-                                </button>
-                                <button
-                                  onClick={() => handleSelectTF(currentQ.id, sub.id, false)}
-                                  disabled={isSubmitted}
-                                  style={{
-                                    padding: '0.35rem 0.85rem',
-                                    borderRadius: '6px',
-                                    fontSize: '0.78rem',
-                                    fontWeight: 700,
-                                    background: userVal === false ? '#EF4444' : '#F3F4F6',
-                                    color: userVal === false ? '#FFFFFF' : '#4B5563'
-                                  }}
-                                >
-                                  SAI
-                                </button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {/* Question Type: Short Answer */}
-                    {currentQ.type === 'short_answer' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-deep)' }}>
-                          Nhập kết quả giá trị (số nguyên):
-                        </label>
-                        <input
-                          type="text"
-                          disabled={isSubmitted}
-                          placeholder="Điền kết quả..."
-                          value={userShortAnswers[currentQ.id] || ''}
-                          onChange={(e) => handleShortAnswerChange(currentQ.id, e.target.value)}
-                          style={{
-                            padding: '0.75rem 1rem',
-                            borderRadius: '8px',
-                            border: '1.5px solid var(--color-border)',
-                            fontSize: '1rem',
-                            fontWeight: 700,
-                            fontFamily: 'var(--font-code)',
-                            width: '240px',
-                            outline: 'none'
-                          }}
-                        />
-                      </div>
-                    )}
-
-                    {/* Explanation when submitted */}
-                    {isSubmitted && (
-                      <div style={{ marginTop: '1rem', background: '#FFFDF9', borderLeft: '4px solid var(--color-primary)', padding: '0.85rem 1rem', borderRadius: '0 8px 8px 0' }}>
-                        <div style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-deep)', marginBottom: '0.25rem' }}>
-                          💡 Giải thích chi tiết câu hỏi:
-                        </div>
-                        <div style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>
-                          {currentQ.explanation}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* Question Navigation Sidebar */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--color-deep)' }}>
-                  Danh sách câu hỏi:
-                </div>
-
-                <div className="question-nav-grid">
-                  {SAMPLE_EXAM_QUESTIONS.map((q, idx) => {
-                    const isAnswered =
-                      userAnswers[q.id] !== undefined ||
-                      userShortAnswers[q.id] !== undefined ||
-                      userTfAnswers[`${q.id}_a`] !== undefined;
-                    const isCurrent = idx === currentQIndex;
-
-                    return (
-                      <button
-                        key={q.id}
-                        className={`q-nav-cell ${isAnswered ? 'answered' : ''} ${isCurrent ? 'current' : ''}`}
-                        onClick={() => setCurrentQIndex(idx)}
-                      >
-                        {idx + 1}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div style={{ height: '1px', background: '#E5E7EB', margin: '0.5rem 0' }}></div>
-
-                {!isSubmitted ? (
-                  <button
-                    className="btn-checkin-streak"
-                    style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-deep))' }}
-                    onClick={handleSubmitExam}
-                  >
-                    <span>Nộp bài & Chấm điểm</span>
-                  </button>
-                ) : (
-                  <button
-                    className="btn-open-station"
-                    style={{ width: '100%', justifyContent: 'center' }}
-                    onClick={() => handleStartExam(activeExam)}
-                  >
-                    <RotateCcw size={16} />
-                    <span>Làm lại đề này</span>
-                  </button>
-                )}
-              </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button onClick={() => setShowSqlModal(false)} style={{
+                padding: '0.5rem 1rem', background: 'var(--color-primary)', color: '#FFF',
+                border: 'none', borderRadius: '6px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer'
+              }}>Đóng</button>
             </div>
           </div>
         </div>
