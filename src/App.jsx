@@ -5,6 +5,7 @@ import RoadmapTab from './components/RoadmapTab';
 import ExamRepoTab from './components/ExamRepoTab';
 import AiExamTab from './components/AiExamTab';
 import GoogleAuthModal from './components/GoogleAuthModal';
+import LoginPage from './components/LoginPage';
 import { DEFAULT_USER } from './mockData';
 import { Flame, CheckCircle, AlertTriangle, ShieldCheck } from 'lucide-react';
 
@@ -13,10 +14,13 @@ export default function App() {
   const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
-  // User state: synced with Google OAuth account name
+  // User state: null = not logged in, object = logged in
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('tinhoc_user');
-    return saved ? JSON.parse(saved) : DEFAULT_USER;
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+    }
+    return null; // Start as guest → shows Login page
   });
 
   // Streak state: count, checkedToday, lastCheckInDate, virtualDateOffset
@@ -54,17 +58,37 @@ export default function App() {
     localStorage.setItem('tinhoc_streak', JSON.stringify(streak));
   }, [streak]);
 
-  // Google OAuth selection
+  // Handle login from LoginPage
+  const handleLogin = (googleAccount) => {
+    const newUser = {
+      ...(user || DEFAULT_USER),
+      name: googleAccount.name,
+      email: googleAccount.email,
+      avatar: googleAccount.avatar || DEFAULT_USER.avatar,
+      grade: googleAccount.grade || DEFAULT_USER.grade
+    };
+    setUser(newUser);
+    showToast(`🎉 Chào mừng ${googleAccount.name}! Bắt đầu luyện thi thôi!`);
+  };
+
+  // Handle logout → back to Login page
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('tinhoc_user');
+    showToast('Đã đăng xuất tài khoản Google.');
+  };
+
+  // Google OAuth selection (from modal inside app)
   const handleSelectGoogleAccount = (googleAccount) => {
     const updated = {
-      ...user,
-      name: googleAccount.name, // "thông tin tên sẽ là tên của tài khoảng gg"
+      ...(user || DEFAULT_USER),
+      name: googleAccount.name,
       email: googleAccount.email,
-      avatar: googleAccount.avatar || user.avatar,
-      grade: googleAccount.grade || user.grade
+      avatar: googleAccount.avatar || DEFAULT_USER.avatar,
+      grade: googleAccount.grade || DEFAULT_USER.grade
     };
     setUser(updated);
-    showToast(`Đăng nhập Google thành công! Tên học viên: ${googleAccount.name}`);
+    showToast(`Đổi tài khoản thành công! Tên học viên: ${googleAccount.name}`);
   };
 
   // Streak Check-in: +1 streak
@@ -106,6 +130,21 @@ export default function App() {
     showToast('⚠️ Bạn đã bỏ lỡ 2 ngày không điểm danh! Chuỗi streak đã bị tắt về 0 ngày.');
   };
 
+  // Show Login page if not logged in
+  if (!user) {
+    return (
+      <>
+        <LoginPage onLogin={handleLogin} />
+        {toastMessage && (
+          <div className="toast-notice">
+            <Flame size={18} color="var(--color-amber)" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="app-container">
       {/* Horizontal Nav Sidebar (Thanh sidebar ngang) */}
@@ -115,6 +154,7 @@ export default function App() {
         user={user}
         streak={streak}
         onOpenGoogleLogin={() => setIsGoogleModalOpen(true)}
+        onLogout={handleLogout}
         onOpenStreakDetails={() => {
           setActiveTab(TABS.HOME);
           const el = document.getElementById('streak-card-section');
