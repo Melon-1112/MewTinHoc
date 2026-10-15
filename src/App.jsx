@@ -8,6 +8,8 @@ import GoogleAuthModal from './components/GoogleAuthModal';
 import LoginPage from './components/LoginPage';
 import { DEFAULT_USER } from './mockData';
 import { Flame, CheckCircle, AlertTriangle, ShieldCheck } from 'lucide-react';
+import AdminPage from './components/AdminPage';
+import { supabase } from './supabase';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(TABS.HOME);
@@ -58,6 +60,71 @@ export default function App() {
     localStorage.setItem('tinhoc_streak', JSON.stringify(streak));
   }, [streak]);
 
+  // Sync Supabase Auth User to App User state
+  const syncSupabaseAuthUser = async (authUser) => {
+    if (!authUser) return;
+    const meta = authUser.user_metadata || {};
+    const name = meta.full_name || meta.name || meta.user_name || authUser.email?.split('@')[0] || 'Học viên';
+    const email = authUser.email || '';
+    const avatar = meta.avatar_url || meta.picture || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(authUser.id)}`;
+
+    const newUser = {
+      id: authUser.id,
+      name,
+      email,
+      avatar,
+      grade: 'Lớp 12 — Ôn thi THPTQG',
+      provider: authUser.app_metadata?.provider || 'google'
+    };
+
+    setUser(newUser);
+    localStorage.setItem('tinhoc_user', JSON.stringify(newUser));
+
+    // Xóa hash hoặc query OAuth khỏi URL cho gọn gàng
+    if (window.location.hash.includes('access_token=') || window.location.search.includes('code=')) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
+    // Tự động đồng bộ/upsert vào bảng profiles (nếu có)
+    try {
+      await supabase.from('profiles').upsert({
+        id: authUser.id,
+        userid: email ? email.split('@')[0] : authUser.id.slice(0, 8),
+        username: name,
+        email: email,
+      }, { onConflict: 'id' });
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  // Lắng nghe đăng nhập Google OAuth qua Supabase
+  useEffect(() => {
+    if (!supabase) return;
+
+    // 1. Kiểm tra session hiện có
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        syncSupabaseAuthUser(session.user);
+      }
+    });
+
+    // 2. Lắng nghe thay đổi auth (khi redirect từ Google OAuth về, đăng nhập, đăng xuất)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        syncSupabaseAuthUser(session.user);
+        showToast(`🎉 Đăng nhập thành công! Chào mừng ${session.user.user_metadata?.full_name || session.user.email}!`);
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
+        localStorage.removeItem('tinhoc_user');
+      }
+    });
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
+
   // Handle login from LoginPage
   const handleLogin = (googleAccount) => {
     const newUser = {
@@ -72,7 +139,12 @@ export default function App() {
   };
 
   // Handle logout → back to Login page
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {
+      console.warn('Sign out error:', e);
+    }
     setUser(null);
     localStorage.removeItem('tinhoc_user');
     showToast('Đã đăng xuất tài khoản Google.');
@@ -129,6 +201,28 @@ export default function App() {
     }));
     showToast('⚠️ Bạn đã bỏ lỡ 2 ngày không điểm danh! Chuỗi streak đã bị tắt về 0 ngày.');
   };
+
+  const [isAdminView, setIsAdminView] = useState(() => {
+    const p = window.location.pathname.replace(/\/+$/, '');
+    return p.endsWith('/admin') || window.location.hash === '#admin';
+  });
+
+  useEffect(() => {
+    const checkAdmin = () => {
+      const p = window.location.pathname.replace(/\/+$/, '');
+      setIsAdminView(p.endsWith('/admin') || window.location.hash === '#admin');
+    };
+    window.addEventListener('hashchange', checkAdmin);
+    window.addEventListener('popstate', checkAdmin);
+    return () => {
+      window.removeEventListener('hashchange', checkAdmin);
+      window.removeEventListener('popstate', checkAdmin);
+    };
+  }, []);
+
+  if (isAdminView) {
+    return <AdminPage />;
+  }
 
   // Show Login page if not logged in
   if (!user) {

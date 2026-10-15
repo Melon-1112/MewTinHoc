@@ -1,12 +1,33 @@
 import React, { useState } from 'react';
-import { X, CheckCircle, ShieldCheck, User } from 'lucide-react';
+import { X, CheckCircle, ShieldCheck, User, LogIn, RefreshCw } from 'lucide-react';
 import { GOOGLE_DEMO_ACCOUNTS } from '../mockData';
+import { supabase } from '../supabase';
 
 export default function GoogleAuthModal({ isOpen, onClose, onSelectAccount, currentUser }) {
   const [customName, setCustomName] = useState('');
   const [customEmail, setCustomEmail] = useState('');
+  const [isConnectingGoogle, setIsConnectingGoogle] = useState(false);
 
   if (!isOpen) return null;
+
+  const handleConnectGoogle = async () => {
+    setIsConnectingGoogle(true);
+    try {
+      const redirectUrl = window.location.origin + window.location.pathname;
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: redirectUrl,
+          queryParams: {
+            prompt: 'select_account',
+          },
+        },
+      });
+    } catch (err) {
+      setIsConnectingGoogle(false);
+      console.error('Lỗi kết nối Google OAuth:', err);
+    }
+  };
 
   const handleCustomLogin = (e) => {
     e.preventDefault();
@@ -25,14 +46,14 @@ export default function GoogleAuthModal({ isOpen, onClose, onSelectAccount, curr
     <div className="modal-backdrop" onClick={onClose}>
       <div className="google-auth-card" onClick={(e) => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={onClose} style={{ color: '#9CA3AF', padding: '4px' }}>
+          <button onClick={onClose} style={{ color: '#9CA3AF', padding: '4px', background: 'none', border: 'none', cursor: 'pointer' }}>
             <X size={20} />
           </button>
         </div>
 
         <div className="google-auth-header">
           {/* Official Google 'G' Logo SVG */}
-          <svg className="google-logo-svg" viewBox="0 0 24 24">
+          <svg className="google-logo-svg" viewBox="0 0 24 24" width={40} height={40}>
             <path
               fill="#4285F4"
               d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
@@ -50,16 +71,43 @@ export default function GoogleAuthModal({ isOpen, onClose, onSelectAccount, curr
               d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
             />
           </svg>
-          <h2 className="google-auth-title">Đăng nhập với Google</h2>
+          <h2 className="google-auth-title">Tài khoản Google</h2>
           <p className="google-auth-subtitle">
-            Hệ thống sẽ đồng bộ họ tên tài khoản Google vào hồ sơ học viên TinHocPro THPTQG
+            Kết nối tài khoản Google qua Supabase OAuth để đồng bộ tiến độ học tập TinHocPro
           </p>
         </div>
+
+        {/* Nút đăng nhập / đổi tài khoản Google thật qua Supabase OAuth */}
+        <button
+          onClick={handleConnectGoogle}
+          disabled={isConnectingGoogle}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.65rem',
+            width: '100%',
+            padding: '0.85rem 1rem',
+            background: '#FFFFFF',
+            border: '2px solid #EA580C',
+            borderRadius: '10px',
+            color: '#EA580C',
+            fontWeight: 700,
+            fontSize: '0.92rem',
+            cursor: isConnectingGoogle ? 'not-allowed' : 'pointer',
+            boxShadow: '0 2px 6px rgba(234, 88, 12, 0.15)',
+            marginBottom: '1rem',
+            transition: 'all 0.2s'
+          }}
+        >
+          <RefreshCw size={18} className={isConnectingGoogle ? 'spin-icon' : ''} />
+          <span>{isConnectingGoogle ? 'Đang chuyển hướng Google...' : 'Đăng nhập / Đổi tài khoản Google khác'}</span>
+        </button>
 
         {/* List of fast Google Accounts */}
         <div>
           <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-deep)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Chọn tài khoản Google sẵn có:
+            Hoặc chọn hồ sơ học viên mẫu:
           </p>
           <div className="account-selector-list">
             {GOOGLE_DEMO_ACCOUNTS.map((acc, index) => {
@@ -101,16 +149,16 @@ export default function GoogleAuthModal({ isOpen, onClose, onSelectAccount, curr
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0.75rem 0' }}>
           <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }}></div>
-          <span style={{ fontSize: '0.75rem', color: '#9CA3AF', fontWeight: 600 }}>Hoặc nhập tên tài khoản Google</span>
+          <span style={{ fontSize: '0.75rem', color: '#9CA3AF', fontWeight: 600 }}>Hoặc nhập họ tên hiển thị</span>
           <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }}></div>
         </div>
 
         {/* Custom Google account input form */}
         <form onSubmit={handleCustomLogin} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <div className="custom-input-group">
-            <label>Họ và tên Google của bạn:</label>
+            <label>Họ và tên của bạn:</label>
             <input
               type="text"
               placeholder="VD: Jax Tin Học, Hoàng Minh..."
@@ -120,10 +168,10 @@ export default function GoogleAuthModal({ isOpen, onClose, onSelectAccount, curr
             />
           </div>
           <div className="custom-input-group">
-            <label>Email Google (tùy chọn):</label>
+            <label>Email liên kết (tùy chọn):</label>
             <input
               type="email"
-              placeholder="VD: jax.dev@gmail.com"
+              placeholder="VD: hocvien@gmail.com"
               value={customEmail}
               onChange={(e) => setCustomEmail(e.target.value)}
             />
@@ -131,15 +179,15 @@ export default function GoogleAuthModal({ isOpen, onClose, onSelectAccount, curr
           <button
             type="submit"
             className="btn-primary-glow"
-            style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', marginTop: '0.5rem' }}
+            style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', marginTop: '0.25rem' }}
           >
-            Đăng nhập tài khoản này
+            Lưu và sử dụng tên này
           </button>
         </form>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center', fontSize: '0.72rem', color: '#9CA3AF' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center', fontSize: '0.72rem', color: '#9CA3AF', marginTop: '0.75rem' }}>
           <ShieldCheck size={14} color="#16A34A" />
-          <span>Bảo mật OAuth 2.0 xác thực thông qua Google API</span>
+          <span>Bảo mật OAuth 2.0 xác thực thông qua Google API & Supabase</span>
         </div>
       </div>
     </div>

@@ -36,11 +36,11 @@ export default function Navbar({
         {/* Left: Brand Logo */}
         <div className="brand-section">
           <div className="brand-logo-icon">
-            <img src={logoMeoCam} alt="TinHocVui Logo" className="brand-logo-img" />
+            <img src={logoMeoCam} alt="MewTinHoc" className="brand-logo-img" />
           </div>
           <div>
             <div className="brand-title">
-              TinHoc<span>Vui</span>
+              <span>Mew</span>TinHoc
               <span className="brand-tag">THPTQG</span>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
