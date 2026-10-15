@@ -139,6 +139,16 @@ a {
   overflow: hidden;
 }
 
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
 .brand-logo-icon::after {
   content: '';
   position: absolute;
@@ -2176,6 +2186,14 @@ a {
   justify-content: center;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.25);
+  overflow: hidden;
+}
+.login-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
 }
 .login-logo-name {
   font-size: 1.25rem;

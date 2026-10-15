@@ -175,19 +175,24 @@ export default function ExamRepoTab() {
   );
 
   const sqlCode = `-- ====================================================
--- Cho phép đọc (liệt kê + tải) TOÀN BỘ file trong bucket "${BUCKET}"
+-- Cấu hình Storage Bucket "${BUCKET}" và phân quyền đọc
 -- Chạy trong Supabase Dashboard > SQL Editor > New query
 -- ====================================================
 
+-- 1. Đảm bảo Bucket tồn tại và ở chế độ Public
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('${BUCKET}', '${BUCKET}', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+-- 2. Xóa policy cũ nếu có (tránh lỗi đã tồn tại khi chạy lại)
+DROP POLICY IF EXISTS "public_read_${BUCKET.toLowerCase()}" ON storage.objects;
+DROP POLICY IF EXISTS "Public Read ${BUCKET}" ON storage.objects;
+
+-- 3. Cho phép khách (anon) và người dùng đọc/tải TOÀN BỘ file
 CREATE POLICY "public_read_${BUCKET.toLowerCase()}"
 ON storage.objects
 FOR SELECT TO anon, authenticated
-USING (bucket_id = '${BUCKET}');
-
--- Ghi chú:
--- 1) Policy này cho phép hiển thị danh sách file cả trong folder con "${FOLDER}"
---    lẫn ở thư mục gốc của bucket "${BUCKET}".
--- 2) Không cấp quyền INSERT/UPDATE/DELETE cho anon để bảo mật.`;
+USING (bucket_id = '${BUCKET}');`;
 
   const handleCopySql = () => {
     navigator.clipboard.writeText(sqlCode);

@@ -11,6 +11,7 @@ import {
   Layers,
   Award
 } from 'lucide-react';
+import logoMeoCam from '../../img/logomeocam.png';
 
 export const TABS = {
   HOME: 'home',
@@ -35,15 +36,15 @@ export default function Navbar({
         {/* Left: Brand Logo */}
         <div className="brand-section">
           <div className="brand-logo-icon">
-            <Flame size={26} strokeWidth={2.4} />
+            <img src={logoMeoCam} alt="TinHocVui Logo" className="brand-logo-img" />
           </div>
           <div>
             <div className="brand-title">
-              TinHoc<span>Pro</span>
-              <span className="brand-tag">THPTQG 2025</span>
+              TinHoc<span>Vui</span>
+              <span className="brand-tag">THPTQG</span>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
-              Cổng Luyện Thi Tin Học Chuẩn Ma Trận Bộ GD&ĐT
+              Đồng hành cùng bạn vượt qua kì thi
             </div>
           </div>
         </div>
