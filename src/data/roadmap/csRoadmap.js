@@ -1,0 +1,1085 @@
+/**
+ * ==============================================================================
+ * HƯỚNG DẪN CẤU HÌNH & CHỈNH SỬA DỮ LIỆU LÝ THUYẾT (DÀNH CHO QUẢN TRỊ VIÊN)
+ * ==============================================================================
+ * File này chứa toàn bộ dữ liệu Lộ trình & Lý thuyết của phân ban:
+ * KHOA HỌC MÁY TÍNH (COMPUTER SCIENCE - CS) - Chuẩn GDPT 2018 & THPTQG 2025-2026.
+ *
+ * CÁCH THAY ĐỔI DỮ LIỆU BÀI HỌC:
+ * 1. Muốn sửa tên bài, số trang SGK, mức độ ưu tiên: Tìm tới `csRoadmapStations` -> chọn Chặng (station) -> sửa trong mảng `lessons`.
+ * 2. Muốn sửa nội dung lý thuyết bài học: Sửa trong thuộc tính `theory` của bài đó:
+ *    - `objectives`: Danh sách các mục tiêu kiến thức.
+ *    - `contentSections`: Các phần lý thuyết (gồm heading, text, bulletPoints).
+ *    - `codeSnippet`: Đoạn mã minh họa (Python/SQL...), để trống nếu không có.
+ *    - `examTips`: Mẹo thi & cạm bẫy hay gặp trong đề thi THPTQG.
+ *    - `quiz`: Câu hỏi trắc nghiệm phản xạ nhanh của bài.
+ * ==============================================================================
+ */
+
+export const CS_EXAM_STRUCTURE = {
+  title: 'Cấu Trúc Đề Thi THPTQG Môn Tin Học — Định Hướng Khoa Học Máy Tính (CS)',
+  duration: '50 phút',
+  totalQuestions: '22 câu hỏi',
+  parts: [
+    {
+      part: 'Phần I',
+      format: '18 câu trắc nghiệm 4 lựa chọn (Câu 1 đến 18)',
+      focus: 'Lý thuyết nền tảng dùng chung (Chủ đề A, B, D, G) + CSDL cơ bản + Thuật toán tổng quát',
+      points: '4.5 điểm (0.25đ / câu)'
+    },
+    {
+      part: 'Phần II',
+      format: '4 câu trắc nghiệm Đúng/Sai (Câu 1 đến 4, mỗi câu 4 lệnh a, b, c, d)',
+      focus: 'Chuyên sâu CS (Câu 3 & 4): Đọc mã Python, Thuật toán sắp xếp/tìm kiếm, CSDL & SQL, Trí tuệ nhân tạo (AI/Machine Learning)',
+      points: '4.0 điểm (Lũy tiến max 1.0đ / câu)'
+    }
+  ]
+};
+
+export const CS_12_WEEK_PLAN = [
+  {
+    phase: 'Giai đoạn 1',
+    weeks: 'Tuần 1 - 4',
+    title: 'Luyện chắc Lý thuyết & Trắc nghiệm Phần I',
+    targetScore: '4.5 - 5.0 điểm nền tảng',
+    content: 'Ôn tập toàn bộ lý thuyết Chủ đề A, B, D, G trong SGK. Đảm bảo làm nhanh và chính xác 100% các câu hỏi nhận biết - thông hiểu (Phần I) để nắm chắc 4.5 - 5.0 điểm nền tảng.'
+  },
+  {
+    phase: 'Giai đoạn 2',
+    weeks: 'Tuần 5 - 9',
+    title: 'Cày sâu CSDL, SQL & Lập trình Python',
+    targetScore: '7.5 - 8.5 điểm',
+    content: 'Tập trung giải các bài tập trắc nghiệm Đúng/Sai Phần II. Đọc thuộc và truy vết chính xác các truy vấn SQL (JOIN, GROUP BY) và kịch bản Python (xử lý xâu, mảng 2 chiều, hàm đệ quy, thuật toán sắp xếp).'
+  },
+  {
+    phase: 'Giai đoạn 3',
+    weeks: 'Tuần 10 - 12',
+    title: 'Giả định thời gian thật & Tối ưu bài thi Đúng/Sai',
+    targetScore: '9.0 - 10.0 điểm tuyệt đối',
+    content: 'Luyện đề thi thử tổng hợp 50 phút. Áp dụng chiến thuật đánh câu Đúng/Sai lũy tiến: Đọc kỹ từng ý a, b, c, d để giành trọn 1.0 điểm cho mỗi câu hỏi Phần II.'
+  }
+];
+
+export const csRoadmapStations = [
+  {
+    id: 'cs_station_1',
+    stepNumber: '01',
+    code: 'Chủ đề A',
+    title: 'Máy Tính & Xã Hội Tri Thức',
+    category: 'Lý thuyết nền tảng',
+    priority: 'Trung bình',
+    priorityBadge: 'normal',
+    questionType: 'Trắc nghiệm Phần I (2 - 3 câu)',
+    description: 'Hệ điều hành, phần mềm ứng dụng thương mại vs mã nguồn mở, lưu trữ dữ liệu số và khái niệm Trí tuệ nhân tạo (AI).',
+    skills: ['Hệ điều hành (OS)', 'Phần mềm nguồn mở', 'Số hóa thông tin', 'Khái niệm & Lịch sử AI'],
+    xp: 250,
+    lessons: [
+      {
+        id: 'cs_a_1',
+        title: 'Bài 1: Hệ điều hành & Phần mềm ứng dụng',
+        bookRef: 'SGK Tin 11 - Trang 5',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Khái niệm OS (Windows, Linux, iOS), vai trò quản lý tài nguyên máy tính, phân biệt phần mềm thương mại và mã nguồn mở.',
+        theory: {
+          objectives: [
+            'Hiểu chức năng cơ bản của Hệ điều hành (quản lý phần cứng, phần mềm, giao tiếp người dùng).',
+            'Phân biệt rõ ràng phần mềm ứng dụng, phần mềm thương mại và phần mềm nguồn mở.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Khái niệm & Vai trò của Hệ điều hành (OS)',
+              text: 'Hệ điều hành là tập hợp các chương trình điều khiển và phối hợp hoạt động của các phần cứng máy tính, cung cấp môi trường để các ứng dụng chạy trên đó.',
+              bulletPoints: [
+                'Chức năng chính: Quản lý thiết bị (CPU, RAM, ổ cứng, I/O), quản lý tiến trình, quản lý tập tin (File System) và cung cấp giao diện người dùng (CLI, GUI).',
+                'Hệ điều hành máy tính để bàn phổ biến: Windows, macOS, Linux (Ubuntu, Fedora...).',
+                'Hệ điều hành di động phổ biến: Android (nhân Linux, nguồn mở), iOS (Apple, nguồn đóng).'
+              ]
+            },
+            {
+              heading: '2. Phân loại Phần mềm nguồn mở & Phần mềm thương mại',
+              text: 'Đây là nội dung xuất hiện thường xuyên trong Phần I trắc nghiệm 4 lựa chọn:',
+              bulletPoints: [
+                'Phần mềm thương mại (Commercial): Thuộc quyền sở hữu của nhà sản xuất, đóng gói mã nguồn, người dùng phải mua bản quyền/giấy phép sử dụng (VD: MS Office, Photoshop, Windows).',
+                'Phần mềm nguồn mở (Open Source): Được cung cấp cùng mã nguồn theo các giấy phép tự do (GNU GPL, MIT, Apache), cho phép tự do xem, sửa và chia sẻ (VD: Linux, LibreOffice, GIMP, Blender).'
+              ]
+            }
+          ],
+          codeSnippet: {
+            lang: 'plaintext',
+            title: 'Bảng đối chiếu nhanh',
+            code: `Tiêu chí          | Phần mềm thương mại         | Phần mềm nguồn mở
+------------------+-----------------------------+---------------------------
+Mã nguồn          | Đóng kín, giữ bản quyền     | Công khai tự do
+Chi phí bản quyền | Mua license/thuê bao định kỳ| Thường miễn phí sử dụng
+Ví dụ điển hình   | Windows, MS Word, Photoshop | Linux, Python, LibreOffice`
+          },
+          examTips: '⚠️ Lưu ý bẫy: Phần mềm mã nguồn mở không đồng nghĩa với phần mềm "không có bản quyền". Mã nguồn mở vẫn chịu sự ràng buộc bởi các giấy phép bản quyền như GNU GPL, Apache hoặc MIT.'
+        },
+        quiz: {
+          question: 'Phát biểu nào sau đây là ĐÚNG về phần mềm nguồn mở?',
+          options: [
+            'Người dùng không được phép chỉnh sửa mã nguồn của phần mềm.',
+            'Mã nguồn được công khai và cho phép người dùng tùy chỉnh, phân phối theo giấy phép.',
+            'Phần mềm nguồn mở không bao giờ có bản quyền sở hữu trí tuệ.',
+            'Hệ điều hành Microsoft Windows là một ví dụ điển hình về phần mềm nguồn mở.'
+          ],
+          answer: 1,
+          explanation: 'Phần mềm nguồn mở công khai mã nguồn theo các giấy phép tự do (như GPL, MIT), cho phép người dùng nghiên cứu, sửa đổi và phân phối lại.'
+        }
+      },
+      {
+        id: 'cs_a_2',
+        title: 'Bài 2: Lưu trữ dữ liệu & Số hóa thông tin',
+        bookRef: 'SGK Tin 11 - Trang 12',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Các đơn vị đo lường thông tin (Byte, KB, MB, GB, TB), nguyên lý số hóa văn bản, hình ảnh và âm thanh.',
+        theory: {
+          objectives: [
+            'Nắm chắc bảng đơn vị đo thông tin theo bội số 2^10 = 1024 (hoặc 10^3).',
+            'Hiểu quy trình số hóa thông tin: Rời rạc hóa (lấy mẫu) và lượng tử hóa.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Đơn vị đo thông tin',
+              text: 'Bit là đơn vị nhỏ nhất biểu diễn thông tin máy tính (nhận giá trị 0 hoặc 1). 1 Byte = 8 bits.',
+              bulletPoints: [
+                '1 KB (Kilobyte) = 1024 Bytes = 2^10 Bytes',
+                '1 MB (Megabyte) = 1024 KB = 2^20 Bytes',
+                '1 GB (Gigabyte) = 1024 MB = 2^30 Bytes',
+                '1 TB (Terabyte) = 1024 GB = 2^40 Bytes'
+              ]
+            },
+            {
+              heading: '2. Số hóa hình ảnh và âm thanh',
+              text: 'Để máy tính xử lý được hình ảnh và âm thanh trong thế giới thực, chúng phải được chuyển đổi thành dãy bit nhị phân:',
+              bulletPoints: [
+                'Số hóa hình ảnh: Ảnh Bitmap được tạo thành từ lưới điểm ảnh (pixel). Mỗi pixel có độ sâu màu (color depth) xác định số bit để mã hóa màu sắc (VD: ảnh RGB 24-bit).',
+                'Số hóa âm thanh: Gồm 2 bước cốt lõi là Lấy mẫu (Sampling - tần số lấy mẫu Hz) và Lượng tử hóa (Quantization - độ phân giải bit mẫu).'
+              ]
+            }
+          ],
+          examTips: '⚠️ Bẫy tính toán: Phân biệt 1 Byte = 8 bits. Khi đề bài hỏi dung lượng lưu trữ của ảnh 1000x1000 pixel 24-bit màu, dung lượng = 1000 * 1000 * 3 Bytes = 3.000.000 Bytes (~2.86 MB).'
+        },
+        quiz: {
+          question: 'Một bức ảnh có kích thước 800 x 600 pixel, sử dụng chuẩn màu 24-bit (3 bytes mỗi pixel). Dung lượng thô của ảnh khi chưa nén là bao nhiêu?',
+          options: [
+            '480.000 Bytes',
+            '1.440.000 Bytes',
+            '3.840.000 Bytes',
+            '1.200.000 Bytes'
+          ],
+          answer: 1,
+          explanation: 'Dung lượng thô = 800 * 600 * 3 Bytes = 1.440.000 Bytes (khoảng 1.37 MB).'
+        }
+      },
+      {
+        id: 'cs_a_3',
+        title: 'Bài 1: Khái niệm & Lịch sử phát triển AI',
+        bookRef: 'SGK Tin 12 - Trang 5',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Định nghĩa Trí tuệ nhân tạo (AI), phép thử Turing (Turing Test), các giai đoạn phát triển và bước ngoặt Deep Learning.',
+        theory: {
+          objectives: [
+            'Hiểu định nghĩa AI: Khả năng của hệ thống máy móc mô phỏng các hành vi trí tuệ của con người.',
+            'Nắm các mốc lịch sử AI: Hội thảo Dartmouth (1956), Phép thử Turing, Mùa đông AI và Sự bùng nổ của Học sâu (Deep Learning).'
+          ],
+          contentSections: [
+            {
+              heading: '1. Khái niệm Trí tuệ nhân tạo (AI)',
+              text: 'Trí tuệ nhân tạo (Artificial Intelligence) là một ngành của khoa học máy tính nhằm xây dựng các hệ thống có khả năng thực hiện các tác vụ vốn đòi hỏi trí thông minh con người như học tập, suy luận, tự thích nghi và giải quyết vấn đề.',
+              bulletPoints: [
+                'Phép thử Turing (Alan Turing, 1950): Thử nghiệm xem một chiếc máy có thể trò chuyện khiến con người không thể phân biệt được là người hay máy.',
+                'Thuật ngữ AI ra đời chính thức tại Hội thảo Dartmouth năm 1956 do John McCarthy đề xuất.'
+              ]
+            }
+          ],
+          examTips: '⚠️ Lưu ý trắc nghiệm: John McCarthy được coi là một trong những người cha đẻ khai sinh ra thuật ngữ "Trí tuệ nhân tạo" vào năm 1956 tại hội thảo Dartmouth.'
+        },
+        quiz: {
+          question: 'Thuật ngữ "Trí tuệ nhân tạo" (Artificial Intelligence) chính thức được đề xuất tại hội thảo nào?',
+          options: [
+            'Hội nghị Paris năm 1945',
+            'Hội thảo Dartmouth năm 1956',
+            'Hội nghị London năm 1968',
+            'Hội nghị Thượng đỉnh Stanford năm 1980'
+          ],
+          answer: 1,
+          explanation: 'Năm 1956, tại Hội thảo Dartmouth, John McCarthy cùng các đồng nghiệp đã chính thức đặt ra thuật ngữ Artificial Intelligence.'
+        }
+      },
+      {
+        id: 'cs_a_4',
+        title: 'Bài 2: AI trong đời sống & Kinh tế tri thức',
+        bookRef: 'SGK Tin 12 - Trang 10',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Phân loại AI hẹp (Narrow AI) vs AI tổng quát (AGI), Machine Learning, Deep Learning và AI tạo sinh (Generative AI).',
+        theory: {
+          objectives: [
+            'Phân biệt được AI hẹp (ANI), AI tổng quát (AGI) và Siêu trí tuệ nhân tạo (ASI).',
+            'Nắm các ứng dụng tiêu biểu: Thị giác máy tính, Xử lý ngôn ngữ tự nhiên (NLP), AI tạo sinh (ChatGPT, Midjourney).'
+          ],
+          contentSections: [
+            {
+              heading: '1. Phân loại cấp độ AI',
+              text: 'Các hệ thống AI hiện nay đều thuộc cấp độ AI hẹp (Narrow AI):',
+              bulletPoints: [
+                'AI hẹp (Artificial Narrow Intelligence - ANI): Được huấn luyện để thực hiện xuất sắc một tác vụ cụ thể (chơi cờ vua, nhận diện khuôn mặt, dịch thuật).',
+                'AI tổng quát (AGI): Có trí tuệ toàn diện tương đương con người trong mọi lĩnh vực (đang ở giai đoạn nghiên cứu).',
+                'AI tạo sinh (Generative AI): Tạo ra nội dung mới (văn bản, hình ảnh, mã nguồn) dựa trên dữ liệu học được từ mô hình ngôn ngữ lớn (LLM).'
+              ]
+            }
+          ],
+          examTips: '⚠️ Bẫy đề: Các ứng dụng thực tế hiện nay (kể cả ChatGPT, AlphaGo, xe tự hành Tesla) đều thuộc nhóm AI HẸP (Narrow AI), chưa đạt tới AGI.'
+        },
+        quiz: {
+          question: 'Các hệ thống AI thực tế hiện nay như ChatGPT, Google Gemini, AlphaGo thuộc cấp độ nào?',
+          options: [
+            'AI Tổng quát (AGI)',
+            'AI Hẹp (Narrow AI / ANI)',
+            'Siêu trí tuệ nhân tạo (ASI)',
+            'AI Toàn năng (Omni AI)'
+          ],
+          answer: 1,
+          explanation: 'Mọi hệ thống AI hiện đại đều là AI hẹp (Narrow AI), chỉ tập trung giải quyết các tác vụ chuyên biệt dựa trên dữ liệu huấn luyện.'
+        }
+      }
+    ]
+  },
+  {
+    id: 'cs_station_2',
+    stepNumber: '02',
+    code: 'Chủ đề B',
+    title: 'Mạng Máy Tính & Internet',
+    category: 'Hạ tầng mạng & Kết nối',
+    priority: 'Trung bình',
+    priorityBadge: 'normal',
+    questionType: 'Trắc nghiệm Phần I (2 câu)',
+    description: 'Thiết bị mạng Switch, Router, Access Point; Địa chỉ IPv4/IPv6; Tên miền DNS; Mô hình Điện toán đám mây IaaS, PaaS, SaaS.',
+    skills: ['Switch vs Router vs AP', 'Giao thức TCP/IP', 'IPv4 & IPv6 & DNS', 'Đám mây IaaS, PaaS, SaaS'],
+    xp: 280,
+    lessons: [
+      {
+        id: 'cs_b_1',
+        title: 'Bài 3: Thiết bị mạng & Mạng cục bộ LAN',
+        bookRef: 'SGK Tin 11 - Trang 24',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Chức năng Switch, Router, Access Point (AP), Modem; môi trường truyền dẫn có dây và không dây.',
+        theory: {
+          objectives: [
+            'Phân biệt vai trò của từng thiết bị mạng cơ bản.',
+            'Hiểu cấu trúc mạng cục bộ (LAN - Local Area Network).'
+          ],
+          contentSections: [
+            {
+              heading: '1. Chức năng các thiết bị kết nối mạng',
+              text: 'Nội dung cốt lõi thường gặp trong câu hỏi trắc nghiệm nhận biết:',
+              bulletPoints: [
+                'Switch (Bộ chuyển mạch): Kết nối các thiết bị trong cùng một mạng LAN, chuyển tiếp dữ liệu dựa trên địa chỉ MAC của từng máy.',
+                'Router (Bộ định tuyến): Định tuyến và chuyển tiếp các gói dữ liệu giữa các mạng khác nhau (ví dụ từ mạng LAN gia đình ra mạng Internet toàn cầu).',
+                'Access Point (Điểm truy cập không dây): Phát sóng Wi-Fi cho phép các thiết bị không dây kết nối vào mạng LAN có dây.',
+                'Modem: Điều chế và giải điều chế tín hiệu từ nhà mạng (ISP) thành tín hiệu số cho thiết bị sử dụng.'
+              ]
+            }
+          ],
+          examTips: '⚠️ Bẫy nhớ nhanh: Switch kết nối các máy TRONG CÙNG mạng LAN. Router kết nối GIỮA CÁC MẠNG KHÁC NHAU với nhau.'
+        },
+        quiz: {
+          question: 'Thiết bị mạng nào có chức năng chính là định tuyến các gói tin và kết nối mạng nội bộ (LAN) ra mạng diện rộng (WAN/Internet)?',
+          options: ['Switch', 'Router', 'Repeater', 'Hub'],
+          answer: 1,
+          explanation: 'Router (Bộ định tuyến) có chức năng tìm đường đi tối ưu và kết nối các mạng khác nhau lại với nhau.'
+        }
+      },
+      {
+        id: 'cs_b_2',
+        title: 'Bài 4: Dịch vụ mạng & Giao thức IP/TCP',
+        bookRef: 'SGK Tin 11 - Trang 30',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Bộ giao thức TCP/IP, địa chỉ IPv4 (32-bit), IPv6 (128-bit), cơ chế phân giải tên miền DNS.',
+        theory: {
+          objectives: [
+            'Nắm chắc độ dài và cấu trúc của địa chỉ IPv4 vs IPv6.',
+            'Hiểu chức năng của hệ thống phân giải tên miền DNS.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Địa chỉ IP (IPv4 vs IPv6)',
+              text: 'Địa chỉ IP dùng để định danh duy nhất mỗi thiết bị tham gia mạng Internet:',
+              bulletPoints: [
+                'IPv4: Có độ dài 32 bit, chia thành 4 octet (mỗi octet 8 bit, giá trị từ 0 đến 255), viết cách nhau bởi dấu chấm (VD: 192.168.1.1). Không gian tối đa ~4.3 tỷ địa chỉ.',
+                'IPv6: Có độ dài 128 bit, viết dưới dạng 8 nhóm số hexa cách nhau bởi dấu hai chấm (VD: 2001:0db8::ff00:0042:8329), giải quyết triệt để cạn kiệt IPv4.'
+              ]
+            },
+            {
+              heading: '2. Dịch vụ DNS (Domain Name System)',
+              text: 'Hệ thống tên miền (DNS) có chức năng biên dịch các tên miền dễ nhớ (như google.com, edu.vn) thành địa chỉ IP dạng số mà máy tính hiểu được.'
+            }
+          ],
+          examTips: '⚠️ Bẫy IPv4: Một địa chỉ IPv4 hợp lệ mỗi nhóm số chỉ được nằm trong đoạn [0, 255]. Ví dụ: "192.168.1.300" là KHÔNG hợp lệ.'
+        },
+        quiz: {
+          question: 'Địa chỉ IPv4 có độ dài bao nhiêu bit và địa chỉ nào sau đây là KHÔNG hợp lệ?',
+          options: [
+            '32 bit; Địa chỉ không hợp lệ: 192.168.1.256',
+            '64 bit; Địa chỉ không hợp lệ: 10.0.0.1',
+            '128 bit; Địa chỉ không hợp lệ: 172.16.254.1',
+            '32 bit; Địa chỉ không hợp lệ: 127.0.0.1'
+          ],
+          answer: 0,
+          explanation: 'IPv4 dài 32 bit, gồm 4 nhóm số từ 0 đến 255. Giá trị 256 vượt quá giới hạn 8-bit nên không hợp lệ.'
+        }
+      },
+      {
+        id: 'cs_b_3',
+        title: 'Bài 3: Thiết bị kết nối mạng Switch/Router nâng cao',
+        bookRef: 'SGK Tin 12 - Trang 14',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Bảng định tuyến (Routing table), cơ chế lọc gói tin, phân chia mạng con (Subnet).',
+        theory: {
+          objectives: [
+            'Hiểu cách thức Router tra cứu bảng định tuyến để chuyển gói tin.',
+            'Nắm cơ chế bảo vệ mạng cơ bản của Router.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Bảng định tuyến & Chuyển mạch gói',
+              text: 'Router dựa vào bảng định tuyến để quyết định cổng giao tiếp tiếp theo nhằm đưa gói tin về đích với quãng đường hiệu quả nhất.'
+            }
+          ],
+          examTips: 'Router phân tích địa chỉ IP đích trong phần Header của gói tin để tra cứu vào Bảng định tuyến.'
+        },
+        quiz: {
+          question: 'Để chuyển gói tin đến đúng mạng đích, Router căn cứ vào thông tin nào?',
+          options: ['Địa chỉ MAC nguồn', 'Địa chỉ IP đích và Bảng định tuyến', 'Số serial của cáp mạng', 'Tên đăng nhập Wi-Fi'],
+          answer: 1,
+          explanation: 'Router đọc địa chỉ IP đích từ Header gói tin và tra cứu trong Bảng định tuyến (Routing Table) để chuyển tiếp.'
+        }
+      },
+      {
+        id: 'cs_b_4',
+        title: 'Bài 4: Mạng không dây Wi-Fi & Điện toán đám mây',
+        bookRef: 'SGK Tin 12 - Trang 20',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Các mô hình dịch vụ đám mây: IaaS (Hạ tầng), PaaS (Nền tảng), SaaS (Phần mềm) và ứng dụng thực tiễn.',
+        theory: {
+          objectives: [
+            'Phân biệt rõ ràng 3 mô hình đám mây IaaS, PaaS và SaaS.',
+            'Hiểu ưu điểm của lưu trữ và điện toán đám mây (Cloud Computing).'
+          ],
+          contentSections: [
+            {
+              heading: '1. Ba mô hình dịch vụ đám mây cốt lõi',
+              text: 'Đề thi THPTQG thường hỏi phân loại dịch vụ đám mây:',
+              bulletPoints: [
+                'IaaS (Infrastructure as a Service - Hạ tầng dịch vụ): Cung cấp máy chủ ảo, tài nguyên tính toán thô, lưu trữ (VD: Amazon EC2, Google Compute Engine).',
+                'PaaS (Platform as a Service - Nền tảng dịch vụ): Cung cấp môi trường phát triển, runtime, cơ sở dữ liệu để lập trình viên triển khai ứng dụng mà không cần quản lý máy chủ (VD: Firebase, Heroku).',
+                'SaaS (Software as a Service - Phần mềm dịch vụ): Cung cấp ứng dụng hoàn chỉnh cho người dùng cuối qua trình duyệt (VD: Google Docs, Gmail, Microsoft 365, Dropbox).'
+              ]
+            }
+          ],
+          examTips: '⚠️ Mẹo nhớ: Muốn dùng ứng dụng soạn thảo văn bản hoặc email qua mạng -> SaaS. Muốn thuê máy chủ cài đặt hệ điều hành tự do -> IaaS.'
+        },
+        quiz: {
+          question: 'Google Docs, Microsoft 365 trực tuyến và Gmail thuộc mô hình dịch vụ điện toán đám mây nào?',
+          options: [
+            'IaaS (Infrastructure as a Service)',
+            'PaaS (Platform as a Service)',
+            'SaaS (Software as a Service)',
+            'BaaS (Backend as a Service)'
+          ],
+          answer: 2,
+          explanation: 'SaaS cung cấp phần mềm ứng dụng hoàn chỉnh trực tiếp tới người dùng cuối qua Internet.'
+        }
+      }
+    ]
+  },
+  {
+    id: 'cs_station_3',
+    stepNumber: '03',
+    code: 'Chủ đề C (CS)',
+    title: 'Cơ Sở Dữ Liệu & Ngôn Ngữ SQL',
+    category: 'Trọng tâm Phần I & II',
+    priority: 'Rất cao',
+    priorityBadge: 'high',
+    questionType: 'Trắc nghiệm Phần I & Phần II (Đúng/Sai)',
+    description: 'Bảng quan hệ, Khóa chính (PK), Khóa ngoại (FK), Ràng buộc toàn vẹn, Câu lệnh SELECT, WHERE, JOIN, GROUP BY, HAVING, INSERT, UPDATE, DELETE.',
+    skills: ['Khóa chính & Khóa ngoại', 'Truy vấn SELECT SQL', 'Phép nối INNER JOIN', 'Gom nhóm GROUP BY & HAVING'],
+    xp: 450,
+    lessons: [
+      {
+        id: 'cs_c_1',
+        title: 'Bài 5: Giới thiệu CSDL & Hệ QTCSDL',
+        bookRef: 'SGK Tin 11 CS - Trang 49',
+        priority: 'Rất cao',
+        examFormat: 'Trắc nghiệm Phần I & II',
+        summary: 'Khái niệm CSDL, Hệ quản trị CSDL (DBMS), các đặc trưng an toàn, tính toàn vẹn và độc lập dữ liệu.',
+        theory: {
+          objectives: [
+            'Phân biệt được CSDL (Database) và Hệ quản trị CSDL (DBMS).',
+            'Nắm vai trò tránh dư thừa dữ liệu và đảm bảo nhất quán.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Khái niệm cốt lõi',
+              text: 'CSDL là tập hợp dữ liệu có liên quan được tổ chức có cấu trúc và lưu trữ trên bộ nhớ máy tính. Hệ QTCSDL (DBMS) là phần mềm cung cấp môi trường để tạo lập, lưu trữ và khai thác CSDL (như MySQL, PostgreSQL, Oracle, SQLite).'
+            }
+          ],
+          examTips: 'CSDL là dữ liệu; DBMS là phần mềm quản lý dữ liệu đó.'
+        },
+        quiz: {
+          question: 'Phần mềm nào sau đây là Hệ quản trị cơ sở dữ liệu (DBMS)?',
+          options: ['Python', 'MySQL', 'Visual Studio Code', 'Git'],
+          answer: 1,
+          explanation: 'MySQL là một Hệ quản trị cơ sở dữ liệu quan hệ (RDBMS) rất phổ biến.'
+        }
+      },
+      {
+        id: 'cs_c_2',
+        title: 'Bài 6: Mô hình CSDL Quan hệ & Khóa chính',
+        bookRef: 'SGK Tin 11 CS - Trang 56',
+        priority: 'Rất cao',
+        examFormat: 'Trắc nghiệm Phần I & II',
+        summary: 'Cấu trúc bảng, bản ghi (dòng), thuộc tính (cột), khái niệm Khóa chính (Primary Key) và tính duy nhất, khác NULL.',
+        theory: {
+          objectives: [
+            'Hiểu định nghĩa Khóa chính (Primary Key).',
+            'Nắm hai điều kiện bắt buộc của Khóa chính: DUY NHẤT (Unique) và KHÔNG ĐƯỢC RỖNG (NOT NULL).'
+          ],
+          contentSections: [
+            {
+              heading: '1. Khóa chính (Primary Key - PK)',
+              text: 'Khóa chính là một hoặc một nhóm thuộc tính dùng để phân biệt duy nhất từng bản ghi (dòng) trong bảng.',
+              bulletPoints: [
+                'Không được chứa giá trị trùng lặp giữa các dòng.',
+                'Không được chứa giá trị NULL (rỗng).',
+                'Mỗi bảng chỉ có duy nhất 1 khóa chính (dù khóa chính đó có thể gồm nhiều cột ghép lại gọi là khóa phức hợp).'
+              ]
+            }
+          ],
+          examTips: '⚠️ Bẫy đề Đúng/Sai Phần II: "Một bảng có thể có nhiều khóa chính" -> SAI (chỉ có duy nhất 1 khóa chính, nhưng có thể gồm nhiều thuộc tính kết hợp).'
+        },
+        quiz: {
+          question: 'Hai tính chất bắt buộc của một Khóa chính (Primary Key) trong bảng quan hệ là:',
+          options: [
+            'Giá trị phải là số nguyên và tự động tăng',
+            'Giá trị phải mang tính DUY NHẤT và KHÔNG ĐƯỢC RỖNG (NOT NULL)',
+            'Giá trị có thể trùng nhau nhưng không được rỗng',
+            'Chỉ áp dụng cho trường văn bản'
+          ],
+          answer: 1,
+          explanation: 'Khóa chính bắt buộc phải duy nhất trên toàn bảng và không được mang giá trị NULL.'
+        }
+      },
+      {
+        id: 'cs_c_3',
+        title: 'Bài 7: Khóa ngoại & Liên kết bảng',
+        bookRef: 'SGK Tin 11 CS - Trang 63',
+        priority: 'Rất cao',
+        examFormat: 'Trắc nghiệm Phần I & II',
+        summary: 'Khái niệm Khóa ngoại (Foreign Key), ràng buộc toàn vẹn tham chiếu, liên kết quan hệ 1 - 1, 1 - N, N - N.',
+        theory: {
+          objectives: [
+            'Hiểu Khóa ngoại là cầu nối tham chiếu đến Khóa chính của bảng khác.',
+            'Nắm quy tắc toàn vẹn tham chiếu: Giá trị khóa ngoại phải tồn tại ở bảng cha hoặc mang giá trị NULL.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Khóa ngoại (Foreign Key - FK)',
+              text: 'Khóa ngoại là một trường (hoặc nhóm trường) trong một bảng tham chiếu đến khóa chính của một bảng khác nhằm thiết lập mối liên kết giữa hai bảng.'
+            }
+          ],
+          examTips: '⚠️ Bẫy xóa dữ liệu: Không thể xóa một dòng ở bảng cha (chứa khóa chính) nếu đang có dòng ở bảng con (chứa khóa ngoại) tham chiếu tới nó (trừ khi có thiết lập ON DELETE CASCADE).'
+        },
+        quiz: {
+          question: 'Ràng buộc toàn vẹn tham chiếu của Khóa ngoại (Foreign Key) quy định điều gì?',
+          options: [
+            'Giá trị khóa ngoại luôn luôn bằng 0',
+            'Giá trị khóa ngoại phải tồn tại trong tập giá trị khóa chính của bảng được tham chiếu (hoặc là NULL)',
+            'Bảng chứa khóa ngoại bắt buộc phải có ít hơn 10 cột',
+            'Khóa ngoại không được phép trùng lặp trong bảng của nó'
+          ],
+          answer: 1,
+          explanation: 'Toàn vẹn tham chiếu đảm bảo không có bản ghi "mồ côi" tham chiếu tới một đối tượng không tồn tại ở bảng cha.'
+        }
+      },
+      {
+        id: 'cs_c_4',
+        title: 'Bài 8: Ngôn ngữ SQL & Lệnh SELECT',
+        bookRef: 'SGK Tin 11 CS - Trang 70',
+        priority: 'Rất cao',
+        examFormat: 'Trắc nghiệm Phần I & II',
+        summary: 'Cú pháp câu lệnh SELECT căn bản, lọc dữ liệu với WHERE, toán tử so sánh, LIKE, BETWEEN, ORDER BY sắp xếp.',
+        theory: {
+          objectives: [
+            'Viết đúng thứ tự các mệnh đề SQL: SELECT ... FROM ... WHERE ... ORDER BY ...',
+            'Sử dụng thành thạo toán tử LIKE với ký tự đại diện % và _.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Cú pháp SELECT cơ bản',
+              text: 'Lệnh truy vấn lấy dữ liệu từ bảng:'
+            }
+          ],
+          codeSnippet: {
+            lang: 'sql',
+            title: 'Ví dụ truy vấn SQL chuẩn đề thi',
+            code: `SELECT MaHS, HoTen, DiemTin
+FROM HOC_SINH
+WHERE DiemTin >= 8.5 AND Lop = '12A1'
+ORDER BY DiemTin DESC;`
+          },
+          examTips: '⚠️ Trật tự thực thi trong SQL: FROM -> WHERE -> SELECT -> ORDER BY. Do đó không thể dùng bí danh (Alias) đặt trong SELECT để lọc ở WHERE.'
+        },
+        quiz: {
+          question: 'Để lọc các học sinh có tên bắt đầu bằng chữ cái "N" trong bảng HOC_SINH, mệnh đề WHERE nào sau đây là chính xác?',
+          options: [
+            "WHERE HoTen = 'N*'",
+            "WHERE HoTen LIKE 'N%'",
+            "WHERE HoTen IN ('N')",
+            "WHERE HoTen CONTAINS 'N'"
+          ],
+          answer: 1,
+          explanation: "Trong chuẩn SQL, toán tử LIKE kết hợp với ký tự '%' đại diện cho chuỗi ký tự bất kỳ."
+        }
+      },
+      {
+        id: 'cs_c_5',
+        title: 'Bài 9: Truy vấn SQL liên kết đa bảng & Gom nhóm',
+        bookRef: 'SGK Tin 11 CS - Trang 78',
+        priority: 'Rất cao',
+        examFormat: 'Trọng tâm Phần II Đúng/Sai',
+        summary: 'Phép nối INNER JOIN, LEFT JOIN; Gom nhóm GROUP BY kết hợp điều kiện lọc HAVING và các hàm tổng hợp COUNT, SUM, AVG, MAX, MIN.',
+        theory: {
+          objectives: [
+            'Phân biệt rõ ràng sự khác nhau giữa WHERE và HAVING.',
+            'Hiểu bản chất của INNER JOIN dựa trên điều kiện khóa chính - khóa ngoại.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Khác biệt then chốt giữa WHERE và HAVING',
+              text: 'Đây là câu hỏi phân loại 9-10 điểm phổ biến nhất trong đề minh họa:',
+              bulletPoints: [
+                'WHERE: Lọc từng dòng dữ liệu TRƯỚC KHI gom nhóm. Không được chứa hàm tổng hợp (Aggregate functions như COUNT, SUM, AVG).',
+                'HAVING: Lọc các nhóm dữ liệu SAU KHI đã gom nhóm bằng GROUP BY. Thường chứa biểu thức hàm tổng hợp (VD: HAVING COUNT(*) >= 5).'
+              ]
+            }
+          ],
+          codeSnippet: {
+            lang: 'sql',
+            title: 'Cú pháp câu hỏi Đúng/Sai chuẩn',
+            code: `SELECT HOC_SINH.Lop, COUNT(*) AS SoLuong, AVG(DiemThi) AS DiemTB
+FROM HOC_SINH
+INNER JOIN KET_QUA ON HOC_SINH.MaHS = KET_QUA.MaHS
+WHERE KET_QUA.DiemThi >= 5.0
+GROUP BY HOC_SINH.Lop
+HAVING COUNT(*) >= 10
+ORDER BY DiemTB DESC;`
+          },
+          examTips: '⚠️ Ghi nhớ vàng: Nếu thấy "WHERE COUNT(*) > 5" trong bất kỳ phương án nào -> Chắc chắn phương án đó SAI!'
+        },
+        quiz: {
+          question: 'Phát biểu nào sau đây là ĐÚNG về mệnh đề WHERE và HAVING trong SQL?',
+          options: [
+            'Hàm tổng hợp như COUNT(*), SUM() có thể đặt trực tiếp trong mệnh đề WHERE.',
+            'WHERE lọc các dòng trước khi gom nhóm, còn HAVING lọc các nhóm sau khi GROUP BY.',
+            'HAVING luôn luôn phải đứng trước mệnh đề WHERE trong câu truy vấn.',
+            'Nếu có HAVING thì bắt buộc không được dùng WHERE.'
+          ],
+          answer: 1,
+          explanation: 'WHERE lọc các dòng trước khi nhóm. HAVING lọc các nhóm dữ liệu sau khi GROUP BY và có thể chứa hàm tổng hợp.'
+        }
+      },
+      {
+        id: 'cs_c_6',
+        title: 'Bài 10: Cập nhật dữ liệu INSERT, UPDATE, DELETE',
+        bookRef: 'SGK Tin 11 CS - Trang 85',
+        priority: 'Rất cao',
+        examFormat: 'Trắc nghiệm Phần I & II',
+        summary: 'Cú pháp thêm bản ghi mới (INSERT INTO), sửa dữ liệu (UPDATE SET WHERE), xóa bản ghi (DELETE FROM WHERE).',
+        theory: {
+          objectives: [
+            'Viết đúng cú pháp 3 thao tác biến đổi dữ liệu.',
+            'Nhận biết nguy cơ xóa/sửa toàn bộ bảng nếu quên mệnh đề WHERE.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Ba câu lệnh thao tác dữ liệu cơ bản',
+              text: 'Cú pháp chuẩn:',
+              bulletPoints: [
+                'INSERT INTO TenBang(Cot1, Cot2) VALUES (GiaTri1, GiaTri2);',
+                'UPDATE TenBang SET Cot1 = GiaTriMoi WHERE DieuKien;',
+                'DELETE FROM TenBang WHERE DieuKien;'
+              ]
+            }
+          ],
+          examTips: '⚠️ Cực kỳ cẩn trọng: Nếu câu lệnh UPDATE hoặc DELETE không có mệnh đề WHERE, toàn bộ các dòng trong bảng sẽ bị thay đổi hoặc xóa sạch.'
+        },
+        quiz: {
+          question: 'Câu lệnh SQL nào dùng để tăng điểm Tin của học sinh có mã "HS01" lên 10.0?',
+          options: [
+            "MODIFY HOC_SINH SET DiemTin = 10.0 WHERE MaHS = 'HS01';",
+            "UPDATE HOC_SINH SET DiemTin = 10.0 WHERE MaHS = 'HS01';",
+            "CHANGE HOC_SINH DiemTin = 10.0 WHERE MaHS = 'HS01';",
+            "INSERT INTO HOC_SINH (DiemTin) VALUES (10.0) WHERE MaHS = 'HS01';"
+          ],
+          answer: 1,
+          explanation: "Cú pháp sửa dữ liệu chuẩn trong SQL là: UPDATE TenBang SET Cot = GiaTri WHERE DieuKien."
+        }
+      }
+    ]
+  },
+  {
+    id: 'cs_station_4',
+    stepNumber: '04',
+    code: 'Chủ đề D',
+    title: 'Đạo Đức, Pháp Luật & Văn Hóa Số',
+    category: 'Pháp lý & Đạo đức',
+    priority: 'Trung bình',
+    priorityBadge: 'normal',
+    questionType: 'Trắc nghiệm Phần I (1 - 2 câu)',
+    description: 'Bản quyền phần mềm, Các loại giấy phép bản quyền (Creative Commons, GPL), Luật An ninh mạng, Bảo vệ quyền riêng tư và dữ liệu số.',
+    skills: ['Giấy phép CC (Creative Commons)', 'Bản quyền GPL & Free Software', 'Luật An ninh mạng 2018', 'Bảo vệ thông tin cá nhân'],
+    xp: 220,
+    lessons: [
+      {
+        id: 'cs_d_1',
+        title: 'Bài 11: Bản quyền phần mềm & Giấy phép',
+        bookRef: 'SGK Tin 11 - Trang 38',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Các loại bản quyền phần mềm, giấy phép nguồn mở GNU GPL, bản quyền tác giả Creative Commons (CC BY, CC NC, CC ND, CC SA).',
+        theory: {
+          objectives: [
+            'Hiểu ý nghĩa các biểu tượng bản quyền Creative Commons.',
+            'Nắm quyền tác giả và nghĩa vụ tôn trọng bản quyền số.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Các ký hiệu của giấy phép Creative Commons (CC)',
+              text: 'Rất hay xuất hiện trong câu hỏi trắc nghiệm nhận diện:',
+              bulletPoints: [
+                'BY (Attribution): Ghi nhận công lao tác giả.',
+                'NC (Non-Commercial): Phi thương mại, không được dùng để kinh doanh kiếm lời.',
+                'ND (No Derivatives): Không tạo tác phẩm phái sinh (không được sửa đổi).',
+                'SA (Share-Alike): Chia sẻ tương tự (tác phẩm phái sinh phải dùng chung giấy phép gốc).'
+              ]
+            }
+          ],
+          examTips: 'Ký hiệu "BY" bắt buộc tác giả phải được dẫn nguồn. Ký hiệu "NC" nghiêm cấm mục đích thương mại.'
+        },
+        quiz: {
+          question: 'Biểu tượng "NC" (Non-Commercial) trong giấy phép Creative Commons có ý nghĩa gì?',
+          options: [
+            'Cho phép tác phẩm được sử dụng cho mục đích kinh doanh kiếm lời tự do',
+            'Nghiêm cấm việc sử dụng tác phẩm cho mục đích thương mại',
+            'Không cần ghi nhận tên tác giả gốc',
+            'Không được phép phân phối tác phẩm qua mạng Internet'
+          ],
+          answer: 1,
+          explanation: 'NC viết tắt của Non-Commercial nghĩa là phi thương mại, cấm sử dụng để bán hoặc thu lợi tài chính.'
+        }
+      },
+      {
+        id: 'cs_d_2',
+        title: 'Bài 5: Luật An ninh mạng & Giữ an toàn số',
+        bookRef: 'SGK Tin 12 - Trang 34',
+        priority: 'Trung bình',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Luật An ninh mạng Việt Nam (2018), phòng ngừa tấn công mạng, phòng chống lừa đảo trực tuyến (Phishing) và bảo vệ dữ liệu cá nhân.',
+        theory: {
+          objectives: [
+            'Nắm các hành vi bị nghiêm cấm theo Luật An ninh mạng Việt Nam.',
+            'Các biện pháp tự bảo vệ tài khoản số: Mật khẩu mạnh, xác thực 2 bước (2FA), nhận biết liên kết giả mạo (Phishing).'
+          ]
+        },
+        quiz: {
+          question: 'Hành vi nào sau đây vi phạm nghiêm trọng Luật An ninh mạng Việt Nam?',
+          options: [
+            'Cài đặt phần mềm diệt virus trên máy tính cá nhân',
+            'Tự giác bật xác thực hai yếu tố (2FA) cho tài khoản ngân hàng số',
+            'Tán phát thông tin sai sự thật gây hoang mang dư luận hoặc cài mã độc chiếm đoạt tài sản',
+            'Sử dụng phần mềm mã nguồn mở để học tập'
+          ],
+          answer: 2,
+          explanation: 'Hành vi tán phát thông tin sai sự thật hoặc phát tán mã độc là hành vi vi phạm pháp luật An ninh mạng.'
+        }
+      }
+    ]
+  },
+  {
+    id: 'cs_station_5',
+    stepNumber: '05',
+    code: 'Chủ đề F (CS)',
+    title: 'Giải Thuật, Lập Trình Python & Trí Tuệ Nhân Tạo',
+    category: 'TRỌNG TÂM CAO NHẤT PHẦN II',
+    priority: 'Cực kỳ cao',
+    priorityBadge: 'extreme',
+    questionType: 'Trắc nghiệm Đúng/Sai (Câu 3 & 4 Phần II)',
+    description: 'TRỌNG TÂM ĐIỂM 9-10 ĐỊNH HƯỚNG CS! Đọc hiểu code Python, Xâu, List, Đệ quy, Tìm kiếm tuyến tính & nhị phân, Sắp xếp nổi bọt/chọn/chèn/QuickSort, Thuật toán Học máy KNN & K-Means.',
+    skills: ['Truy vết vòng lặp Python', 'Tìm kiếm nhị phân', 'Độ phức tạp O(n) & O(n log n)', 'Thuật toán KNN & K-Means'],
+    xp: 600,
+    lessons: [
+      {
+        id: 'cs_f_1',
+        title: 'Bài 12: Thuật toán tìm kiếm Tuyến tính & Nhị phân',
+        bookRef: 'SGK Tin 11 CS - Trang 90',
+        priority: 'Cực kỳ cao',
+        examFormat: 'Trắc nghiệm Đúng/Sai Phần II',
+        summary: 'Linear Search O(n), Binary Search O(log n), điều kiện áp dụng tìm kiếm nhị phân (danh sách ĐÃ ĐƯỢC SẮP XẾP).',
+        theory: {
+          objectives: [
+            'Hiểu bản chất và số phép so sánh của tìm kiếm tuyến tính vs tìm kiếm nhị phân.',
+            'Đọc hiểu và truy vết từng bước chạy của đoạn mã Python cài đặt tìm kiếm nhị phân.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Tìm kiếm nhị phân (Binary Search)',
+              text: 'Điều kiện tiên quyết: Dãy số phải được sắp xếp theo thứ tự tăng dần hoặc giảm dần.',
+              bulletPoints: [
+                'Ý tưởng: Mỗi lần so sánh phần tử cần tìm với phần tử ở giữa (mid = (left + right) // 2).',
+                'Nếu bằng: Tìm thấy. Nếu nhỏ hơn: Thu hẹp về nửa bên trái (right = mid - 1). Nếu lớn hơn: Thu hẹp về nửa bên phải (left = mid + 1).',
+                'Độ phức tạp thời gian: O(log n) — tối ưu vượt trội so với tìm kiếm tuyến tính O(n).'
+              ]
+            }
+          ],
+          codeSnippet: {
+            lang: 'python',
+            title: 'Mã Python Tìm kiếm nhị phân chuẩn đề thi',
+            code: `def binary_search(arr, x):
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == x:
+            return mid # Tìm thấy tại chỉ số mid
+        elif arr[mid] < x:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1 # Không tìm thấy`
+          },
+          examTips: '⚠️ Bẫy đề Đúng/Sai: "Có thể áp dụng ngay thuật toán tìm kiếm nhị phân cho một danh sách bất kỳ chưa được sắp xếp" -> SAI hoàn toàn!'
+        },
+        quiz: {
+          question: 'Cho mảng đã sắp xếp gồm 1024 phần tử. Số lần so sánh tối đa trong trường hợp xấu nhất của thuật toán Tìm kiếm nhị phân là bao nhiêu?',
+          options: ['1024 lần', '512 lần', '11 lần (khoảng log2(1024) + 1)', '100 lần'],
+          answer: 2,
+          explanation: 'Với mảng n = 1024 phần tử, số lần lặp tối đa là log2(1024) + 1 = 10 + 1 = 11 phép so sánh.'
+        }
+      },
+      {
+        id: 'cs_f_2',
+        title: 'Bài 13: Thuật toán sắp xếp Nổi bọt & Chọn',
+        bookRef: 'SGK Tin 11 CS - Trang 98',
+        priority: 'Cực kỳ cao',
+        examFormat: 'Trắc nghiệm Đúng/Sai Phần II',
+        summary: 'Bubble Sort và Selection Sort: Ý tưởng hoán đổi, trạng thái của mảng sau mỗi lượt lặp, độ phức tạp O(n^2).',
+        theory: {
+          objectives: [
+            'Nắm chắc trạng thái của mảng sau mỗi vòng lặp i.',
+            'Đọc hiểu mã nguồn Python và xác định số lần hoán đổi (swap).'
+          ],
+          contentSections: [
+            {
+              heading: '1. Sắp xếp Nổi bọt (Bubble Sort)',
+              text: 'So sánh từng cặp 2 phần tử liền kề (arr[j] và arr[j+1]), nếu sai thứ tự thì đổi chỗ. Sau mỗi vòng lặp ngoài, phần tử lớn nhất sẽ "nổi" về cuối dãy.'
+            },
+            {
+              heading: '2. Sắp xếp Chọn (Selection Sort)',
+              text: 'Tại mỗi bước i, tìm phần tử nhỏ nhất trong đoạn từ i đến cuối mảng, sau đó hoán đổi nó với phần tử tại vị trí i.'
+            }
+          ],
+          codeSnippet: {
+            lang: 'python',
+            title: 'Mã Python Bubble Sort',
+            code: `def bubble_sort(a):
+    n = len(a)
+    for i in range(n - 1):
+        for j in range(n - 1 - i):
+            if a[j] > a[j + 1]:
+                a[j], a[j + 1] = a[j + 1], a[j]
+    return a`
+          },
+          examTips: 'Đề bài rất hay hỏi: "Sau vòng lặp ngoài đầu tiên (i = 0), danh sách [5, 1, 4, 2, 8] sẽ trở thành dãy số nào?". Hãy truy vết từng cặp liền kề!'
+        },
+        quiz: {
+          question: 'Độ phức tạp thời gian trong trường hợp xấu nhất của cả 2 thuật toán Sắp xếp nổi bọt (Bubble Sort) và Sắp xếp chọn (Selection Sort) là:',
+          options: ['O(1)', 'O(n)', 'O(n log n)', 'O(n^2)'],
+          answer: 3,
+          explanation: 'Cả Bubble Sort và Selection Sort sử dụng 2 vòng lặp lồng nhau nên độ phức tạp là O(n^2).'
+        }
+      },
+      {
+        id: 'cs_f_3',
+        title: 'Bài 14: Thuật toán sắp xếp Chèn & QuickSort',
+        bookRef: 'SGK Tin 11 CS - Trang 106',
+        priority: 'Cực kỳ cao',
+        examFormat: 'Trắc nghiệm Đúng/Sai Phần II',
+        summary: 'Insertion Sort, thuật toán sắp xếp nhanh QuickSort theo kỹ thuật phân hoạch chốt (Pivot), độ phức tạp O(n log n).',
+        theory: {
+          objectives: [
+            'Hiểu cơ chế chọn Pivot và phân hoạch mảng trong QuickSort.',
+            'Nắm độ phức tạp trung bình của QuickSort là O(n log n).'
+          ]
+        },
+        quiz: {
+          question: 'Thuật toán sắp xếp nhanh (QuickSort) dựa trên kỹ thuật thiết kế thuật toán nào?',
+          options: ['Tham lam (Greedy)', 'Chia để trị (Divide and Conquer)', 'Quy hoạch động (Dynamic Programming)', 'Tìm kiếm vét cạn'],
+          answer: 1,
+          explanation: 'QuickSort chọn chốt (Pivot) và phân hoạch dãy thành 2 phần độc lập để đệ quy sắp xếp, áp dụng chiến lược Chia để trị.'
+        }
+      },
+      {
+        id: 'cs_f_4',
+        title: 'Bài 15: Kỹ thuật Chia để trị & Đồ thị',
+        bookRef: 'SGK Tin 11 CS - Trang 114',
+        priority: 'Cực kỳ cao',
+        examFormat: 'Trắc nghiệm Phần I & II',
+        summary: 'Tư tưởng chia nhỏ bài toán thành các bài toán con cùng dạng, hàm đệ quy trong Python và các khái niệm đồ thị đỉnh/cạnh.',
+        theory: {
+          objectives: [
+            'Xác định điểm dừng (Base case) và bước đệ quy của hàm.',
+            'Đọc hiểu ma trận kề, danh sách kề biểu diễn đồ thị.'
+          ]
+        },
+        quiz: {
+          question: 'Một hàm đệ quy trong Python bắt buộc phải có thành phần nào để không rơi vào vòng lặp vô hạn (RecursionError)?',
+          options: ['Vòng lặp while', 'Điểm dừng (Base case / Neo đệ quy)', 'Lệnh try-except', 'Khối lệnh else'],
+          answer: 1,
+          explanation: 'Mọi hàm đệ quy bắt buộc phải có điều kiện dừng (Base case) để chấm dứt chuỗi gọi đệ quy.'
+        }
+      },
+      {
+        id: 'cs_f_5',
+        title: 'Bài 6: Thuật toán Học máy Supervised & Unsupervised',
+        bookRef: 'SGK Tin 12 CS - Trang 5',
+        priority: 'Cực kỳ cao',
+        examFormat: 'Trắc nghiệm Đúng/Sai Phần II',
+        summary: 'Phân biệt Học có giám sát (Supervised Learning - dữ liệu có nhãn) vs Học không giám sát (Unsupervised Learning - dữ liệu chưa có nhãn).',
+        theory: {
+          objectives: [
+            'Hiểu bản chất dữ liệu có nhãn (Labeled data) vs không nhãn (Unlabeled data).',
+            'Phân loại bài toán Phân lớp (Classification) / Hồi quy (Regression) vs Phân cụm (Clustering).'
+          ],
+          contentSections: [
+            {
+              heading: '1. Học có giám sát (Supervised Learning)',
+              text: 'Mô hình học từ tập dữ liệu huấn luyện đã được con người dán nhãn sẵn (Đầu vào X và Kết quả mong muốn Y). Ví dụ: Phân biệt email Spam hay Không Spam, nhận dạng chữ số viết tay.'
+            },
+            {
+              heading: '2. Học không giám sát (Unsupervised Learning)',
+              text: 'Dữ liệu đầu vào KHÔNG có nhãn trước. Mục tiêu là mô hình tự khám phá các cấu trúc, mối liên hệ tiềm ẩn hoặc gom nhóm tự nhiên trong dữ liệu (Ví dụ: Phân cụm khách hàng theo hành vi mua sắm).'
+            }
+          ],
+          examTips: '⚠️ Bẫy đề: Học có giám sát bắt buộc phải có nhãn kết quả (Label). Học không giám sát thì không có nhãn!'
+        },
+        quiz: {
+          question: 'Bài toán phân loại email thành "Hộp thư đến" hoặc "Thư rác (Spam)" dựa trên tập hàng ngàn email đã được đánh dấu mẫu thuộc loại học máy nào?',
+          options: [
+            'Học không giám sát (Unsupervised Learning)',
+            'Học có giám sát (Supervised Learning)',
+            'Học tăng cường (Reinforcement Learning)',
+            'Học tự quản (Self-supervised)'
+          ],
+          answer: 1,
+          explanation: 'Vì tập dữ liệu đã có nhãn "Spam" hoặc "Không Spam" nên đây là bài toán Học có giám sát (Supervised Learning).'
+        }
+      },
+      {
+        id: 'cs_f_6',
+        title: 'Bài 7: Thuật toán Phân loại Classification & KNN',
+        bookRef: 'SGK Tin 12 CS - Trang 15',
+        priority: 'Cực kỳ cao',
+        examFormat: 'Trọng tâm Phần II Đúng/Sai',
+        summary: 'Thuật toán K láng giềng gần nhất (K-Nearest Neighbors - KNN), tính khoảng cách Euclidean, nguyên tắc biểu quyết theo đa số (Majority Voting).',
+        theory: {
+          objectives: [
+            'Hiểu cách tính khoảng cách giữa điểm dữ liệu mới với các điểm huấn luyện.',
+            'Nắm cơ chế biểu quyết chọn nhãn phổ biến nhất trong k láng giềng gần nhất.'
+          ],
+          contentSections: [
+            {
+              heading: '1. Thuật toán KNN (K-Nearest Neighbors)',
+              text: 'KNN là một thuật toán học có giám sát đơn giản và hiệu quả:',
+              bulletPoints: [
+                'Bước 1: Chọn giá trị k (thường là số lẻ để tránh hòa phiếu khi biểu quyết).',
+                'Bước 2: Tính khoảng cách (thường dùng khoảng cách Euclidean: d = sqrt((x2-x1)^2 + (y2-y1)^2)) từ điểm mới đến tất cả các điểm trong tập dữ liệu huấn luyện.',
+                'Bước 3: Chọn ra k điểm có khoảng cách nhỏ nhất (gần nhất).',
+                'Bước 4: Nhãn của điểm mới được quyết định bởi nhãn chiếm số lượng nhiều nhất trong k điểm này.'
+              ]
+            }
+          ],
+          examTips: '⚠️ Khi k = 1, điểm mới sẽ mang chính xác nhãn của điểm láng giềng gần nhất với nó.'
+        },
+        quiz: {
+          question: 'Trong thuật toán KNN với k = 3, giả sử trong 3 điểm gần nhất có 2 điểm thuộc nhãn "Đậu" và 1 điểm thuộc nhãn "Rớt". Điểm mới sẽ được dự đoán là nhãn gì?',
+          options: ['Rớt', 'Đậu', 'Không xác định được', 'Cả Đậu và Rớt'],
+          answer: 1,
+          explanation: 'Theo cơ chế biểu quyết đa số, nhãn "Đậu" chiếm 2/3 phiếu nên điểm mới sẽ được phân loại là "Đậu".'
+        }
+      },
+      {
+        id: 'cs_f_7',
+        title: 'Bài 8: Thuật toán Phân cụm K-Means',
+        bookRef: 'SGK Tin 12 CS - Trang 25',
+        priority: 'Cực kỳ cao',
+        examFormat: 'Trọng tâm Phần II Đúng/Sai',
+        summary: 'Thuật toán K-Means Clustering: Chọn ngẫu nhiên k tâm cụm (Centroids), gán điểm vào cụm gần nhất, cập nhật lại tọa độ tâm cụm trung bình, điều kiện dừng.',
+        theory: {
+          objectives: [
+            'Nắm chắc 4 bước lặp của thuật toán K-Means.',
+            'Hiểu K-Means là thuật toán học KHÔNG giám sát (Unsupervised).'
+          ],
+          contentSections: [
+            {
+              heading: '1. Quy trình thực hiện K-Means',
+              bulletPoints: [
+                'Bước 1: Khởi tạo k tâm cụm ngẫu nhiên.',
+                'Bước 2 (Gán cụm): Tính khoảng cách từ mỗi điểm dữ liệu đến k tâm cụm; gán điểm vào cụm có tâm gần nhất.',
+                'Bước 3 (Cập nhật tâm): Tính lại vị trí tâm cụm mới bằng trung bình cộng tọa độ các điểm thuộc cụm đó.',
+                'Bước 4: Lặp lại Bước 2 và 3 cho đến khi vị trí các tâm cụm không còn thay đổi (hoặc đạt số lần lặp tối đa).'
+              ]
+            }
+          ],
+          examTips: 'K-Means là Học KHÔNG giám sát; còn KNN là Học CÓ giám sát. Rất nhiều học sinh nhầm lẫn 2 thuật toán này!'
+        },
+        quiz: {
+          question: 'Phát biểu nào sau đây phân biệt chính xác nhất giữa K-Means và KNN?',
+          options: [
+            'K-Means là học có giám sát; KNN là học không giám sát',
+            'Cả hai đều là học có giám sát',
+            'K-Means là thuật toán phân cụm (Học không giám sát); còn KNN là thuật toán phân loại (Học có giám sát)',
+            'Cả hai đều không cần tính khoảng cách giữa các điểm'
+          ],
+          answer: 2,
+          explanation: 'K-Means là học không giám sát dùng để phân cụm. KNN là học có giám sát dùng để phân loại/dự đoán nhãn.'
+        }
+      },
+      {
+        id: 'cs_f_8',
+        title: 'Bài 9: Viết kịch bản Python nâng cao & Xử lý mảng',
+        bookRef: 'SGK Tin 12 CS - Trang 32',
+        priority: 'Cực kỳ cao',
+        examFormat: 'Trọng tâm Phần II Đúng/Sai',
+        summary: 'Đọc hiểu mã nguồn Python phức hợp: Mảng 2 chiều (Nested List), Lát cắt Slice [start:stop:step], Xử lý chuỗi ký tự, Truy vết biến.',
+        theory: {
+          objectives: [
+            'Truy vết chính xác các biểu thức lát cắt list / xâu slice s[start:stop:step].',
+            'Đọc hiểu và dự đoán chính xác biến cờ, biến đếm sau khi kết thúc vòng lặp.'
+          ],
+          codeSnippet: {
+            lang: 'python',
+            title: 'Mẫu câu hỏi Đúng/Sai mã nguồn Python 2025',
+            code: `matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+total = 0
+for i in range(len(matrix)):
+    total += matrix[i][i] # Tổng đường chéo chính: 1 + 5 + 9 = 15
+print("Tong duong cheo:", total)`
+          },
+          examTips: '⚠️ Lưu ý chỉ số âm trong Python: a[-1] là phần tử cuối cùng, a[::-1] tạo ra bản sao đảo ngược danh sách hoặc xâu ký tự.'
+        },
+        quiz: {
+          question: 'Cho đoạn code Python: s = "THPTQG2025"; print(s[-4:]). Kết quả in ra màn hình là gì?',
+          options: ['THPT', '2025', 'QG20', 'TQG2025'],
+          answer: 1,
+          explanation: 'Lát cắt s[-4:] lấy từ 4 ký tự cuối cùng trở về sau, kết quả là chuỗi "2025".'
+        }
+      }
+    ]
+  },
+  {
+    id: 'cs_station_6',
+    stepNumber: '06',
+    code: 'Chủ đề G',
+    title: 'Hướng Nghiệp Với Tin Học',
+    category: 'Định hướng nghề nghiệp',
+    priority: 'Thấp',
+    priorityBadge: 'low',
+    questionType: 'Trắc nghiệm Phần I (1 câu)',
+    description: 'Đặc thù công việc nhóm nghề Khoa học máy tính: Kỹ sư Phần mềm (Software Engineer), Kỹ sư AI, Chuyên viên Dữ liệu (Data Scientist).',
+    skills: ['Kỹ sư phần mềm', 'Kỹ sư Trí tuệ nhân tạo (AI)', 'Chuyên viên Khoa học dữ liệu'],
+    xp: 200,
+    lessons: [
+      {
+        id: 'cs_g_1',
+        title: 'Bài 16: Các nhóm nghề thuộc ngành CNTT',
+        bookRef: 'SGK Tin 11 - Trang 115',
+        priority: 'Thấp',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Các vị trí nghề nghiệp: Phát triển phần mềm, Quản trị hệ thống, Kiểm thử phần mềm (Tester), Chuyên viên an ninh mạng.',
+        theory: {
+          objectives: ['Nhận biết đặc trưng công việc và yêu cầu kỹ năng của các nghề CNTT phổ biến.']
+        },
+        quiz: {
+          question: 'Người có trách nhiệm thiết kế, lập trình và bảo trì các hệ thống ứng dụng phần mềm được gọi là:',
+          options: ['Chuyên viên hỗ trợ kỹ thuật', 'Kỹ sư phần mềm (Software Engineer)', 'Nhân viên nhập liệu', 'Kỹ thuật viên sửa phần cứng'],
+          answer: 1,
+          explanation: 'Kỹ sư phần mềm trực tiếp thiết kế cấu trúc, viết mã và bảo trì các ứng dụng phần mềm.'
+        }
+      },
+      {
+        id: 'cs_g_2',
+        title: 'Bài 10: Hướng nghiệp Khoa học dữ liệu & Trí tuệ nhân tạo',
+        bookRef: 'SGK Tin 12 - Trang 106',
+        priority: 'Thấp',
+        examFormat: 'Trắc nghiệm Phần I',
+        summary: 'Vai trò của Kỹ sư AI (AI Engineer), Nhà khoa học dữ liệu (Data Scientist) trong kỷ nguyên kinh tế số.',
+        theory: {
+          objectives: ['Hiểu rõ định hướng phát triển của ngành Khoa học dữ liệu và AI.']
+        },
+        quiz: {
+          question: 'Vị trí công việc nào tập trung nghiên cứu, xây dựng và huấn luyện các mô hình Machine Learning, Deep Learning phục vụ dự đoán và tự động hóa?',
+          options: ['Kỹ sư Trí tuệ nhân tạo (AI Engineer)', 'Quản trị viên mạng văn phòng', 'Nhân viên thiết kế đồ họa 2D', 'Kế toán viên'],
+          answer: 0,
+          explanation: 'Kỹ sư AI chuyên xây dựng, tinh chỉnh và triển khai các thuật toán và mô hình trí tuệ nhân tạo vào thực tế.'
+        }
+      }
+    ]
+  },
+  {
+    id: 'cs_station_7',
+    stepNumber: '07',
+    code: 'Chặng Boss',
+    title: 'Lộ Trình Về Đích 12 Tuần — Chinh Phục Điểm 9-10 CS',
+    category: 'Tổng ôn chiến lược',
+    priority: 'Cực kỳ cao',
+    priorityBadge: 'extreme',
+    questionType: 'Luyện đề 50 phút chuẩn Bộ GD&ĐT',
+    description: 'Tổng hợp chiến thuật phòng thi, phân bổ 50 phút cho 22 câu hỏi, tránh bẫy Đúng/Sai lũy tiến để giành trọn 10 điểm tuyệt đối.',
+    skills: ['Chiến thuật 50 phút', 'Bẫy Đúng/Sai Phần II', 'Kỹ năng dò code Python', 'Tối đa hóa điểm lũy tiến'],
+    xp: 800,
+    lessons: [
+      {
+        id: 'cs_boss_1',
+        title: 'Chiến thuật phân bổ 50 phút cho 22 câu đề thi CS',
+        bookRef: 'Cẩm nang ôn thi THPTQG 2025-2026',
+        priority: 'Cực kỳ cao',
+        examFormat: 'Tổng hợp',
+        summary: '15 phút đầu giải quyết trọn vẹn 18 câu trắc nghiệm Phần I (4.5 điểm). 30 phút sau dành cho 4 câu Đúng/Sai Phần II (4.0 điểm). 5 phút soát lại.',
+        theory: {
+          objectives: [
+            'Thuộc nằm lòng barem điểm Đúng/Sai: Đúng 1 lệnh được 0.1đ; Đúng 2 lệnh được 0.25đ; Đúng 3 lệnh được 0.5đ; Đúng cả 4 lệnh được 1.0đ.',
+            'Áp dụng chiến thuật cẩn trọng từng lệnh nhỏ a, b, c, d.'
+          ]
+        },
+        quiz: {
+          question: 'Trong Phần II câu trắc nghiệm Đúng/Sai, nếu bạn làm đúng cả 4 ý a, b, c, d của một câu thì điểm số nhận được cho câu đó là bao nhiêu?',
+          options: ['0.25 điểm', '0.5 điểm', '0.75 điểm', '1.0 điểm'],
+          answer: 3,
+          explanation: 'Quy tắc chấm lũy tiến của Bộ GD&ĐT: Đúng 1 ý: 0.1đ; Đúng 2 ý: 0.25đ; Đúng 3 ý: 0.5đ; Đúng cả 4 ý: trọn vẹn 1.0 điểm!'
+        }
+      }
+    ]
+  }
+];
