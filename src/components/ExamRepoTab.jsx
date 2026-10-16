@@ -80,7 +80,7 @@ export default function ExamRepoTab() {
     setIsLoading(true);
     setError(null);
     try {
-      if (!supabase) throw new Error('Supabase client chưa được cấu hình.');
+      if (!supabase) throw new Error('Lỗi cấu hình!');
 
       // 1. Thử lấy trong FOLDER ('DeThiThu')
       let targetFolder = FOLDER;
@@ -107,7 +107,7 @@ export default function ExamRepoTab() {
             offset: 0,
             sortBy: { column: 'created_at', order: 'desc' }
           });
-        
+
         const rootFiles = (rootRes.data || []).filter(
           (f) => f.id && f.name !== '.emptyFolderPlaceholder'
         );
@@ -211,6 +211,26 @@ USING (bucket_id = '${BUCKET}');`;
   return (
     <div className="exam-repo-container">
 
+      {/* ── Header + Search ── */}
+      <div className="doc-header-section">
+        <div>
+          <h2 className="doc-page-title">
+            <FolderOpen size={24} />
+            Kho Tài Liệu Đề Thi Thử
+          </h2>
+          <p className="doc-page-subtitle">Tải về các đề thi thử, tài liệu ôn tập chuẩn THPTQG mới nhất</p>
+        </div>
+        <div className="search-input-wrap">
+          <Search size={16} />
+          <input
+            type="text"
+            placeholder="Tìm kiếm tài liệu..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+      </div>
+
       {/* ── Status bar ── */}
       <div className="doc-status-bar" data-source={error ? 'mock' : 'supabase'}>
         <div className="doc-status-left">
@@ -232,26 +252,6 @@ USING (bucket_id = '${BUCKET}');`;
             <RefreshCw size={14} className={isLoading ? 'spin-icon' : ''} />
             <span>{isLoading ? 'Đang tải...' : 'Làm mới'}</span>
           </button>
-        </div>
-      </div>
-
-      {/* ── Header + Search ── */}
-      <div className="doc-header-section">
-        <div>
-          <h2 className="doc-page-title">
-            <FolderOpen size={24} />
-            Kho Tài Liệu Đề Thi Thử
-          </h2>
-          <p className="doc-page-subtitle">Tải về các đề thi thử, tài liệu ôn tập chuẩn THPTQG mới nhất</p>
-        </div>
-        <div className="search-input-wrap">
-          <Search size={16} />
-          <input
-            type="text"
-            placeholder="Tìm kiếm tài liệu..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
         </div>
       </div>
 

@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, BookOpen, Trophy, Brain, ArrowRight, Eye, EyeOff, Lock, User, ChevronDown, ChevronUp } from 'lucide-react';
+import { ShieldCheck, BookOpen, Brain, ArrowRight, Trophy } from 'lucide-react';
 import { supabase } from '../supabase';
 import logoMeoCam from '../../img/logomeocam.png';
 
 const FEATURES = [
   { icon: BookOpen, label: 'Kho đề thi chuẩn cấu trúc mới của Bộ GD&ĐT', color: '#EA580C' },
   { icon: Brain, label: 'AI ra đề thích nghi và chấm điểm phân hóa', color: '#FBBF24' },
-  { icon: Trophy, label: 'Lộ trình dây xích ôn luyện mục tiêu 9+ Tin học', color: '#16A34A' },
+  //{ icon: Trophy, label: 'Giúp bạn đạt thành tích cao trong kì thi', color: '#16A34A' }, //
 ];
 
 const STATS = [
-  { value: '1,200+', label: 'Câu hỏi chuẩn Bộ' },
-  { value: '98%', label: 'Học viên đạt ≥8' },
-  { value: 'AI', label: 'Đề thích nghi' },
+  //{ value: '1,200+', label: 'Câu hỏi chuẩn Bộ' },
+  //{ value: '98%', label: 'Học viên đạt ≥8' },
+  //{ value: 'AI', label: 'Đề thích nghi' },
 ];
-
-const toEmail = (userid) => `${userid.toLowerCase()}@gmail.com`;
-const USERID_REGEX = /^[a-z0-9_]{4,20}$/;
 
 function GoogleGLogo({ size = 22 }) {
   return (
@@ -41,52 +38,8 @@ function GoogleGLogo({ size = 22 }) {
   );
 }
 
-function PasswordInput({ id, value, onChange, placeholder, autoComplete }) {
-  const [show, setShow] = useState(false);
-  return (
-    <div style={{ position: 'relative' }}>
-      <input
-        id={id}
-        type={show ? 'text' : 'password'}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        required
-        minLength={6}
-        autoComplete={autoComplete}
-        className="login-input"
-        style={{ paddingRight: '2.6rem', width: '100%' }}
-      />
-      <button
-        type="button"
-        onClick={() => setShow((s) => !s)}
-        aria-label={show ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
-        style={{
-          position: 'absolute',
-          right: '0.6rem',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          color: '#6B7280',
-          display: 'flex',
-        }}
-      >
-        {show ? <EyeOff size={18} /> : <Eye size={18} />}
-      </button>
-    </div>
-  );
-}
-
 export default function LoginPage({ onLogin }) {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [showManualForm, setShowManualForm] = useState(false);
-  const [mode, setMode] = useState('login'); // 'login' | 'register'
-  const [username, setUsername] = useState('');
-  const [userid, setUserid] = useState('');
-  const [password, setPassword] = useState('');
-  const [isManualLoading, setIsManualLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [floatAnim, setFloatAnim] = useState(false);
@@ -142,129 +95,6 @@ export default function LoginPage({ onLogin }) {
       setError(err?.message || 'Không thể kết nối đến Google OAuth. Vui lòng thử lại sau.');
     }
   };
-
-  const switchMode = (m) => {
-    setMode(m);
-    setError('');
-    setSuccess('');
-    setPassword('');
-  };
-
-  // ĐĂNG KÝ THỦ CÔNG
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-
-    const id = userid.trim().toLowerCase();
-    if (!USERID_REGEX.test(id)) {
-      setError('User ID gồm 4-20 ký tự: chữ thường, số hoặc dấu gạch dưới.');
-      return;
-    }
-    if (!supabase) {
-      setError('Chưa cấu hình kết nối Supabase.');
-      return;
-    }
-
-    setIsManualLoading(true);
-    try {
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email: toEmail(id),
-        password,
-        options: { data: { userid: id, username: username.trim() } },
-      });
-
-      if (signUpError) {
-        setError(
-          signUpError.message.toLowerCase().includes('already')
-            ? 'User ID này đã có người dùng.'
-            : signUpError.message
-        );
-        return;
-      }
-
-      if (data?.user?.id) {
-        try {
-          await supabase.from('profiles').upsert({
-            id: data.user.id,
-            userid: id,
-            username: username.trim(),
-            email: toEmail(id),
-          }, { onConflict: 'id' });
-        } catch (profileErr) {
-          console.warn('Lỗi ghi profile:', profileErr);
-        }
-      }
-
-      await supabase.auth.signOut();
-      setSuccess('Đăng ký thành công! Hãy đăng nhập.');
-      setMode('login');
-      setPassword('');
-    } catch (err) {
-      setError(err?.message || 'Có lỗi xảy ra khi đăng ký.');
-    } finally {
-      setIsManualLoading(false);
-    }
-  };
-
-  // ĐĂNG NHẬP THỦ CÔNG
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-
-    if (!supabase) {
-      setError('Chưa cấu hình kết nối Supabase.');
-      return;
-    }
-
-    setIsManualLoading(true);
-    const id = userid.trim().toLowerCase();
-
-    try {
-      const { data, error: signInError } = await supabase.auth.signInWithPassword({
-        email: toEmail(id),
-        password,
-      });
-
-      if (signInError) {
-        setIsManualLoading(false);
-        setError('Sai User ID hoặc mật khẩu.');
-        return;
-      }
-
-      let profile = null;
-      try {
-        const { data: p } = await supabase
-          .from('profiles')
-          .select('username, userid')
-          .eq('id', data.user.id)
-          .maybeSingle();
-        profile = p;
-      } catch (profileErr) {
-        console.warn('Lỗi truy vấn profile:', profileErr);
-      }
-
-      setIsManualLoading(false);
-
-      const displayName = profile?.username || data.user?.user_metadata?.username || id;
-      const displayUserId = profile?.userid || data.user?.user_metadata?.userid || id;
-
-      onLogin({
-        id: data.user.id,
-        name: displayName,
-        userid: displayUserId,
-        email: data.user.email || '',
-        avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(id)}`,
-        grade: 'Ôn thi THPTQG',
-      });
-    } catch (err) {
-      setIsManualLoading(false);
-      setError(err?.message || 'Có lỗi xảy ra khi đăng nhập.');
-    }
-  };
-
-  const isRegister = mode === 'register';
 
   return (
     <div className="login-page-root">
@@ -420,126 +250,8 @@ export default function LoginPage({ onLogin }) {
                 border: '1px solid #DCFCE7'
               }}>
                 <ShieldCheck size={14} color="#16A34A" />
-                <span>Xác thực an toàn qua Google OAuth 2.0 (Supabase)</span>
+                <span>Xác thực qua Google an toàn</span>
               </div>
-
-              {/* TÙY CHỌN: ĐĂNG NHẬP BẰNG TÀI KHOẢN MẬT KHẨU */}
-              <div className="login-divider" style={{ margin: '0.5rem 0' }}>
-                <span>hoặc đăng nhập thủ công</span>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setShowManualForm(!showManualForm)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-primary)',
-                  fontSize: '0.82rem',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '0.35rem',
-                  padding: '4px'
-                }}
-              >
-                <span>{showManualForm ? 'Thu gọn đăng nhập thủ công' : 'Đăng nhập với User ID & Mật khẩu'}</span>
-                {showManualForm ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-              </button>
-
-              {showManualForm && (
-                <div style={{
-                  marginTop: '0.5rem',
-                  paddingTop: '0.75rem',
-                  borderTop: '1px dashed #E5E7EB',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#374151' }}>
-                      {isRegister ? 'Tạo tài khoản học viên' : 'Đăng nhập học viên'}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => switchMode(isRegister ? 'login' : 'register')}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: 'var(--color-primary)',
-                        fontSize: '0.78rem',
-                        fontWeight: 600,
-                        cursor: 'pointer'
-                      }}
-                    >
-                      {isRegister ? 'Đã có tài khoản? Đăng nhập' : 'Chưa có? Tạo mới'}
-                    </button>
-                  </div>
-
-                  <form onSubmit={isRegister ? handleRegister : handleLogin} className="login-custom-form">
-                    {isRegister && (
-                      <div className="login-field-group">
-                        <label htmlFor="username">Họ và tên <span className="login-required">*</span></label>
-                        <input
-                          id="username"
-                          type="text"
-                          placeholder="VD: Nguyễn Văn A"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                          required
-                          maxLength={40}
-                          className="login-input"
-                        />
-                      </div>
-                    )}
-
-                    <div className="login-field-group">
-                      <label htmlFor="userid">User ID <span className="login-required">*</span></label>
-                      <input
-                        id="userid"
-                        type="text"
-                        placeholder="nguyenvana01"
-                        value={userid}
-                        onChange={(e) => setUserid(e.target.value)}
-                        required
-                        autoComplete="username"
-                        className="login-input"
-                      />
-                    </div>
-
-                    <div className="login-field-group">
-                      <label htmlFor="password">Mật khẩu <span className="login-required">*</span></label>
-                      <PasswordInput
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Ít nhất 6 ký tự"
-                        autoComplete={isRegister ? 'new-password' : 'current-password'}
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={isManualLoading}
-                      style={{
-                        padding: '0.65rem 1rem',
-                        background: 'var(--color-primary)',
-                        color: '#FFF',
-                        border: 'none',
-                        borderRadius: '8px',
-                        fontSize: '0.85rem',
-                        fontWeight: 700,
-                        cursor: isManualLoading ? 'not-allowed' : 'pointer',
-                        marginTop: '0.25rem'
-                      }}
-                    >
-                      {isManualLoading ? 'Đang xử lý...' : (isRegister ? 'Đăng ký tài khoản' : 'Đăng nhập')}
-                    </button>
-                  </form>
-                </div>
-              )}
 
               <div className="login-security-note">
                 <ShieldCheck size={14} color="#16A34A" />
