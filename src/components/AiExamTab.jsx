@@ -26,7 +26,20 @@ export default function AiExamTab({ user }) {
   // Generation state
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
-  const [generatedExam, setGeneratedExam] = useState(null);
+  const [generatedExam, setGeneratedExam] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('tinhoc_generated_exam');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  React.useEffect(() => {
+    if (generatedExam) {
+      sessionStorage.setItem('tinhoc_generated_exam', JSON.stringify(generatedExam));
+    }
+  }, [generatedExam]);
 
   // AI Chat state
   const [chatMessages, setChatMessages] = useState([

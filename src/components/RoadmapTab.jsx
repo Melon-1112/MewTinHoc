@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Link as ChainIcon,
   CheckCircle,
@@ -37,10 +38,26 @@ import {
 } from '../data/roadmap';
 
 export default function RoadmapTab() {
+  const { track } = useParams();
+  const navigate = useNavigate();
+
+  const validTrack = (track && [TRACK_TYPES.ICT, TRACK_TYPES.CS].includes(track.toLowerCase()))
+    ? track.toLowerCase()
+    : null;
+
   // 1. Quản lý phân ban: 'cs' (Khoa học máy tính) hoặc 'ict' (Tin học ứng dụng)
   const [activeTrack, setActiveTrack] = useState(() => {
+    if (validTrack) return validTrack;
     return localStorage.getItem('tinhoc_selected_track') || TRACK_TYPES.ICT;
   });
+
+  // Tự động đồng bộ khi URL thay đổi (VD người dùng nhấn Back/Forward)
+  useEffect(() => {
+    if (validTrack && validTrack !== activeTrack) {
+      setActiveTrack(validTrack);
+      localStorage.setItem('tinhoc_selected_track', validTrack);
+    }
+  }, [validTrack]);
 
   // 2. Trạng thái các bài học đã hoàn thành lưu trong localStorage theo user
   const [completedLessonIds, setCompletedLessonIds] = useState(() => {
@@ -71,14 +88,15 @@ export default function RoadmapTab() {
   const [showBlueprint, setShowBlueprint] = useState(false);
   const [showTwelveWeekPlan, setShowTwelveWeekPlan] = useState(false);
 
-  const currentTrackData = TRACK_INFO[activeTrack];
+  const currentTrackData = TRACK_INFO[activeTrack] || TRACK_INFO[TRACK_TYPES.ICT];
   const stations = currentTrackData.stations;
 
-  // Lưu track vào localStorage
+  // Lưu track vào localStorage và cập nhật đường dẫn URL rẽ nhánh
   const handleSwitchTrack = (trackId) => {
     setActiveTrack(trackId);
     localStorage.setItem('tinhoc_selected_track', trackId);
     setSelectedStation(null);
+    navigate(`/roadmap/${trackId}`);
   };
 
   // Tính toán tiến độ học tập của từng chặng dựa trên completedLessonIds

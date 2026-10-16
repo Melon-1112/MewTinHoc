@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Flame,
   Home,
@@ -29,12 +30,29 @@ export default function Navbar({
   onLogout,
   onOpenStreakDetails
 }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isHomeActive = location.pathname === '/' || location.pathname === '/home' || activeTab === TABS.HOME;
+  const isRoadmapActive = location.pathname.startsWith('/roadmap') || activeTab === TABS.ROADMAP;
+  const isExamsActive = location.pathname.startsWith('/exams') || activeTab === TABS.EXAMS;
+  const isAiExamActive = location.pathname.startsWith('/ai-exam') || activeTab === TABS.AI_EXAM;
+
+  const handleNav = (path, tabKey) => {
+    if (setActiveTab) setActiveTab(tabKey);
+    navigate(path);
+  };
   return (
     <header className="horizontal-sidebar">
       {/* Top row: Brand & Student Info (Thông tin học viên ở trên cùng thanh sidebar) */}
       <div className="top-nav-row">
         {/* Left: Brand Logo */}
-        <div className="brand-section">
+        <div
+          className="brand-section"
+          onClick={() => handleNav('/', TABS.HOME)}
+          style={{ cursor: 'pointer' }}
+          title="Về Trang chủ"
+        >
           <div className="brand-logo-icon">
             <img src={logoMeoCam} alt="MewTinHoc" className="brand-logo-img" />
           </div>
@@ -138,9 +156,9 @@ export default function Navbar({
           <nav className="category-tabs" role="tablist">
             <button
               role="tab"
-              aria-selected={activeTab === TABS.HOME}
-              className={`nav-tab-btn ${activeTab === TABS.HOME ? 'active' : ''}`}
-              onClick={() => setActiveTab(TABS.HOME)}
+              aria-selected={isHomeActive}
+              className={`nav-tab-btn ${isHomeActive ? 'active' : ''}`}
+              onClick={() => handleNav('/', TABS.HOME)}
               id="tab-home"
             >
               <Home size={17} />
@@ -149,9 +167,9 @@ export default function Navbar({
 
             <button
               role="tab"
-              aria-selected={activeTab === TABS.ROADMAP}
-              className={`nav-tab-btn ${activeTab === TABS.ROADMAP ? 'active' : ''}`}
-              onClick={() => setActiveTab(TABS.ROADMAP)}
+              aria-selected={isRoadmapActive}
+              className={`nav-tab-btn ${isRoadmapActive ? 'active' : ''}`}
+              onClick={() => handleNav('/roadmap', TABS.ROADMAP)}
               id="tab-roadmap"
             >
               <GitCommit size={17} />
@@ -161,9 +179,9 @@ export default function Navbar({
 
             <button
               role="tab"
-              aria-selected={activeTab === TABS.EXAMS}
-              className={`nav-tab-btn ${activeTab === TABS.EXAMS ? 'active' : ''}`}
-              onClick={() => setActiveTab(TABS.EXAMS)}
+              aria-selected={isExamsActive}
+              className={`nav-tab-btn ${isExamsActive ? 'active' : ''}`}
+              onClick={() => handleNav('/exams', TABS.EXAMS)}
               id="tab-exams"
             >
               <BookOpen size={17} />
@@ -172,9 +190,9 @@ export default function Navbar({
 
             <button
               role="tab"
-              aria-selected={activeTab === TABS.AI_EXAM}
-              className={`nav-tab-btn ${activeTab === TABS.AI_EXAM ? 'active' : ''}`}
-              onClick={() => setActiveTab(TABS.AI_EXAM)}
+              aria-selected={isAiExamActive}
+              className={`nav-tab-btn ${isAiExamActive ? 'active' : ''}`}
+              onClick={() => handleNav('/ai-exam', TABS.AI_EXAM)}
               id="tab-ai-exam"
             >
               <Sparkles size={17} />

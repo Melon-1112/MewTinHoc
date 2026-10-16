@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import Navbar, { TABS } from './components/Navbar';
 import HomeTab from './components/HomeTab';
 import RoadmapTab from './components/RoadmapTab';
@@ -204,29 +205,16 @@ export default function App() {
     showToast('⚠️ Bạn đã bỏ lỡ 2 ngày không điểm danh! Chuỗi streak đã bị tắt về 0 ngày.');
   };
 
-  const [isAdminView, setIsAdminView] = useState(() => {
-    const p = window.location.pathname.replace(/\/+$/, '');
-    return p.endsWith('/admin') || window.location.hash === '#admin';
-  });
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-    const checkAdmin = () => {
-      const p = window.location.pathname.replace(/\/+$/, '');
-      setIsAdminView(p.endsWith('/admin') || window.location.hash === '#admin');
-    };
-    window.addEventListener('hashchange', checkAdmin);
-    window.addEventListener('popstate', checkAdmin);
-    return () => {
-      window.removeEventListener('hashchange', checkAdmin);
-      window.removeEventListener('popstate', checkAdmin);
-    };
-  }, []);
+  const isAdminRoute = location.pathname.endsWith('/admin') || window.location.hash === '#admin';
 
-  if (isAdminView) {
+  if (isAdminRoute) {
     return <AdminPage />;
   }
 
-  // Show Login page if not logged in
+  // Show Login page if not logged in (and not on admin)
   if (!user) {
     return (
       <>
@@ -251,30 +239,37 @@ export default function App() {
         streak={streak}
         onLogout={handleLogout}
         onOpenStreakDetails={() => {
-          setActiveTab(TABS.HOME);
-          const el = document.getElementById('streak-card-section');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          navigate('/');
+          setTimeout(() => {
+            const el = document.getElementById('streak-card-section');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
         }}
       />
 
-      {/* Main Content View */}
+      {/* Main Content View with URL Routes */}
       <main className="main-content">
-        {activeTab === TABS.HOME && (
-          <HomeTab
-            user={user}
-            streak={streak}
-            onCheckIn={handleCheckIn}
-            onSimulateNextDay={handleSimulateNextDay}
-            onSimulateMissedDays={handleSimulateMissedDays}
-            onNavigateTab={setActiveTab}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomeTab
+                user={user}
+                streak={streak}
+                onCheckIn={handleCheckIn}
+                onSimulateNextDay={handleSimulateNextDay}
+                onSimulateMissedDays={handleSimulateMissedDays}
+              />
+            }
           />
-        )}
-
-        {activeTab === TABS.ROADMAP && <RoadmapTab />}
-
-        {activeTab === TABS.EXAMS && <ExamRepoTab />}
-
-        {activeTab === TABS.AI_EXAM && <AiExamTab user={user} />}
+          <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/roadmap" element={<RoadmapTab />} />
+          <Route path="/roadmap/:track" element={<RoadmapTab />} />
+          <Route path="/exams" element={<ExamRepoTab />} />
+          <Route path="/ai-exam" element={<AiExamTab user={user} />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
 
       {/* Footer */}

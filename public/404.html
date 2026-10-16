@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Đang chuyển hướng...</title>
+  <script type="text/javascript">
+    // SPA Single Page Apps for GitHub Pages
+    // MIT License - https://github.com/rafgraph/spa-github-pages
+    // Giữ cho URL sạch và ngăn ngừa lỗi 404 khi tải lại trang (F5) trên GitHub Pages
+    (function () {
+      var path = window.location.pathname;
+      // Kiểm tra xem trang có subpath repo (ví dụ /Website-Tin-h-c-THPTQG/) hay ở root
+      var repoBase = '/Website-Tin-h-c-THPTQG';
+      var pathSegmentsToKeep = path.startsWith(repoBase) ? 1 : 0;
+
+      var l = window.location;
+      var newUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash;
+
+      l.replace(newUrl);
+    })();
+  </script>
+</head>
+<body>
+</body>
+</html>
