@@ -1350,10 +1350,11 @@ a {
 
 /* Theory Viewer Modal styles */
 .theory-modal-container {
-  display: grid;
-  grid-template-columns: 290px 1fr;
-  height: 80vh;
-  max-height: 800px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 85vh;
+  max-height: 880px;
   overflow: hidden;
   background: #FFFFFF;
   border-radius: var(--radius-lg);
@@ -1361,17 +1362,27 @@ a {
 
 @media (max-width: 900px) {
   .theory-modal-container {
-    grid-template-columns: 1fr;
-    height: 85vh;
+    flex-direction: column;
+    height: 88vh;
   }
 }
 
 .theory-modal-sidebar {
+  width: 290px;
+  min-width: 290px;
+  max-width: 290px;
   background: #F8FAFC;
   border-right: 1.5px solid var(--color-border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.theory-modal-sidebar.collapsed {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
 }
 
 .theory-sidebar-header {
@@ -1429,10 +1440,153 @@ a {
 .theory-main-content {
   flex: 1;
   overflow-y: auto;
-  padding: 2rem;
+  padding: 2rem 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 2rem;
+}
+
+/* Study Focus Mode (Phóng to & Tối ưu ghi chép) */
+.exam-taker-window.study-focus-mode {
+  width: 96vw !important;
+  max-width: 1400px !important;
+  height: 94vh !important;
+  max-height: 94vh !important;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35);
+  border: 1.5px solid rgba(226, 232, 240, 0.8);
+}
+
+.exam-taker-window.full-screen-mode {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.theory-reading-container {
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+/* Theory Section Box (Từng đề mục lý thuyết trình bày thoáng, chuẩn học & ghi chép) */
+.theory-section-box {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.theory-section-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-deep);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1.5px dashed var(--color-border);
+  padding-bottom: 0.5rem;
+}
+
+.theory-section-text {
+  font-size: var(--theory-font-size, 1.02rem);
+  color: #334155;
+  line-height: 1.75;
+  margin-bottom: 0.85rem;
+}
+
+.theory-bullet-list {
+  margin: 0;
+  padding-left: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.theory-bullet-item {
+  font-size: var(--theory-font-size, 0.98rem);
+  color: #1E293B;
+  line-height: 1.7;
+}
+
+/* Lesson Preview Call To Action Screen */
+.lesson-preview-card {
+  max-width: 780px;
+  margin: 2rem auto;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  background: linear-gradient(180deg, #FFFFFF, #F8FAFC);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.btn-start-learning {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 900;
+  border-radius: 999px;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 25px -5px rgba(234, 88, 12, 0.4);
+}
+
+.btn-start-learning:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 15px 35px -5px rgba(234, 88, 12, 0.5);
+}
+
+.btn-start-learning.ict {
+  box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.4);
+}
+
+.btn-start-learning.ict:hover {
+  box-shadow: 0 15px 35px -5px rgba(2, 132, 199, 0.5);
+}
+
+/* Toolbar Controls */
+.theory-toolbar-btn {
+  background: #F1F5F9;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s ease;
+}
+
+.theory-toolbar-btn:hover {
+  background: #E2E8F0;
+  color: var(--color-deep);
+}
+
+.theory-toolbar-btn.active {
+  background: var(--color-deep);
+  color: #FFFFFF;
+  border-color: var(--color-deep);
 }
 
 /* Syntax & Code Box */

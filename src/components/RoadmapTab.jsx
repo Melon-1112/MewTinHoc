@@ -24,7 +24,9 @@ import {
   FileText,
   Calendar,
   Layers,
-  Award
+  Award,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 
 import {
@@ -53,6 +55,12 @@ export default function RoadmapTab() {
   // 3. Modal xem lý thuyết chặng
   const [selectedStation, setSelectedStation] = useState(null);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
+
+  // Chế độ học tập trung (Study Focus Mode)
+  const [isStudyMode, setIsStudyMode] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [fontSizeLevel, setFontSizeLevel] = useState(1); // 0: 0.94rem, 1: 1.03rem, 2: 1.15rem
 
   // 4. Trạng thái câu hỏi phản xạ trong bài học đang xem
   const [selectedOption, setSelectedOption] = useState(null);
@@ -105,18 +113,28 @@ export default function RoadmapTab() {
   }, 0);
 
   // Mở modal học lý thuyết chặng
-  const handleOpenStationModal = (station, lessonIdx = 0) => {
+  const handleOpenStationModal = (station, lessonIdx = 0, startImmediately = false) => {
     setSelectedStation(station);
     setActiveLessonIndex(lessonIdx);
     setSelectedOption(null);
     setIsAnswerSubmitted(false);
     setCopiedCode(false);
+    if (startImmediately) {
+      setIsStudyMode(true);
+      setIsSidebarCollapsed(true);
+    } else {
+      setIsStudyMode(false);
+      setIsSidebarCollapsed(false);
+    }
   };
 
   const handleCloseModal = () => {
     setSelectedStation(null);
     setSelectedOption(null);
     setIsAnswerSubmitted(false);
+    setIsStudyMode(false);
+    setIsSidebarCollapsed(false);
+    setIsFullScreen(false);
   };
 
   // Chuyển đổi trạng thái đã học / chưa học của một bài
@@ -485,7 +503,7 @@ export default function RoadmapTab() {
                               key={lesson.id}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleOpenStationModal(station, lIdx);
+                                handleOpenStationModal(station, lIdx, true);
                               }}
                               style={{
                                 fontSize: '0.72rem',
@@ -554,14 +572,19 @@ export default function RoadmapTab() {
       {selectedStation && currentLesson && (
         <div className="modal-backdrop" onClick={handleCloseModal}>
           <div
-            className="exam-taker-window"
-            style={{ maxWidth: '1050px', width: '92vw', height: '88vh', padding: 0 }}
+            className={`exam-taker-window ${isStudyMode ? 'study-focus-mode' : ''} ${isFullScreen ? 'full-screen-mode' : ''}`}
+            style={{
+              maxWidth: isFullScreen ? '100vw' : isStudyMode ? '1400px' : '1050px',
+              width: isFullScreen ? '100vw' : isStudyMode ? '96vw' : '92vw',
+              height: isFullScreen ? '100vh' : isStudyMode ? '94vh' : '88vh',
+              padding: 0
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Container: 2 Cột (Sidebar bài học + Nội dung lý thuyết) */}
-            <div className="theory-modal-container">
+            <div className={`theory-modal-container ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
               {/* Sidebar: Danh sách các bài học trong chặng */}
-              <div className="theory-modal-sidebar">
+              <div className={`theory-modal-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
                 <div className="theory-sidebar-header">
                   <div style={{ fontSize: '0.72rem', fontWeight: 800, color: currentTrackData.badgeColor, textTransform: 'uppercase' }}>
                     {selectedStation.code} • {currentTrackData.shortName}
@@ -620,16 +643,18 @@ export default function RoadmapTab() {
                   })}
                 </div>
 
-                {/* Tiện ích sửa dữ liệu cho Admin */}
-                <div style={{ padding: '0.75rem 1rem', background: '#F1F5F9', borderTop: '1px solid var(--color-border)', fontSize: '0.72rem', color: '#64748B' }}>
-                  <div style={{ fontWeight: 700, marginBottom: '0.2rem', color: 'var(--color-deep)' }}>
-                    🛠️ Dành cho Quản Trị Viên:
+                {/* Tiện ích Quản trị viên chỉ hiện khi không ở StudyMode để tránh phân tâm */}
+                {!isStudyMode && (
+                  <div style={{ padding: '0.75rem 1rem', background: '#F1F5F9', borderTop: '1px solid var(--color-border)', fontSize: '0.72rem', color: '#64748B' }}>
+                    <div style={{ fontWeight: 700, marginBottom: '0.2rem', color: 'var(--color-deep)' }}>
+                      🛠️ Dành cho Quản Trị Viên:
+                    </div>
+                    <div>Sửa dữ liệu bài học tại:</div>
+                    <code style={{ fontSize: '0.68rem', color: '#EA580C', wordBreak: 'break-all' }}>
+                      {activeTrack === 'cs' ? 'csRoadmap.js' : 'ictRoadmap.js'}
+                    </code>
                   </div>
-                  <div>Sửa nội dung lý thuyết bài này tại:</div>
-                  <code style={{ fontSize: '0.68rem', color: '#EA580C', wordBreak: 'break-all' }}>
-                    {activeTrack === 'cs' ? 'csRoadmap.js' : 'ictRoadmap.js'}
-                  </code>
-                </div>
+                )}
               </div>
 
               {/* Main: Nội dung lý thuyết chi tiết của bài */}
@@ -640,12 +665,26 @@ export default function RoadmapTab() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '1rem 1.75rem',
+                    padding: '0.85rem 1.5rem',
                     borderBottom: '1.5px solid var(--color-border)',
-                    background: '#FFFFFF'
+                    background: '#FFFFFF',
+                    gap: '0.75rem',
+                    flexWrap: 'wrap'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                    {/* Nút bật/tắt Sidebar mục lục trong chế độ học */}
+                    {isStudyMode && (
+                      <button
+                        className="theory-toolbar-btn"
+                        onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                        title={isSidebarCollapsed ? "Mở danh sách bài học" : "Thu gọn mục lục bài học"}
+                      >
+                        <Layers size={15} />
+                        <span>{isSidebarCollapsed ? `Mục lục (${selectedStation.lessons.length} bài)` : 'Thu gọn'}</span>
+                      </button>
+                    )}
+
                     <div
                       style={{
                         padding: '0.35rem 0.75rem',
@@ -658,226 +697,376 @@ export default function RoadmapTab() {
                     >
                       {currentLesson.bookRef}
                     </div>
+
                     <span className="badge-exam-format">
                       {currentLesson.examFormat}
                     </span>
                   </div>
 
-                  <button
-                    onClick={handleCloseModal}
-                    style={{
-                      background: '#F1F5F9',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '6px',
-                      cursor: 'pointer',
-                      color: '#64748B'
-                    }}
-                  >
-                    <X size={20} />
-                  </button>
+                  {/* Thanh công cụ phụ trợ (Cỡ chữ, Toàn màn hình, Thoát) */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {isStudyMode && (
+                      <>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                          <button
+                            className="theory-toolbar-btn"
+                            onClick={() => setFontSizeLevel((prev) => Math.max(0, prev - 1))}
+                            title="Giảm cỡ chữ"
+                          >
+                            A-
+                          </button>
+                          <button
+                            className="theory-toolbar-btn"
+                            onClick={() => setFontSizeLevel((prev) => Math.min(2, prev + 1))}
+                            title="Tăng cỡ chữ"
+                          >
+                            A+
+                          </button>
+                        </div>
+
+                        <button
+                          className="theory-toolbar-btn"
+                          onClick={() => setIsFullScreen(!isFullScreen)}
+                          title={isFullScreen ? "Thu nhỏ cửa sổ" : "Phóng to toàn màn hình"}
+                        >
+                          {isFullScreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+                        </button>
+                      </>
+                    )}
+
+                    <button
+                      onClick={handleCloseModal}
+                      style={{
+                        background: '#F1F5F9',
+                        border: 'none',
+                        borderRadius: '8px',
+                        padding: '6px',
+                        cursor: 'pointer',
+                        color: '#64748B',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                      title="Đóng cửa sổ"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Body: Cuộn nội dung kiến thức bài giảng */}
-                <div className="theory-main-content">
-                  {/* Tiêu đề bài học & Tóm tắt */}
-                  <div>
-                    <h2 style={{ fontSize: '1.45rem', fontWeight: 900, color: 'var(--color-deep)', marginBottom: '0.5rem', lineHeight: 1.3 }}>
-                      {currentLesson.title}
-                    </h2>
-                    <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: 1.6, background: '#F8FAFC', padding: '0.85rem 1.1rem', borderRadius: 'var(--radius-md)', borderLeft: `4px solid ${currentTrackData.badgeColor}` }}>
-                      {currentLesson.summary}
-                    </p>
-                  </div>
-
-                  {/* Mục tiêu cần đạt */}
-                  {currentLesson.theory && currentLesson.theory.objectives && (
-                    <div style={{ background: '#FAF5FF', border: '1.5px solid #F3E8FF', borderRadius: 'var(--radius-md)', padding: '1rem 1.25rem' }}>
-                      <h4 style={{ fontSize: '0.88rem', fontWeight: 800, color: '#7E22CE', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <Award size={17} />
-                        <span>Mục tiêu cốt lõi cần nắm vững trong đề thi:</span>
-                      </h4>
-                      <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.86rem', color: '#4C1D95', lineHeight: 1.6 }}>
-                        {currentLesson.theory.objectives.map((obj, oIdx) => (
-                          <li key={oIdx} style={{ marginBottom: '0.25rem' }}>
-                            {obj}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Các phần lý thuyết chuyên sâu (Content Sections) */}
-                  {currentLesson.theory && currentLesson.theory.contentSections && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                      {currentLesson.theory.contentSections.map((sec, sIdx) => (
-                        <div key={sIdx}>
-                          <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-deep)', marginBottom: '0.45rem' }}>
-                            {sec.heading}
-                          </h3>
-                          {sec.text && (
-                            <p style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.65, marginBottom: '0.5rem' }}>
-                              {sec.text}
-                            </p>
-                          )}
-                          {sec.bulletPoints && (
-                            <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                              {sec.bulletPoints.map((bp, bIdx) => (
-                                <li key={bIdx} style={{ fontSize: '0.88rem', color: '#334155', lineHeight: 1.55 }}>
-                                  {bp}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Khối hiển thị Code / Công thức minh họa (Syntax Editor Box) */}
-                  {currentLesson.theory && currentLesson.theory.codeSnippet && (
-                    <div className="code-editor-box">
-                      <div className="code-editor-topbar">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                          <div className="code-editor-dots">
-                            <span className="code-editor-dot" style={{ background: '#EF4444' }}></span>
-                            <span className="code-editor-dot" style={{ background: '#F59E0B' }}></span>
-                            <span className="code-editor-dot" style={{ background: '#10B981' }}></span>
-                          </div>
-                          <span style={{ fontSize: '0.78rem', color: '#94A3B8', fontWeight: 700, fontFamily: 'monospace' }}>
-                            {currentLesson.theory.codeSnippet.title || 'Mã nguồn / Công thức minh họa'}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => handleCopyCode(currentLesson.theory.codeSnippet.code)}
-                          style={{
-                            background: '#334155',
-                            border: 'none',
-                            color: '#F8FAFC',
-                            padding: '0.3rem 0.65rem',
-                            borderRadius: '6px',
-                            fontSize: '0.72rem',
-                            fontWeight: 700,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.35rem',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          {copiedCode ? <CheckCheck size={13} color="#4ADE80" /> : <Copy size={13} />}
-                          <span>{copiedCode ? 'Đã sao chép' : 'Sao chép'}</span>
-                        </button>
+                <div
+                  className="theory-main-content"
+                  style={{
+                    fontSize: fontSizeLevel === 0 ? '0.94rem' : fontSizeLevel === 2 ? '1.14rem' : '1.03rem'
+                  }}
+                >
+                  {!isStudyMode ? (
+                    /* MÀN HÌNH PREVIEW & NÚT BẮT ĐẦU HỌC TO RÕ RÀNG */
+                    <div className="lesson-preview-card">
+                      <div
+                        style={{
+                          display: 'inline-flex',
+                          padding: '1.25rem',
+                          borderRadius: '50%',
+                          background: activeTrack === TRACK_TYPES.ICT ? '#E0F2FE' : '#FFEDD5',
+                          color: currentTrackData.badgeColor
+                        }}
+                      >
+                        <BookOpen size={42} strokeWidth={2.2} />
                       </div>
-                      <pre className="code-editor-pre">
-                        <code>{currentLesson.theory.codeSnippet.code}</code>
-                      </pre>
-                    </div>
-                  )}
 
-                  {/* Khối Cạm Bẫy Đề Thi & Mẹo Làm Bài (Exam Tips) */}
-                  {currentLesson.theory && currentLesson.theory.examTips && (
-                    <div className="exam-trap-box">
-                      <AlertTriangle size={22} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
                       <div>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#B45309', marginBottom: '0.25rem' }}>
-                          CẠM BẪY ĐỀ THI & MẸO TRÁNH MẤT ĐIỂM THPTQG:
+                        <div style={{ fontSize: '0.8rem', fontWeight: 800, color: currentTrackData.badgeColor, textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+                          {selectedStation.code} • {currentLesson.bookRef}
                         </div>
-                        <div style={{ fontSize: '0.86rem', color: '#78350F', lineHeight: 1.55 }}>
-                          {currentLesson.theory.examTips}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Khối Câu Hỏi Phản Xạ Tương Tác (Quick Quiz Checkpoint) */}
-                  {currentLesson.quiz && (
-                    <div style={{ background: '#F8FAFC', border: '1.5px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '1.35rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                        <Sparkles size={18} color={currentTrackData.badgeColor} />
-                        <span style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--color-deep)' }}>
-                          Câu hỏi phản xạ nhanh (Kiểm tra độ hiểu bài ngay)
-                        </span>
+                        <h2 style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--color-deep)', marginBottom: '0.65rem', lineHeight: 1.3 }}>
+                          {currentLesson.title}
+                        </h2>
+                        <p style={{ fontSize: '0.98rem', color: '#475569', lineHeight: 1.65, maxWidth: '640px', margin: '0 auto' }}>
+                          {currentLesson.summary}
+                        </p>
                       </div>
 
-                      <p style={{ fontSize: '0.9rem', color: 'var(--color-deep)', fontWeight: 700, marginBottom: '1rem', lineHeight: 1.5 }}>
-                        {currentLesson.quiz.question}
-                      </p>
-
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        {currentLesson.quiz.options.map((opt, optIdx) => {
-                          const isSelected = selectedOption === optIdx;
-                          const isCorrect = currentLesson.quiz.answer === optIdx;
-                          let btnBg = '#FFFFFF';
-                          let btnBorder = 'var(--color-border)';
-                          let btnColor = 'var(--color-deep)';
-
-                          if (isAnswerSubmitted) {
-                            if (isCorrect) {
-                              btnBg = '#DCFCE7';
-                              btnBorder = '#22C55E';
-                              btnColor = '#15803D';
-                            } else if (isSelected && !isCorrect) {
-                              btnBg = '#FEE2E2';
-                              btnBorder = '#EF4444';
-                              btnColor = '#B91C1C';
-                            }
-                          } else if (isSelected) {
-                            btnBg = '#EFF6FF';
-                            btnBorder = '#3B82F6';
-                          }
-
-                          return (
-                            <button
-                              key={optIdx}
-                              onClick={() => {
-                                setSelectedOption(optIdx);
-                                setIsAnswerSubmitted(true);
-                              }}
-                              style={{
-                                padding: '0.75rem 1rem',
-                                borderRadius: '8px',
-                                border: '1.5px solid',
-                                borderColor: btnBorder,
-                                background: btnBg,
-                                color: btnColor,
-                                textAlign: 'left',
-                                fontSize: '0.86rem',
-                                fontWeight: isSelected || (isAnswerSubmitted && isCorrect) ? 700 : 500,
-                                cursor: 'pointer',
-                                transition: 'all 0.15s',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between'
-                              }}
-                            >
-                              <span>{String.fromCharCode(65 + optIdx)}. {opt}</span>
-                              {isAnswerSubmitted && isCorrect && <CheckCircle size={16} color="#16A34A" />}
-                              {isAnswerSubmitted && isSelected && !isCorrect && <X size={16} color="#EF4444" />}
-                            </button>
-                          );
-                        })}
-                      </div>
-
-                      {/* Lời giải thích khi đã chọn */}
-                      {isAnswerSubmitted && (
-                        <div
-                          style={{
-                            marginTop: '1rem',
-                            padding: '0.85rem 1rem',
-                            borderRadius: '8px',
-                            background: selectedOption === currentLesson.quiz.answer ? '#F0FDF4' : '#FEF2F2',
-                            border: '1px solid',
-                            borderColor: selectedOption === currentLesson.quiz.answer ? '#BBF7D0' : '#FECACA',
-                            fontSize: '0.82rem',
-                            lineHeight: 1.5,
-                            color: selectedOption === currentLesson.quiz.answer ? '#166534' : '#991B1B',
-                            fontWeight: 600
-                          }}
-                        >
-                          {selectedOption === currentLesson.quiz.answer ? '🎉 Chính xác tuyệt đối! ' : '❌ Chưa chính xác! '}
-                          {currentLesson.quiz.explanation}
+                      {/* Mục tiêu cốt lõi xem trước */}
+                      {currentLesson.theory && currentLesson.theory.objectives && (
+                        <div style={{ textAlign: 'left', width: '100%', background: '#FAF5FF', border: '1.5px solid #F3E8FF', borderRadius: 'var(--radius-md)', padding: '1.25rem' }}>
+                          <h4 style={{ fontSize: '0.9rem', fontWeight: 800, color: '#7E22CE', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                            <Award size={18} />
+                            <span>Mục tiêu cốt lõi cần nắm vững trong bài:</span>
+                          </h4>
+                          <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.9rem', color: '#4C1D95', lineHeight: 1.6 }}>
+                            {currentLesson.theory.objectives.map((obj, oIdx) => (
+                              <li key={oIdx} style={{ marginBottom: '0.35rem' }}>
+                                {obj}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       )}
+
+                      {/* NÚT BẮT ĐẦU HỌC */}
+                      <button
+                        className={`btn-start-learning ${activeTrack === TRACK_TYPES.ICT ? 'ict' : ''}`}
+                        style={{ background: currentTrackData.gradientBg, marginTop: '0.5rem' }}
+                        onClick={() => {
+                          setIsStudyMode(true);
+                          setIsSidebarCollapsed(true);
+                        }}
+                      >
+                        <Play size={22} fill="#FFFFFF" />
+                        <span>BẮT ĐẦU HỌC BÀI NÀY</span>
+                        <ChevronRight size={22} />
+                      </button>
+
+                      <div style={{ fontSize: '0.78rem', color: '#94A3B8' }}>
+                        💡 Sau khi bấm, toàn bộ bài học sẽ phóng to toàn màn hình và thu nhỏ các thanh tiện ích để bạn dễ dàng ghi chép.
+                      </div>
+                    </div>
+                  ) : (
+                    /* CHẾ ĐỘ HỌC PHÓNG TO & ĐỌC LÝ THUYẾT CHI TIẾT */
+                    <div className="theory-reading-container">
+                      {/* Tiêu đề bài học & Tóm tắt */}
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 800, color: currentTrackData.badgeColor, textTransform: 'uppercase' }}>
+                            {selectedStation.code} • {currentLesson.bookRef}
+                          </span>
+                        </div>
+                        <h1 style={{ fontSize: '1.85rem', fontWeight: 900, color: 'var(--color-deep)', marginBottom: '0.75rem', lineHeight: 1.3 }}>
+                          {currentLesson.title}
+                        </h1>
+                        <p style={{ fontSize: '1.02rem', color: '#475569', lineHeight: 1.7, background: '#F8FAFC', padding: '1rem 1.35rem', borderRadius: 'var(--radius-md)', borderLeft: `5px solid ${currentTrackData.badgeColor}` }}>
+                          {currentLesson.summary}
+                        </p>
+                      </div>
+
+                      {/* Mục tiêu cần đạt */}
+                      {currentLesson.theory && currentLesson.theory.objectives && (
+                        <div style={{ background: '#FAF5FF', border: '1.5px solid #F3E8FF', borderRadius: 'var(--radius-md)', padding: '1.25rem 1.5rem' }}>
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#7E22CE', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                            <Award size={19} />
+                            <span>Mục tiêu cốt lõi cần nắm vững & ghi chép:</span>
+                          </h4>
+                          <ul style={{ margin: 0, paddingLeft: '1.35rem', fontSize: '0.95rem', color: '#4C1D95', lineHeight: 1.7 }}>
+                            {currentLesson.theory.objectives.map((obj, oIdx) => (
+                              <li key={oIdx} style={{ marginBottom: '0.35rem' }}>
+                                {obj}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* CÁC PHẦN LÝ THUYẾT CHUYÊN SÂU */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                          <BookOpen size={20} color={currentTrackData.badgeColor} />
+                          <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--color-deep)', margin: 0 }}>
+                            Nội Dung Lý Thuyết Chi Tiết:
+                          </h3>
+                        </div>
+
+                        {currentLesson.theory && currentLesson.theory.contentSections && currentLesson.theory.contentSections.length > 0 ? (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                            {currentLesson.theory.contentSections.map((sec, sIdx) => (
+                              <div key={sIdx} className="theory-section-box">
+                                {sec.heading && (
+                                  <h3 className="theory-section-title">
+                                    <span>{sec.heading}</span>
+                                  </h3>
+                                )}
+                                {sec.text && (
+                                  <p className="theory-section-text">
+                                    {sec.text}
+                                  </p>
+                                )}
+                                {sec.bulletPoints && (
+                                  <ul className="theory-bullet-list">
+                                    {sec.bulletPoints.map((bp, bIdx) => (
+                                      <li key={bIdx} className="theory-bullet-item">
+                                        {bp}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="theory-section-box" style={{ textAlign: 'center', padding: '2.5rem 1.5rem', background: '#F8FAFC', border: '1.5px dashed #CBD5E1' }}>
+                            <BookOpen size={36} color="#94A3B8" style={{ margin: '0 auto 0.75rem auto', display: 'block' }} />
+                            <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-deep)', marginBottom: '0.4rem' }}>
+                              * Chưa thiết lập nội dung lý thuyết cho bài này
+                            </h4>
+                            <p style={{ fontSize: '0.9rem', color: '#64748B', maxWidth: '540px', margin: '0 auto', lineHeight: 1.6 }}>
+                              Phần lý thuyết đang để trống để bạn tự biên soạn và thêm vào tại: <code style={{ color: '#EA580C', fontWeight: 700 }}>src/data/roadmap/{activeTrack === 'cs' ? 'csRoadmap.js' : 'ictRoadmap.js'}</code>.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Khối hiển thị Code / Công thức minh họa (Syntax Editor Box) */}
+                      {currentLesson.theory && currentLesson.theory.codeSnippet && (
+                        <div className="code-editor-box">
+                          <div className="code-editor-topbar">
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                              <div className="code-editor-dots">
+                                <span className="code-editor-dot" style={{ background: '#EF4444' }}></span>
+                                <span className="code-editor-dot" style={{ background: '#F59E0B' }}></span>
+                                <span className="code-editor-dot" style={{ background: '#10B981' }}></span>
+                              </div>
+                              <span style={{ fontSize: '0.82rem', color: '#94A3B8', fontWeight: 700, fontFamily: 'monospace' }}>
+                                {currentLesson.theory.codeSnippet.title || 'Mã nguồn / Công thức minh họa'}
+                              </span>
+                            </div>
+                            <button
+                              onClick={() => handleCopyCode(currentLesson.theory.codeSnippet.code)}
+                              style={{
+                                background: '#334155',
+                                border: 'none',
+                                color: '#F8FAFC',
+                                padding: '0.35rem 0.75rem',
+                                borderRadius: '6px',
+                                fontSize: '0.75rem',
+                                fontWeight: 700,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.35rem',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              {copiedCode ? <CheckCheck size={14} color="#4ADE80" /> : <Copy size={14} />}
+                              <span>{copiedCode ? 'Đã sao chép' : 'Sao chép'}</span>
+                            </button>
+                          </div>
+                          <pre className="code-editor-pre" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
+                            <code>{currentLesson.theory.codeSnippet.code}</code>
+                          </pre>
+                        </div>
+                      )}
+
+                      {/* ========================================================================= */}
+                      {/* PHẦN CẠM BẪY VÀ CÂU HỎI PHẢN XẠ Ở CUỐI TRANG LÝ THUYẾT (THEO ĐÚNG YÊU CẦU) */}
+                      {/* ========================================================================= */}
+                      <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                        {/* 1. Khối Cạm Bẫy Đề Thi & Mẹo Làm Bài (Exam Tips) */}
+                        <div className="exam-trap-box" style={{ padding: '1.25rem 1.5rem' }}>
+                          <AlertTriangle size={26} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#B45309', marginBottom: '0.35rem' }}>
+                              ⚠️ CẠM BẪY ĐỀ THI & MẸO TRÁNH MẤT ĐIỂM THPTQG:
+                            </div>
+                            <div style={{ fontSize: '0.94rem', color: '#78350F', lineHeight: 1.65 }}>
+                              {currentLesson.theory && currentLesson.theory.examTips ? (
+                                currentLesson.theory.examTips
+                              ) : (
+                                <span style={{ fontStyle: 'italic', color: '#92400E' }}>
+                                  * Chưa thiết lập mẹo làm bài riêng cho bài học này. Hãy ôn kỹ các khái niệm cốt lõi để tránh bẫy câu hỏi trắc nghiệm!
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 2. Khối Câu Hỏi Phản Xạ Tương Tác (Quick Quiz Checkpoint) */}
+                        <div style={{ background: '#F8FAFC', border: '1.5px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem 1.75rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.85rem' }}>
+                            <Sparkles size={20} color={currentTrackData.badgeColor} />
+                            <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--color-deep)' }}>
+                              Câu hỏi phản xạ nhanh (Tự kiểm tra kiến thức vừa ghi chép)
+                            </span>
+                          </div>
+
+                          {currentLesson.quiz ? (
+                            <>
+                              <p style={{ fontSize: '0.96rem', color: 'var(--color-deep)', fontWeight: 700, marginBottom: '1.15rem', lineHeight: 1.55 }}>
+                                {currentLesson.quiz.question}
+                              </p>
+
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                                {currentLesson.quiz.options.map((opt, optIdx) => {
+                                  const isSelected = selectedOption === optIdx;
+                                  const isCorrect = currentLesson.quiz.answer === optIdx;
+                                  let btnBg = '#FFFFFF';
+                                  let btnBorder = 'var(--color-border)';
+                                  let btnColor = 'var(--color-deep)';
+
+                                  if (isAnswerSubmitted) {
+                                    if (isCorrect) {
+                                      btnBg = '#DCFCE7';
+                                      btnBorder = '#22C55E';
+                                      btnColor = '#15803D';
+                                    } else if (isSelected && !isCorrect) {
+                                      btnBg = '#FEE2E2';
+                                      btnBorder = '#EF4444';
+                                      btnColor = '#B91C1C';
+                                    }
+                                  } else if (isSelected) {
+                                    btnBg = '#EFF6FF';
+                                    btnBorder = '#3B82F6';
+                                  }
+
+                                  return (
+                                    <button
+                                      key={optIdx}
+                                      onClick={() => {
+                                        setSelectedOption(optIdx);
+                                        setIsAnswerSubmitted(true);
+                                      }}
+                                      style={{
+                                        padding: '0.85rem 1.15rem',
+                                        borderRadius: '8px',
+                                        border: '1.5px solid',
+                                        borderColor: btnBorder,
+                                        background: btnBg,
+                                        color: btnColor,
+                                        textAlign: 'left',
+                                        fontSize: '0.92rem',
+                                        fontWeight: isSelected || (isAnswerSubmitted && isCorrect) ? 700 : 500,
+                                        cursor: 'pointer',
+                                        transition: 'all 0.15s',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between'
+                                      }}
+                                    >
+                                      <span>{String.fromCharCode(65 + optIdx)}. {opt}</span>
+                                      {isAnswerSubmitted && isCorrect && <CheckCircle size={18} color="#16A34A" />}
+                                      {isAnswerSubmitted && isSelected && !isCorrect && <X size={18} color="#EF4444" />}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+
+                              {/* Lời giải thích khi đã chọn */}
+                              {isAnswerSubmitted && (
+                                <div
+                                  style={{
+                                    marginTop: '1.15rem',
+                                    padding: '1rem 1.25rem',
+                                    borderRadius: '8px',
+                                    background: selectedOption === currentLesson.quiz.answer ? '#F0FDF4' : '#FEF2F2',
+                                    border: '1px solid',
+                                    borderColor: selectedOption === currentLesson.quiz.answer ? '#BBF7D0' : '#FECACA',
+                                    fontSize: '0.9rem',
+                                    lineHeight: 1.6,
+                                    color: selectedOption === currentLesson.quiz.answer ? '#166534' : '#991B1B',
+                                    fontWeight: 600
+                                  }}
+                                >
+                                  {selectedOption === currentLesson.quiz.answer ? '🎉 Chính xác tuyệt đối! ' : '❌ Chưa chính xác! '}
+                                  {currentLesson.quiz.explanation}
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <div style={{ padding: '1rem', textAlign: 'center', color: '#64748B', fontStyle: 'italic', fontSize: '0.9rem' }}>
+                              * Chưa thiết lập câu hỏi phản xạ nhanh cho bài học này.
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -885,7 +1074,7 @@ export default function RoadmapTab() {
                 {/* Footer Modal: Chuyển bài & Đánh dấu hoàn thành */}
                 <div
                   style={{
-                    padding: '1rem 1.75rem',
+                    padding: '0.9rem 1.75rem',
                     background: '#F8FAFC',
                     borderTop: '1.5px solid var(--color-border)',
                     display: 'flex',
@@ -904,16 +1093,16 @@ export default function RoadmapTab() {
                         setIsAnswerSubmitted(false);
                       }}
                       style={{
-                        padding: '0.5rem 0.9rem',
+                        padding: '0.55rem 1rem',
                         borderRadius: '8px',
                         background: '#FFFFFF',
                         border: '1px solid var(--color-border)',
                         color: activeLessonIndex === 0 ? '#94A3B8' : 'var(--color-deep)',
                         fontWeight: 700,
-                        fontSize: '0.82rem',
+                        fontSize: '0.85rem',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.3rem',
+                        gap: '0.35rem',
                         cursor: activeLessonIndex === 0 ? 'not-allowed' : 'pointer'
                       }}
                     >
@@ -929,16 +1118,16 @@ export default function RoadmapTab() {
                         setIsAnswerSubmitted(false);
                       }}
                       style={{
-                        padding: '0.5rem 0.9rem',
+                        padding: '0.55rem 1rem',
                         borderRadius: '8px',
                         background: '#FFFFFF',
                         border: '1px solid var(--color-border)',
                         color: activeLessonIndex === selectedStation.lessons.length - 1 ? '#94A3B8' : 'var(--color-deep)',
                         fontWeight: 700,
-                        fontSize: '0.82rem',
+                        fontSize: '0.85rem',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.3rem',
+                        gap: '0.35rem',
                         cursor: activeLessonIndex === selectedStation.lessons.length - 1 ? 'not-allowed' : 'pointer'
                       }}
                     >
@@ -952,10 +1141,10 @@ export default function RoadmapTab() {
                     <button
                       onClick={() => handleToggleLessonComplete(currentLesson.id)}
                       style={{
-                        padding: '0.6rem 1.25rem',
+                        padding: '0.65rem 1.35rem',
                         borderRadius: '8px',
                         fontWeight: 800,
-                        fontSize: '0.84rem',
+                        fontSize: '0.88rem',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.45rem',
@@ -969,12 +1158,12 @@ export default function RoadmapTab() {
                     >
                       {completedLessonIds[currentLesson.id] ? (
                         <>
-                          <CheckCircle size={16} />
+                          <CheckCircle size={17} />
                           <span>Đã hoàn thành bài này</span>
                         </>
                       ) : (
                         <>
-                          <Check size={16} />
+                          <Check size={17} />
                           <span>Đánh dấu đã hiểu bài</span>
                         </>
                       )}
@@ -983,7 +1172,7 @@ export default function RoadmapTab() {
                     <button
                       className="btn-open-station"
                       onClick={handleCloseModal}
-                      style={{ padding: '0.6rem 1rem' }}
+                      style={{ padding: '0.65rem 1.15rem' }}
                     >
                       Đóng
                     </button>
