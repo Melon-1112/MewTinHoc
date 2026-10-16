@@ -9,8 +9,8 @@
     // Giữ cho URL sạch và ngăn ngừa lỗi 404 khi tải lại trang (F5) trên GitHub Pages
     (function () {
       var path = window.location.pathname;
-      // Kiểm tra xem trang có subpath repo (ví dụ /Website-Tin-h-c-THPTQG/) hay ở root
-      var repoBase = '/Website-Tin-h-c-THPTQG';
+      // Kiểm tra xem trang có subpath repo (ví dụ /MewTinHoc/) hay ở root
+      var repoBase = '/MewTinHoc';
       var pathSegmentsToKeep = path.startsWith(repoBase) ? 1 : 0;
 
       var l = window.location;
