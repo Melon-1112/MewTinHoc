@@ -5,4 +5,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   base: '/Website-Tin-h-c-THPTQG/',
   plugins: [react()],
+  build: {
+    cssMinify: false,
+  },
 })

@@ -64,51 +64,32 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* Student Profile & Google OAuth button */}
+          {/* Student Profile & Logout button */}
           {user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <div
                 className="student-profile-chip"
-                onClick={onOpenGoogleLogin}
-                title="Tài khoản Google đang kết nối. Nhấp để chuyển tài khoản."
+                title={`Học viên: ${user.name}`}
               >
                 <img
-                  src={user.avatar}
-                  alt={user.name}
+                  src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'Học viên')}&background=ea580c&color=ffffff&bold=true`}
+                  alt=""
+                  referrerPolicy="no-referrer"
+                  crossOrigin="anonymous"
                   className="student-avatar"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'Học viên')}&background=ea580c&color=ffffff&bold=true`;
+                  }}
                 />
-                <div className="student-info-text">
-                  <div className="student-name">
-                    {user.name}
-                    <span style={{ fontSize: '0.65rem', background: '#DCFCE7', color: '#15803D', padding: '1px 6px', borderRadius: '999px', fontWeight: 700 }}>
-                      Google OAuth
-                    </span>
-                  </div>
-                  <div className="student-role">
-                    {user.grade || 'Lớp 12'} • 🎯 Mục tiêu: {user.targetScore || 9.5}đ
-                  </div>
-                </div>
+                <span className="student-name">{user.name}</span>
               </div>
+
               {/* Logout button */}
               <button
                 onClick={onLogout}
-                title="Đăng xuất"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '34px',
-                  height: '34px',
-                  borderRadius: '8px',
-                  background: 'rgba(220,38,38,0.08)',
-                  color: '#DC2626',
-                  border: '1.5px solid rgba(220,38,38,0.15)',
-                  cursor: 'pointer',
-                  flexShrink: 0,
-                  transition: 'all 0.18s ease',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(220,38,38,0.15)'; e.currentTarget.style.borderColor = '#DC2626'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(220,38,38,0.08)'; e.currentTarget.style.borderColor = 'rgba(220,38,38,0.15)'; }}
+                title="Đăng xuất tài khoản"
+                className="student-logout-btn"
               >
                 <LogOut size={16} />
               </button>

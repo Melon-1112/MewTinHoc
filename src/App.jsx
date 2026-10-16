@@ -4,7 +4,6 @@ import HomeTab from './components/HomeTab';
 import RoadmapTab from './components/RoadmapTab';
 import ExamRepoTab from './components/ExamRepoTab';
 import AiExamTab from './components/AiExamTab';
-import GoogleAuthModal from './components/GoogleAuthModal';
 import LoginPage from './components/LoginPage';
 import { DEFAULT_USER } from './mockData';
 import { Flame, CheckCircle, AlertTriangle, ShieldCheck } from 'lucide-react';
@@ -13,7 +12,6 @@ import { supabase } from './supabase';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(TABS.HOME);
-  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
   // User state: null = not logged in, object = logged in
@@ -64,9 +62,13 @@ export default function App() {
   const syncSupabaseAuthUser = async (authUser) => {
     if (!authUser) return;
     const meta = authUser.user_metadata || {};
-    const name = meta.full_name || meta.name || meta.user_name || authUser.email?.split('@')[0] || 'Học viên';
-    const email = authUser.email || '';
-    const avatar = meta.avatar_url || meta.picture || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(authUser.id)}`;
+    const identities = authUser.identities || [];
+    const googleIdentity = identities.find(id => id.provider === 'google') || identities[0];
+    const identityData = googleIdentity?.identity_data || {};
+
+    const name = meta.full_name || meta.name || identityData.full_name || identityData.name || meta.user_name || authUser.email?.split('@')[0] || 'Học viên';
+    const email = authUser.email || identityData.email || '';
+    const avatar = meta.avatar_url || meta.picture || identityData.avatar_url || identityData.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ea580c&color=ffffff&bold=true`;
 
     const newUser = {
       id: authUser.id,
@@ -247,7 +249,6 @@ export default function App() {
         setActiveTab={setActiveTab}
         user={user}
         streak={streak}
-        onOpenGoogleLogin={() => setIsGoogleModalOpen(true)}
         onLogout={handleLogout}
         onOpenStreakDetails={() => {
           setActiveTab(TABS.HOME);
@@ -294,14 +295,6 @@ export default function App() {
           </div>
         </div>
       </footer>
-
-      {/* Google OAuth Login Modal */}
-      <GoogleAuthModal
-        isOpen={isGoogleModalOpen}
-        onClose={() => setIsGoogleModalOpen(false)}
-        onSelectAccount={handleSelectGoogleAccount}
-        currentUser={user}
-      />
 
       {/* Toast Notification */}
       {toastMessage && (

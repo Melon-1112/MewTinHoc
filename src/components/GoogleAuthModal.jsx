@@ -124,8 +124,14 @@ export default function GoogleAuthModal({ isOpen, onClose, onSelectAccount, curr
                   <div className="account-user-meta">
                     <img
                       src={acc.avatar}
-                      alt={acc.name}
+                      alt=""
+                      referrerPolicy="no-referrer"
+                      crossOrigin="anonymous"
                       style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(acc.name || 'Học viên')}&background=ea580c&color=ffffff&bold=true`;
+                      }}
                     />
                     <div>
                       <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#1F2937' }}>
