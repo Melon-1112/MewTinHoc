@@ -218,7 +218,7 @@ export function useUserProgress(user) {
         }));
       } else {
         // Người dùng mới -> tự tạo dòng mặc định
-        await supabase.from('user_progress').upsert({
+        const { error: seedProgErr } = await supabase.from('user_progress').upsert({
           id: userId,
           streak_count: DEFAULT_PROGRESS.streak_count,
           streak_last_date: null,
@@ -226,7 +226,8 @@ export function useUserProgress(user) {
           avg_score: DEFAULT_PROGRESS.avg_score,
           accuracy: DEFAULT_PROGRESS.accuracy,
           xp_total: DEFAULT_PROGRESS.xp_total
-        }).catch(() => {});
+        });
+        if (seedProgErr) console.warn('Không tạo được user_progress mặc định:', seedProgErr.message);
       }
 
       // 2. Tải mastery_progress
@@ -248,7 +249,8 @@ export function useUserProgress(user) {
           block_key,
           progress: prog
         }));
-        await supabase.from('mastery_progress').upsert(initialRows).catch(() => {});
+        const { error: seedMastErr } = await supabase.from('mastery_progress').upsert(initialRows);
+        if (seedMastErr) console.warn('Không seed được mastery mặc định:', seedMastErr.message);
       }
 
       // 3. Tải roadmap_lessons
@@ -522,14 +524,20 @@ export function useUserProgress(user) {
       };
 
       if (user?.id && supabase) {
-        supabase.from('user_progress').upsert({
-          id: user.id,
-          total_exams: newTotal,
-          avg_score: newAvg,
-          accuracy: newAcc,
-          xp_total: newXp,
-          updated_at: new Date().toISOString()
-        }).catch(() => {});
+        supabase
+          .from('user_progress')
+          .upsert({
+            id: user.id,
+            total_exams: newTotal,
+            avg_score: newAvg,
+            accuracy: newAcc,
+            xp_total: newXp,
+            updated_at: new Date().toISOString()
+          })
+          .then(
+            () => {},
+            (err) => console.warn('Lỗi ghi kết quả thi lên Supabase:', err?.message)
+          );
       }
 
       return updated;
