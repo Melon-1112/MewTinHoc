@@ -237,7 +237,44 @@ export default function LoginPage({ onLogin }) {
                 )}
               </button>
 
+              {/* Hoặc Trải nghiệm nhanh */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0.1rem 0' }}>
+                <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }}></div>
+                <span style={{ fontSize: '0.72rem', color: '#9CA3AF', fontWeight: 600 }}>HOẶC</span>
+                <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }}></div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => onLogin({
+                  id: 'demo-student-id',
+                  name: 'Nguyễn Văn An',
+                  email: 'an.nguyen@hocvien.edu.vn',
+                  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+                  grade: 'Lớp 12 — Ôn thi THPTQG'
+                })}
+                style={{
+                  padding: '0.75rem 1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  background: '#FFF9F2',
+                  border: '1.5px dashed var(--color-primary)',
+                  borderRadius: '10px',
+                  fontSize: '0.86rem',
+                  fontWeight: 700,
+                  color: 'var(--color-primary)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+                id="btn-demo-login"
+              >
+                <span>⚡ Vào nhanh trải nghiệm (Học viên mẫu)</span>
+              </button>
+
               <div style={{
+
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

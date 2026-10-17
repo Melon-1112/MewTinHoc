@@ -10,6 +10,7 @@ import { DEFAULT_USER } from './mockData';
 import { Flame, CheckCircle, AlertTriangle, ShieldCheck } from 'lucide-react';
 import AdminPage from './components/AdminPage';
 import { supabase } from './supabase';
+import { useUserProgress } from './lib/userProgress';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(TABS.HOME);
@@ -24,23 +25,21 @@ export default function App() {
     return null; // Start as guest → shows Login page
   });
 
-  // Streak state: count, checkedToday, lastCheckInDate, virtualDateOffset
-  const [streak, setStreak] = useState(() => {
-    const saved = localStorage.getItem('tinhoc_streak');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        // fallback
-      }
-    }
-    return {
-      count: 7,
-      checkedToday: false,
-      lastCheckInDate: null,
-      dayOffset: 0 // Virtual day offset for testing "qua 1 ngày"
-    };
-  });
+  // Tích hợp dữ liệu Realtime Database (Streak, Mastery 4 khối, Lộ trình, Lịch sử điểm danh)
+  const {
+    progress,
+    mastery,
+    completedLessons,
+    streak,
+    dbStatus,
+    isRealtimeActive,
+    checkIn,
+    updateMastery,
+    toggleLesson,
+    recordExamResult,
+    simulateNextDay,
+    simulateMissedDays
+  } = useUserProgress(user);
 
   // Helper to show toasts
   const showToast = (msg) => {
@@ -55,9 +54,6 @@ export default function App() {
     localStorage.setItem('tinhoc_user', JSON.stringify(user));
   }, [user]);
 
-  useEffect(() => {
-    localStorage.setItem('tinhoc_streak', JSON.stringify(streak));
-  }, [streak]);
 
   // Sync Supabase Auth User to App User state
   const syncSupabaseAuthUser = async (authUser) => {
@@ -166,43 +162,24 @@ export default function App() {
     showToast(`Đổi tài khoản thành công! Tên học viên: ${googleAccount.name}`);
   };
 
-  // Streak Check-in: +1 streak
-  const handleCheckIn = () => {
-    if (streak.checkedToday) {
-      showToast('Hôm nay bạn đã điểm danh rồi!');
-      return;
+  // Streak Check-in: +1 streak với Supabase Realtime
+  const handleCheckIn = async () => {
+    const res = await checkIn();
+    if (res?.message) {
+      showToast(res.message);
     }
-
-    const newCount = streak.count + 1;
-    setStreak((prev) => ({
-      ...prev,
-      count: newCount,
-      checkedToday: true,
-      lastCheckInDate: new Date().toISOString().split('T')[0]
-    }));
-
-    showToast(`🔥 Điểm danh thành công! Chuỗi Streak tăng lên ${newCount} ngày.`);
   };
 
   // Simulation: Tua nhanh 1 ngày (Hôm sau - cho phép điểm danh tiếp)
   const handleSimulateNextDay = () => {
-    setStreak((prev) => ({
-      ...prev,
-      dayOffset: prev.dayOffset + 1,
-      checkedToday: false // Qua ngày mới thì chưa điểm danh
-    }));
-    showToast('📅 Đã mô phỏng sang ngày hôm sau! Bạn có thể điểm danh tiếp để duy trì streak.');
+    const msg = simulateNextDay();
+    showToast(msg);
   };
 
   // Simulation: Bỏ lỡ 2 ngày không học -> mất streak về 0
-  const handleSimulateMissedDays = () => {
-    setStreak((prev) => ({
-      ...prev,
-      dayOffset: prev.dayOffset + 2,
-      count: 0, // Mất streak
-      checkedToday: false
-    }));
-    showToast('⚠️ Bạn đã bỏ lỡ 2 ngày không điểm danh! Chuỗi streak đã bị tắt về 0 ngày.');
+  const handleSimulateMissedDays = async () => {
+    const msg = await simulateMissedDays();
+    showToast(msg);
   };
 
   const navigate = useNavigate();
@@ -256,21 +233,53 @@ export default function App() {
               <HomeTab
                 user={user}
                 streak={streak}
+                progress={progress}
+                mastery={mastery}
+                onUpdateMastery={updateMastery}
+                dbStatus={dbStatus}
+                isRealtimeActive={isRealtimeActive}
                 onCheckIn={handleCheckIn}
                 onSimulateNextDay={handleSimulateNextDay}
                 onSimulateMissedDays={handleSimulateMissedDays}
+                onNavigateTab={(tabKey) => {
+                  if (tabKey === TABS.ROADMAP) navigate('/roadmap');
+                  else if (tabKey === TABS.EXAMS) navigate('/exams');
+                  else if (tabKey === TABS.AI_EXAM) navigate('/ai-exam');
+                  else navigate('/');
+                }}
               />
             }
           />
           <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/roadmap" element={<RoadmapTab />} />
-          <Route path="/roadmap/:track" element={<RoadmapTab />} />
-          <Route path="/exams" element={<ExamRepoTab />} />
-          <Route path="/ai-exam" element={<AiExamTab user={user} />} />
+          <Route
+            path="/roadmap"
+            element={
+              <RoadmapTab
+                user={user}
+                completedLessonIds={completedLessons}
+                onToggleLesson={toggleLesson}
+                onUpdateMastery={updateMastery}
+              />
+            }
+          />
+          <Route
+            path="/roadmap/:track"
+            element={
+              <RoadmapTab
+                user={user}
+                completedLessonIds={completedLessons}
+                onToggleLesson={toggleLesson}
+                onUpdateMastery={updateMastery}
+              />
+            }
+          />
+          <Route path="/exams" element={<ExamRepoTab user={user} onRecordExamResult={recordExamResult} />} />
+          <Route path="/ai-exam" element={<AiExamTab user={user} onRecordExamResult={recordExamResult} />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
 
       {/* Footer */}
       <footer style={{ borderTop: '1.5px solid var(--color-border)', background: '#FFF9F2', padding: '2rem 1.5rem', textAlign: 'center', marginTop: 'auto' }}>

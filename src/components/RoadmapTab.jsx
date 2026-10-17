@@ -37,7 +37,12 @@ import {
   ictRoadmapStations
 } from '../data/roadmap';
 
-export default function RoadmapTab() {
+export default function RoadmapTab({
+  completedLessonIds: propCompletedLessonIds,
+  onToggleLesson,
+  onUpdateMastery,
+  user
+}) {
   const { track } = useParams();
   const navigate = useNavigate();
 
@@ -59,8 +64,8 @@ export default function RoadmapTab() {
     }
   }, [validTrack]);
 
-  // 2. Trạng thái các bài học đã hoàn thành lưu trong localStorage theo user
-  const [completedLessonIds, setCompletedLessonIds] = useState(() => {
+  // 2. Trạng thái các bài học đã hoàn thành: ưu tiên từ Supabase Realtime prop, fallback localStorage
+  const [internalCompletedLessonIds, setInternalCompletedLessonIds] = useState(() => {
     try {
       const saved = localStorage.getItem('tinhoc_completed_lessons');
       return saved ? JSON.parse(saved) : {};
@@ -69,7 +74,10 @@ export default function RoadmapTab() {
     }
   });
 
+  const completedLessonIds = propCompletedLessonIds || internalCompletedLessonIds;
+
   // 3. Modal xem lý thuyết chặng
+
   const [selectedStation, setSelectedStation] = useState(null);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
 
@@ -155,14 +163,34 @@ export default function RoadmapTab() {
     setIsFullScreen(false);
   };
 
-  // Chuyển đổi trạng thái đã học / chưa học của một bài
-  const handleToggleLessonComplete = (lessonId) => {
-    setCompletedLessonIds((prev) => {
-      const next = { ...prev, [lessonId]: !prev[lessonId] };
-      localStorage.setItem('tinhoc_completed_lessons', JSON.stringify(next));
-      return next;
-    });
+  // Chuyển đổi trạng thái đã học / chưa học của một bài (đồng bộ CSDL Supabase Realtime)
+  const handleToggleLessonComplete = async (lessonId) => {
+    if (onToggleLesson) {
+      await onToggleLesson(lessonId, activeTrack);
+    } else {
+      setInternalCompletedLessonIds((prev) => {
+        const next = { ...prev, [lessonId]: !prev[lessonId] };
+        localStorage.setItem('tinhoc_completed_lessons', JSON.stringify(next));
+        return next;
+      });
+    }
+
+    // Tự động gia tăng mức độ làm chủ khối kiến thức tương ứng nếu đang học chặng này
+    if (onUpdateMastery && selectedStation) {
+      const text = ((selectedStation.title || '') + ' ' + (selectedStation.domain || '') + ' ' + (selectedStation.subTitle || '')).toLowerCase();
+      if (text.includes('python') || text.includes('thuật toán') || text.includes('lập trình')) {
+        // block python: tăng nhẹ tiến độ nếu chưa 100
+        onUpdateMastery('python', (prev) => Math.min(100, (prev || 88) + 2));
+      } else if (text.includes('sql') || text.includes('cơ sở dữ liệu') || text.includes('csdl') || text.includes('database')) {
+        onUpdateMastery('sql', (prev) => Math.min(100, (prev || 65) + 3));
+      } else if (text.includes('mạng') || text.includes('internet') || text.includes('ip') || text.includes('network')) {
+        onUpdateMastery('network', (prev) => Math.min(100, (prev || 45) + 3));
+      } else if (text.includes('an toàn') || text.includes('đạo đức') || text.includes('pháp luật') || text.includes('bảo mật') || text.includes('safety')) {
+        onUpdateMastery('safety', (prev) => Math.min(100, (prev || 80) + 2));
+      }
+    }
   };
+
 
   // Sao chép mã nguồn minh họa
   const handleCopyCode = (codeText) => {

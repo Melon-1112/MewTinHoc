@@ -4,12 +4,7 @@ import {
   FileText,
   Download,
   Eye,
-  Database,
   RefreshCw,
-  Code2,
-  Copy,
-  Check,
-  X,
   File,
   FileSpreadsheet,
   FileImage,
@@ -70,9 +65,6 @@ export default function ExamRepoTab() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showSqlModal, setShowSqlModal] = useState(false);
-  const [copiedSql, setCopiedSql] = useState(false);
-
   const [activeFolder, setActiveFolder] = useState(FOLDER);
 
   // Lấy danh sách file trong bucket/folder (tự động kiểm tra folder con hoặc thư mục gốc)
@@ -174,32 +166,6 @@ export default function ExamRepoTab() {
     (d.ten_file || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const sqlCode = `-- ====================================================
--- Cấu hình Storage Bucket "${BUCKET}" và phân quyền đọc
--- Chạy trong Supabase Dashboard > SQL Editor > New query
--- ====================================================
-
--- 1. Đảm bảo Bucket tồn tại và ở chế độ Public
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('${BUCKET}', '${BUCKET}', true)
-ON CONFLICT (id) DO UPDATE SET public = true;
-
--- 2. Xóa policy cũ nếu có (tránh lỗi đã tồn tại khi chạy lại)
-DROP POLICY IF EXISTS "public_read_${BUCKET.toLowerCase()}" ON storage.objects;
-DROP POLICY IF EXISTS "Public Read ${BUCKET}" ON storage.objects;
-
--- 3. Cho phép khách (anon) và người dùng đọc/tải TOÀN BỘ file
-CREATE POLICY "public_read_${BUCKET.toLowerCase()}"
-ON storage.objects
-FOR SELECT TO anon, authenticated
-USING (bucket_id = '${BUCKET}');`;
-
-  const handleCopySql = () => {
-    navigator.clipboard.writeText(sqlCode);
-    setCopiedSql(true);
-    setTimeout(() => setCopiedSql(false), 2000);
-  };
-
   const errorHint = (() => {
     if (!error) return null;
     if (/not found|bucket/i.test(error)) {
@@ -211,49 +177,43 @@ USING (bucket_id = '${BUCKET}');`;
   return (
     <div className="exam-repo-container">
 
-      {/* ── Header + Search ── */}
+      {/* ── Header + Search + Refresh ── */}
       <div className="doc-header-section">
         <div>
           <h2 className="doc-page-title">
             <FolderOpen size={24} />
             Kho Tài Liệu Đề Thi Thử
           </h2>
-          <p className="doc-page-subtitle">Tải về các đề thi thử, tài liệu ôn tập chuẩn THPTQG mới nhất</p>
+          <p className="doc-page-subtitle">
+            Tải về các đề thi thử, tài liệu ôn tập chuẩn THPTQG mới nhất
+            {!isLoading && docs.length > 0 && (
+              <span className="doc-count-badge">{docs.length} tài liệu</span>
+            )}
+          </p>
         </div>
-        <div className="search-input-wrap">
-          <Search size={16} />
-          <input
-            type="text"
-            placeholder="Tìm kiếm tài liệu..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+        <div className="doc-header-actions">
+          <div className="search-input-wrap">
+            <Search size={16} />
+            <input
+              type="text"
+              placeholder="Tìm kiếm tài liệu..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <button className="doc-btn-refresh" onClick={fetchDocs} disabled={isLoading} title="Làm mới danh sách">
+            <RefreshCw size={16} className={isLoading ? 'spin-icon' : ''} />
+          </button>
         </div>
       </div>
 
-      {/* ── Status bar ── */}
-      <div className="doc-status-bar" data-source={error ? 'mock' : 'supabase'}>
-        <div className="doc-status-left">
-          <Database size={18} />
-          <div>
-            <div className="doc-status-title">
-              {error
-                ? '🔴 Không đọc được Supabase Storage'
-                : `🟢 Supabase Storage — ${BUCKET}${activeFolder ? '/' + activeFolder : ' (Gốc)'} (${docs.length} tài liệu)`}
-            </div>
-            {errorHint && <div className="doc-status-error">{errorHint}</div>}
-          </div>
+      {/* ── Error banner (chỉ hiện khi có lỗi) ── */}
+      {errorHint && (
+        <div className="doc-error-banner">
+          <AlertCircle size={16} />
+          <span>{errorHint}</span>
         </div>
-        <div className="doc-status-actions">
-          <button className="doc-btn-secondary" onClick={() => setShowSqlModal(true)}>
-            <Code2 size={14} /><span>Policy</span>
-          </button>
-          <button className="doc-btn-primary" onClick={fetchDocs} disabled={isLoading}>
-            <RefreshCw size={14} className={isLoading ? 'spin-icon' : ''} />
-            <span>{isLoading ? 'Đang tải...' : 'Làm mới'}</span>
-          </button>
-        </div>
-      </div>
+      )}
 
       {/* ── Loading indicator ── */}
       {isLoading && (
@@ -338,15 +298,15 @@ USING (bucket_id = '${BUCKET}');`;
             <>
               <p>Chưa có tài liệu nào trong bucket <strong>"{BUCKET}"</strong>.</p>
               <p style={{ fontSize: '0.85rem', maxWidth: '520px', lineHeight: 1.5 }}>
-                Nếu bạn đã tải file lên Supabase, nguyên nhân là <strong>chưa có RLS Policy</strong> để cho phép khách đọc file.
+                Nếu bạn đã tải file lên Supabase, hãy kiểm tra <strong>RLS Policy</strong> cho phép đọc file công khai, hoặc nhấn <strong>Làm mới</strong> để thử lại.
               </p>
               <button
                 className="doc-btn-primary"
-                onClick={() => setShowSqlModal(true)}
+                onClick={fetchDocs}
                 style={{ marginTop: '0.5rem' }}
               >
-                <Code2 size={15} />
-                <span>Xem & Sao chép mã SQL Policy</span>
+                <RefreshCw size={15} />
+                <span>Thử tải lại</span>
               </button>
             </>
           ) : (
@@ -355,53 +315,6 @@ USING (bucket_id = '${BUCKET}');`;
         </div>
       )}
 
-      {/* ── Policy modal ── */}
-      {showSqlModal && (
-        <div className="exam-taker-modal-backdrop" style={{ zIndex: 1100 }}>
-          <div className="exam-taker-window" style={{ maxWidth: '720px', maxHeight: '85vh', overflowY: 'auto', padding: '1.5rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Database size={20} color="var(--color-primary)" />
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--color-deep)', margin: 0 }}>
-                  SQL phân quyền đọc Storage
-                </h3>
-              </div>
-              <button onClick={() => setShowSqlModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6B7280' }}>
-                <X size={20} />
-              </button>
-            </div>
-
-            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '1rem', lineHeight: 1.5 }}>
-              Mở <strong>Supabase Dashboard → SQL Editor</strong> và chạy đoạn mã bên dưới. Sau đó nhấn <strong>Làm mới</strong> trên giao diện.
-            </p>
-
-            <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
-              <pre style={{
-                background: '#1E293B', color: '#F8FAFC', padding: '1rem', borderRadius: '8px',
-                fontSize: '0.78rem', lineHeight: 1.5, overflowX: 'auto', fontFamily: 'Consolas, monospace'
-              }}>
-                <code>{sqlCode}</code>
-              </pre>
-              <button onClick={handleCopySql} style={{
-                position: 'absolute', top: '10px', right: '10px',
-                display: 'flex', alignItems: 'center', gap: '0.35rem',
-                background: copiedSql ? '#16A34A' : '#334155', color: '#FFF', border: 'none',
-                padding: '0.35rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer'
-              }}>
-                {copiedSql ? <Check size={14} /> : <Copy size={14} />}
-                <span>{copiedSql ? 'Đã sao chép!' : 'Sao chép'}</span>
-              </button>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <button onClick={() => setShowSqlModal(false)} style={{
-                padding: '0.5rem 1rem', background: 'var(--color-primary)', color: '#FFF',
-                border: 'none', borderRadius: '6px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer'
-              }}>Đóng</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
