@@ -10,7 +10,8 @@ import {
   LogIn,
   LogOut,
   Layers,
-  Award
+  Award,
+  ShieldCheck
 } from 'lucide-react';
 import logoMeoCam from '../../img/logomeocam.png';
 
@@ -102,6 +103,31 @@ export default function Navbar({
                 />
                 <span className="student-name">{user.name}</span>
               </div>
+
+              {/* Nút Admin chỉ hiển thị riêng cho người công ty (isAdmin === true) */}
+              {user?.isAdmin && (
+                <button
+                  onClick={() => navigate('/admin')}
+                  title="Trang Quản Trị Hệ Thống (Dành riêng cho người công ty)"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.35rem 0.65rem',
+                    borderRadius: '8px',
+                    background: '#FEF2F2',
+                    color: '#DC2626',
+                    border: '1px solid #FECACA',
+                    fontSize: '0.74rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    boxShadow: '0 1px 2px rgba(220, 38, 38, 0.08)'
+                  }}
+                >
+                  <ShieldCheck size={14} />
+                  <span>Admin</span>
+                </button>
+              )}
 
               {/* Logout button */}
               <button

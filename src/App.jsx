@@ -11,6 +11,7 @@ import { Flame, CheckCircle, AlertTriangle, ShieldCheck } from 'lucide-react';
 import AdminPage from './components/AdminPage';
 import { supabase } from './supabase';
 import { useUserProgress } from './lib/userProgress';
+import { resolveUserRole, syncUserRoleToSupabase } from './lib/roleService';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(TABS.HOME);
@@ -20,7 +21,10 @@ export default function App() {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('tinhoc_user');
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+      try {
+        const parsed = JSON.parse(saved);
+        return resolveUserRole(parsed);
+      } catch (e) { /* ignore */ }
     }
     return null; // Start as guest → shows Login page
   });
@@ -67,7 +71,7 @@ export default function App() {
     const email = authUser.email || identityData.email || '';
     const avatar = meta.avatar_url || meta.picture || identityData.avatar_url || identityData.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ea580c&color=ffffff&bold=true`;
 
-    const newUser = {
+    const rawUser = {
       id: authUser.id,
       name,
       email,
@@ -76,24 +80,14 @@ export default function App() {
       provider: authUser.app_metadata?.provider || 'google'
     };
 
-    setUser(newUser);
-    localStorage.setItem('tinhoc_user', JSON.stringify(newUser));
+    // Tự động kiểm tra và đồng bộ quyền hạn thực tế từ Supabase profiles
+    const syncedUser = await syncUserRoleToSupabase(rawUser);
+    setUser(syncedUser);
+    localStorage.setItem('tinhoc_user', JSON.stringify(syncedUser));
 
     // Xóa hash hoặc query OAuth khỏi URL cho gọn gàng
     if (window.location.hash.includes('access_token=') || window.location.search.includes('code=')) {
       window.history.replaceState(null, '', window.location.pathname);
-    }
-
-    // Tự động đồng bộ/upsert vào bảng profiles (nếu có)
-    try {
-      await supabase.from('profiles').upsert({
-        id: authUser.id,
-        userid: email ? email.split('@')[0] : authUser.id.slice(0, 8),
-        username: name,
-        email: email,
-      }, { onConflict: 'id' });
-    } catch (e) {
-      // ignore
     }
   };
 
@@ -125,15 +119,17 @@ export default function App() {
   }, []);
 
   // Handle login from LoginPage
-  const handleLogin = (googleAccount) => {
-    const newUser = {
+  const handleLogin = async (googleAccount) => {
+    const rawUser = {
       ...(user || DEFAULT_USER),
       name: googleAccount.name,
       email: googleAccount.email,
       avatar: googleAccount.avatar || DEFAULT_USER.avatar,
       grade: googleAccount.grade || DEFAULT_USER.grade
     };
-    setUser(newUser);
+    const syncedUser = await syncUserRoleToSupabase(rawUser);
+    setUser(syncedUser);
+    localStorage.setItem('tinhoc_user', JSON.stringify(syncedUser));
     showToast(`🎉 Chào mừng ${googleAccount.name}! Bắt đầu luyện thi thôi!`);
   };
 
@@ -188,7 +184,7 @@ export default function App() {
   const isAdminRoute = location.pathname.endsWith('/admin') || window.location.hash === '#admin';
 
   if (isAdminRoute) {
-    return <AdminPage />;
+    return <AdminPage currentUser={user} />;
   }
 
   // Show Login page if not logged in (and not on admin)

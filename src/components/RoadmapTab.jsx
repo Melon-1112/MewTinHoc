@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   Link as ChainIcon,
   CheckCircle,
-  Lock,
   Play,
   BookOpen,
   X,
@@ -12,14 +11,11 @@ import {
   ChevronLeft,
   ChevronDown,
   ChevronUp,
-  Code,
   Flame,
   Check,
   Laptop,
   Cpu,
-  HelpCircle,
   AlertTriangle,
-  Lightbulb,
   Copy,
   CheckCheck,
   FileText,
@@ -27,15 +23,22 @@ import {
   Layers,
   Award,
   Maximize2,
-  Minimize2
+  Minimize2,
+  RefreshCw,
+  Cloud,
+  Database,
+  Download
 } from 'lucide-react';
 
 import {
   TRACK_TYPES,
-  TRACK_INFO,
-  csRoadmapStations,
-  ictRoadmapStations
+  TRACK_INFO
 } from '../data/roadmap';
+
+import {
+  fetchRemoteRoadmap,
+  downloadRoadmapJSON
+} from '../lib/roadmapStorage';
 
 export default function RoadmapTab({
   completedLessonIds: propCompletedLessonIds,
@@ -96,8 +99,68 @@ export default function RoadmapTab({
   const [showBlueprint, setShowBlueprint] = useState(false);
   const [showTwelveWeekPlan, setShowTwelveWeekPlan] = useState(false);
 
-  const currentTrackData = TRACK_INFO[activeTrack] || TRACK_INFO[TRACK_TYPES.ICT];
+  // 6. Dữ liệu lộ trình tải từ Supabase Storage (KhoTaiLieuTinHocThiThu/LoTrinhDayXich)
+  const [remoteTrackData, setRemoteTrackData] = useState({});
+  const [syncStatus, setSyncStatus] = useState({});
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  // Tải dữ liệu lộ trình từ Supabase Storage
+  const loadRoadmapFromSupabase = async (trackToLoad = activeTrack) => {
+    setIsSyncing(true);
+    try {
+      const res = await fetchRemoteRoadmap(trackToLoad);
+      setSyncStatus((prev) => ({
+        ...prev,
+        [trackToLoad]: {
+          source: res.source, // 'supabase' | 'local'
+          message: res.message,
+          updatedAt: res.updatedAt || new Date().toLocaleTimeString('vi-VN'),
+          success: res.success
+        }
+      }));
+      if (res.success && res.data) {
+        setRemoteTrackData((prev) => ({
+          ...prev,
+          [trackToLoad]: res.data
+        }));
+      }
+    } catch (e) {
+      console.warn('Lỗi khi tải dữ liệu lộ trình từ Supabase:', e);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  // Tự động tải từ Supabase khi mở trang hoặc khi đổi phân ban
+  useEffect(() => {
+    loadRoadmapFromSupabase(activeTrack);
+  }, [activeTrack]);
+
+  const baseTrackData = TRACK_INFO[activeTrack] || TRACK_INFO[TRACK_TYPES.ICT];
+  const dynamicTrackData = remoteTrackData[activeTrack];
+
+  const currentTrackData = {
+    ...baseTrackData,
+    ...(dynamicTrackData ? {
+      stations: dynamicTrackData.stations || baseTrackData.stations,
+      examStructure: dynamicTrackData.examStructure || baseTrackData.examStructure,
+      twelveWeekPlan: dynamicTrackData.twelveWeekPlan || baseTrackData.twelveWeekPlan
+    } : {})
+  };
+
   const stations = currentTrackData.stations;
+  const currentSync = syncStatus[activeTrack];
+  const isCloudSynced = currentSync?.source === 'supabase';
+
+  // Khi stations cập nhật từ Supabase, đồng bộ lại selectedStation nếu đang mở modal
+  useEffect(() => {
+    if (selectedStation) {
+      const refreshed = stations.find((st) => st.id === selectedStation.id);
+      if (refreshed) {
+        setSelectedStation(refreshed);
+      }
+    }
+  }, [stations]);
 
   // Lưu track vào localStorage và cập nhật đường dẫn URL rẽ nhánh
   const handleSwitchTrack = (trackId) => {
@@ -235,13 +298,82 @@ export default function RoadmapTab({
             <strong>Khoa học máy tính (CS)</strong>. Mỗi chặng liên kết chặt chẽ theo dạng dây xích, bấm vào từng bài để học lý thuyết chuyên sâu!
           </p>
 
-          {/* Gợi ý cho Admin / Chủ website */}
-          <div style={{ marginTop: '0.75rem' }}>
-            <span className="admin-config-hint" title="Hướng dẫn chỉnh sửa nội dung bài giảng">
-              <Lightbulb size={13} color="#EA580C" />
-              <span>Config lý thuyết: Sửa tại <strong>src/data/roadmap/{activeTrack === 'cs' ? 'csRoadmap.js' : 'ictRoadmap.js'}</strong></span>
-            </span>
-          </div>
+          {/* Thanh trạng thái đồng bộ Supabase Cloud & Tiện ích Admin (Chỉ hiển thị cho người công ty có quyền Admin) */}
+          {user?.isAdmin && (
+            <div style={{ marginTop: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  fontSize: '0.76rem',
+                  fontWeight: 700,
+                  padding: '0.35rem 0.75rem',
+                  borderRadius: '8px',
+                  background: isCloudSynced ? '#DCFCE7' : '#FEF3C7',
+                  color: isCloudSynced ? '#15803D' : '#B45309',
+                  border: `1px solid ${isCloudSynced ? '#86EFAC' : '#FDE68A'}`
+                }}
+                title={
+                  isCloudSynced
+                    ? `Đang dùng dữ liệu trực tiếp từ Supabase Storage: KhoTaiLieuTinHocThiThu/LoTrinhDayXich/${activeTrack === 'cs' ? 'csRoadmap.json' : 'ictRoadmap.json'}`
+                    : `Chưa tìm thấy file trên Supabase Storage. Đang dùng dữ liệu cục bộ mặc định.`
+                }
+              >
+                {isCloudSynced ? <Cloud size={14} color="#16A34A" /> : <Database size={14} color="#D97706" />}
+                <span>
+                  {isCloudSynced
+                    ? `Supabase Live: ${activeTrack === 'cs' ? 'csRoadmap.json' : 'ictRoadmap.json'} (${currentSync.updatedAt})`
+                    : `Dữ liệu nội bộ (Chưa có trên Supabase)`}
+                </span>
+              </div>
+
+              {/* Nút Làm mới / Refresh từ Supabase */}
+              <button
+                onClick={() => loadRoadmapFromSupabase(activeTrack)}
+                disabled={isSyncing}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  padding: '0.35rem 0.65rem',
+                  borderRadius: '8px',
+                  background: '#FFFFFF',
+                  color: 'var(--color-deep)',
+                  border: '1px solid var(--color-border)',
+                  cursor: isSyncing ? 'not-allowed' : 'pointer'
+                }}
+                title="Tải lại nội dung mới nhất từ Supabase Storage mà không bị cache"
+              >
+                <RefreshCw size={13} className={isSyncing ? 'animate-spin' : ''} />
+                <span>{isSyncing ? 'Đang đồng bộ...' : 'Làm mới'}</span>
+              </button>
+
+              {/* Nút Tải file JSON mẫu về máy */}
+              <button
+                onClick={() => downloadRoadmapJSON(activeTrack)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  padding: '0.35rem 0.65rem',
+                  borderRadius: '8px',
+                  background: '#FFFFFF',
+                  color: '#EA580C',
+                  border: '1px solid #FED7AA',
+                  cursor: 'pointer'
+                }}
+                title="Tải file JSON chuẩn của phân ban này về máy để kéo thả vào Supabase Storage"
+              >
+                <Download size={13} />
+                <span>Tải file {activeTrack === 'cs' ? 'csRoadmap.json' : 'ictRoadmap.json'}</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Thống kê tiến độ */}
@@ -689,15 +821,18 @@ export default function RoadmapTab({
                   })}
                 </div>
 
-                {/* Tiện ích Quản trị viên chỉ hiện khi không ở StudyMode để tránh phân tâm */}
-                {!isStudyMode && (
+                {/* Tiện ích Quản trị viên chỉ hiển thị cho người có quyền Admin */}
+                {!isStudyMode && user?.isAdmin && (
                   <div style={{ padding: '0.75rem 1rem', background: '#F1F5F9', borderTop: '1px solid var(--color-border)', fontSize: '0.72rem', color: '#64748B' }}>
-                    <div style={{ fontWeight: 700, marginBottom: '0.2rem', color: 'var(--color-deep)' }}>
-                      🛠️ Dành cho Quản Trị Viên:
+                    <div style={{ fontWeight: 700, marginBottom: '0.2rem', color: 'var(--color-deep)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <Cloud size={13} color={isCloudSynced ? '#16A34A' : '#EA580C'} />
+                      <span>Nguồn dữ liệu: {isCloudSynced ? 'Đám mây Supabase Live' : 'Cục bộ (Dự phòng)'}</span>
                     </div>
-                    <div>Sửa dữ liệu bài học tại:</div>
+                    <div>Sửa dữ liệu tại:</div>
                     <code style={{ fontSize: '0.68rem', color: '#EA580C', wordBreak: 'break-all' }}>
-                      {activeTrack === 'cs' ? 'csRoadmap.js' : 'ictRoadmap.js'}
+                      {isCloudSynced
+                        ? `Supabase Storage: KhoTaiLieuTinHocThiThu/LoTrinhDayXich/${activeTrack === 'cs' ? 'csRoadmap.json' : 'ictRoadmap.json'}`
+                        : `src/data/roadmap/${activeTrack === 'cs' ? 'csRoadmap.js' : 'ictRoadmap.js'}`}
                     </code>
                   </div>
                 )}
@@ -943,10 +1078,14 @@ export default function RoadmapTab({
                           <div className="theory-section-box" style={{ textAlign: 'center', padding: '2.5rem 1.5rem', background: '#F8FAFC', border: '1.5px dashed #CBD5E1' }}>
                             <BookOpen size={36} color="#94A3B8" style={{ margin: '0 auto 0.75rem auto', display: 'block' }} />
                             <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-deep)', marginBottom: '0.4rem' }}>
-                              * Chưa thiết lập nội dung lý thuyết cho bài này
+                              {user?.isAdmin ? '* Chưa thiết lập nội dung lý thuyết cho bài này' : 'Nội dung lý thuyết đang được cập nhật'}
                             </h4>
                             <p style={{ fontSize: '0.9rem', color: '#64748B', maxWidth: '540px', margin: '0 auto', lineHeight: 1.6 }}>
-                              Phần lý thuyết đang để trống để bạn tự biên soạn và thêm vào tại: <code style={{ color: '#EA580C', fontWeight: 700 }}>src/data/roadmap/{activeTrack === 'cs' ? 'csRoadmap.js' : 'ictRoadmap.js'}</code>.
+                              {user?.isAdmin ? (
+                                <>Phần lý thuyết có thể chỉnh sửa trực tiếp trên Supabase Storage tại: <code style={{ color: '#EA580C', fontWeight: 700 }}>KhoTaiLieuTinHocThiThu/LoTrinhDayXich/{activeTrack === 'cs' ? 'csRoadmap.json' : 'ictRoadmap.json'}</code>.</>
+                              ) : (
+                                'Bài học lý thuyết chi tiết này đang được đội ngũ giáo viên hoàn thiện và sẽ sớm cập nhật đầy đủ.'
+                              )}
                             </p>
                           </div>
                         )}
