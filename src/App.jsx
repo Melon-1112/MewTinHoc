@@ -42,7 +42,8 @@ export default function App() {
     toggleLesson,
     recordExamResult,
     simulateNextDay,
-    simulateMissedDays
+    simulateMissedDays,
+    resetSimulation
   } = useUserProgress(user);
 
   // Helper to show toasts
@@ -178,6 +179,11 @@ export default function App() {
     showToast(msg);
   };
 
+  // Simulation: Quay về ngày thực tế
+  const handleResetSimulation = () => {
+    showToast(resetSimulation());
+  };
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -237,6 +243,7 @@ export default function App() {
                 onCheckIn={handleCheckIn}
                 onSimulateNextDay={handleSimulateNextDay}
                 onSimulateMissedDays={handleSimulateMissedDays}
+                onResetSimulation={handleResetSimulation}
                 onNavigateTab={(tabKey) => {
                   if (tabKey === TABS.ROADMAP) navigate('/roadmap');
                   else if (tabKey === TABS.EXAMS) navigate('/exams');

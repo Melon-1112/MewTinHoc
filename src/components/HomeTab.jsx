@@ -12,15 +12,28 @@ import {
   AlertCircle,
   RotateCcw,
   FastForward,
+  Undo2,
   Code2,
   Database,
   Globe2,
-  ShieldAlert
+  ShieldAlert,
+  Lock,
+  Trophy,
+  CalendarClock,
+  CalendarDays
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { TABS } from './Navbar';
 
 import { Radio, Wifi, Database as DbIcon, CheckCircle2 as CheckIcon } from 'lucide-react';
+import { formatLocalDate } from '../lib/userProgress';
+import {
+  STREAK_EVOLUTIONS,
+  STREAK_EVOLUTION_MAX_DAYS,
+  getEvolutionByDays,
+  getEvolutionProgress
+} from '../lib/streakEvolutions';
+import StreakEvolutionArt from './StreakEvolutionArt';
 
 export default function HomeTab({
   user,
@@ -33,6 +46,7 @@ export default function HomeTab({
   onCheckIn,
   onSimulateNextDay,
   onSimulateMissedDays,
+  onResetSimulation,
   onNavigateTab
 }) {
   const triggerConfetti = () => {
@@ -63,7 +77,7 @@ export default function HomeTab({
     const isToday = index === currentDayOfWeek;
     const dayDate = new Date(now);
     dayDate.setDate(now.getDate() - (currentDayOfWeek - index));
-    const dayDateStr = dayDate.toISOString().split('T')[0];
+    const dayDateStr = formatLocalDate(dayDate);
 
     // Chỉ sáng ngọn lửa nếu ngày đó nằm trong lịch sử đã điểm danh (checkinHistory)
     // HOẶC hôm nay và đã bấm điểm danh
@@ -74,6 +88,26 @@ export default function HomeTab({
   });
 
   const checkedDaysCount = daysOfWeek.filter(d => d.checked).length;
+
+  // ---- Tiến hoá hình dạng Streak (Bộ sưu tập) ----
+  const streakCount = streak?.count || 0;
+  const curEvo = streak?.currentEvolution || getEvolutionByDays(streakCount);
+  const evoProg = streak?.evolutionProgress || getEvolutionProgress(streakCount);
+  const nextEvo = evoProg.next;
+  const isMaxEvo = !nextEvo && streakCount > 0;
+  const curEvoIndex = STREAK_EVOLUTIONS.findIndex(e => e.id === curEvo.id);
+  // Chưa điểm danh ngày nào thì coi như chưa sở hữu hình dạng nào cả (0/6).
+  const hasStarted = streakCount > 0;
+  const unlockedCount = hasStarted ? curEvoIndex + 1 : 0;
+  const graceDays = streak?.graceDays ?? 3;
+
+  // Biến CSS để "nhuộm" màu theo cấp tiến hoá đang sở hữu
+  const evoVars = {
+    '--evo-accent': curEvo.accent,
+    '--evo-secondary': curEvo.secondary,
+    '--evo-glow': curEvo.glow,
+    '--evo-aura': curEvo.aura
+  };
 
 
 
@@ -330,9 +364,37 @@ export default function HomeTab({
               </span>
             </div>
 
-            {/* Streak Giant Display */}
+            {/* Streak Giant Display + hình dạng tiến hoá hiện tại */}
             <div className="streak-display-center">
-              <span className="streak-flame-giant">{streak?.count > 0 ? '🔥' : '🌱'}</span>
+              <div
+                className={`streak-evo-stage ${isMaxEvo ? 'is-max' : ''}`}
+                style={evoVars}
+              >
+                <span
+                  className="streak-evo-glyph"
+                  title={hasStarted ? curEvo.name : 'Chưa mở khoá'}
+                >
+                  <StreakEvolutionArt
+                    id={hasStarted ? curEvo.id : STREAK_EVOLUTIONS[0].id}
+                    mono={!hasStarted}
+                    size={118}
+                  />
+                </span>
+                <span className="streak-evo-name">
+                  {streakCount > 0 ? curEvo.name : 'Chưa Bắt Đầu'}
+                </span>
+                {nextEvo ? (
+                  <span className="streak-evo-next">
+                    Học thêm <strong>{evoProg.daysToNext} ngày</strong> nữa để mở khoá một hình dạng mới 🔒
+                  </span>
+                ) : (
+                  <span className="streak-evo-next">🎉 Đã đạt cấp tối đa ({STREAK_EVOLUTION_MAX_DAYS} ngày)</span>
+                )}
+                <div className="streak-evo-progress">
+                  <div className="streak-evo-progress-fill" style={{ width: `${evoProg.percent}%` }} />
+                </div>
+              </div>
+
               <div className="streak-big-number">{streak?.count ?? 0}</div>
               <div className="streak-big-label">Ngày Học Liên Tục</div>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.4rem' }}>
@@ -383,42 +445,136 @@ export default function HomeTab({
               )}
             </button>
 
-            {/* Important Rule Warning */}
+            {/* Important Rule Warning — quy tắc ân hạn 3 ngày */}
             <div style={{ display: 'flex', gap: '0.5rem', background: '#FFF7ED', padding: '0.65rem 0.85rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
               <AlertCircle size={16} color="var(--color-primary)" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div style={{ fontSize: '0.75rem', color: 'var(--color-deep)', lineHeight: 1.4 }}>
-                <strong>Quy tắc Streak:</strong> Nếu qua 1 ngày mà bạn không bấm điểm danh học tập, chuỗi streak sẽ bị mất và trở về 0!
+                <strong>Quy tắc Streak:</strong> bạn được phép nghỉ tối đa <strong>{graceDays - 1} ngày</strong>. Nếu bỏ trống <strong>{graceDays} ngày liên tiếp</strong> mà không bấm điểm danh, chuỗi streak sẽ bị mất và trở về 0.
               </div>
             </div>
 
-            {/* Streak Simulation Testing Panel (Giúp người dùng kiểm chứng yêu cầu "qua 1 ngày thì mất streak") */}
-            <div className="streak-sim-box">
-              <div style={{ fontWeight: 800, fontSize: '0.78rem', color: 'var(--color-deep)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                <span>🧪 Công cụ thử nghiệm chu kỳ ngày:</span>
+            {/* Bộ sưu tập hình dạng Streak — hiển thị cho MỌI học viên.
+                Cấp chưa mở khoá được vẽ silhouette ĐEN, không lộ thiết kế/màu. */}
+            <div className="streak-collection">
+              <div className="streak-collection-head">
+                <div className="streak-collection-title">
+                  <Trophy size={15} color="var(--color-amber-dark)" />
+                  <span>Bộ sưu tập hình dạng Streak</span>
+                </div>
+                <span className="streak-collection-count">
+                  Đã mở {unlockedCount}/{STREAK_EVOLUTIONS.length}
+                </span>
               </div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
-                Bấm các nút dưới đây để kiểm tra việc tăng streak và mất streak khi qua ngày:
+
+              <div className="streak-collection-grid">
+                {STREAK_EVOLUTIONS.map((evo, i) => {
+                  const unlocked = hasStarted && streakCount >= evo.minDays;
+                  const isCurrent = unlocked && i === curEvoIndex;
+                  const tileVars = {
+                    '--evo-accent': evo.accent,
+                    '--evo-secondary': evo.secondary,
+                    '--evo-glow': evo.glow,
+                    '--evo-aura': evo.aura,
+                    '--evo-title': evo.titleColor,
+                    '--evo-card-bg': evo.card.bg,
+                    '--evo-card-border': evo.card.border
+                  };
+
+                  return (
+                    <div
+                      key={evo.id}
+                      className={`evo-tile ${unlocked ? 'unlocked' : 'locked'}`}
+                      style={tileVars}
+                      title={
+                        unlocked
+                          ? `${evo.name} — ${evo.description}`
+                          : `Chưa mở khoá — mốc ${evo.dateLabel}`
+                      }
+                    >
+                      {isCurrent && <span className="evo-tile-now">HIỆN TẠI</span>}
+
+                      {/* Hình vẽ. Cấp CHƯA mở khoá: ảnh được đổ đen toàn bộ
+                          (brightness(0)) nên chỉ thấy đúng cái bóng đen. */}
+                      <span className="evo-tile-art">
+                        <StreakEvolutionArt id={evo.id} mono={!unlocked} size={82} />
+                        {!unlocked && (
+                          <span className="evo-tile-lock">
+                            <Lock size={11} />
+                          </span>
+                        )}
+                      </span>
+
+                      {/* Cấp CHƯA mở khoá: KHÔNG hiện tên (trước đây hiện "???"),
+                          vừa không lộ thiết kế vừa không gây rối ở thẻ nhỏ. */}
+                      {unlocked && <span className="evo-tile-name">{evo.name}</span>}
+
+                      {/* Dưới cùng CHỈ ghi mốc ngày — bỏ mô tả cho gọn. */}
+                      <span className="evo-tile-days">
+                        <CalendarDays size={12} />
+                        <span>{evo.dateLabel}</span>
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
-              <div className="streak-sim-row">
-                <button
-                  className="btn-sim"
-                  onClick={onSimulateNextDay}
-                  title="Giả lập hệ thống sang ngày hôm sau (được phép điểm danh tiếp)"
-                >
-                  <FastForward size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
-                  Tua tới ngày mai (+1 ngày)
-                </button>
-                <button
-                  className="btn-sim"
-                  onClick={onSimulateMissedDays}
-                  style={{ color: '#DC2626' }}
-                  title="Giả lập học sinh bỏ lỡ 2 ngày không học -> mất streak về 0"
-                >
-                  <RotateCcw size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
-                  Bỏ lỡ 2 ngày (Mất streak)
-                </button>
+
+              <div className="streak-collection-note">
+                <CalendarClock size={13} style={{ flexShrink: 0, marginTop: '1px' }} />
+                <span>
+                  Duy trì chuỗi càng lâu, bạn càng mở khoá nhiều hình dạng mới. Cấp tối đa là{' '}
+                  {STREAK_EVOLUTION_MAX_DAYS} ngày (3 tháng). Hình dạng bị khoá sẽ được hé lộ khi bạn đạt mốc tương ứng.
+                </span>
               </div>
             </div>
+
+            {/* Bảng điều khiển mô phỏng chu kỳ ngày — CHỈ hiển thị cho Admin.
+                Học viên không bao giờ thấy khối này. */}
+            {user?.isAdmin && (
+              <div className="streak-sim-box">
+                <div style={{ fontWeight: 800, fontSize: '0.78rem', color: 'var(--color-deep)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <span>🧪 Công cụ thử nghiệm chu kỳ ngày (chỉ Admin):</span>
+                  {streak?.dayOffset ? (
+                    <span style={{ fontSize: '0.68rem', background: '#FEF3C7', color: '#92400E', padding: '1px 6px', borderRadius: '999px' }}>
+                      Đang mô phỏng +{streak.dayOffset} ngày
+                    </span>
+                  ) : null}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
+                  Chỉ thay đổi tạm thời trong phiên làm việc — không ghi gì lên Supabase và sẽ tự trở về bình thường khi tải lại trang (F5):
+                </div>
+                <div className="streak-sim-row">
+                  <button
+                    className="btn-sim"
+                    onClick={onSimulateNextDay}
+                    title="Giả lập hệ thống sang ngày hôm sau (được phép điểm danh tiếp)"
+                  >
+                    <FastForward size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
+                    Tua tới ngày mai (+1 ngày)
+                  </button>
+                  <button
+                    className="btn-sim"
+                    onClick={onSimulateMissedDays}
+                    style={{ color: '#DC2626' }}
+                    title={`Giả lập học sinh bỏ trống ${graceDays} ngày liên tiếp không học -> mất streak về 0`}
+                  >
+                    <RotateCcw size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
+                    Bỏ trống {graceDays} ngày (Mất streak)
+                  </button>
+                  {onResetSimulation && (
+                    <button
+                      className="btn-sim"
+                      onClick={onResetSimulation}
+                      disabled={!streak?.dayOffset}
+                      style={{ color: '#1D4ED8', opacity: streak?.dayOffset ? 1 : 0.45, cursor: streak?.dayOffset ? 'pointer' : 'not-allowed' }}
+                      title="Quay về ngày thực tế ngay lập tức"
+                    >
+                      <Undo2 size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
+                      Về hôm nay
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Target Countdown Card */}

@@ -782,6 +782,288 @@ a {
   border-color: var(--color-primary);
 }
 
+/* ============================================================
+   STREAK EVOLUTION (hình dạng hiện tại) + BỘ SƯU TẬP
+   ============================================================ */
+
+/* Sân khấu hiển thị hình dạng đang sở hữu */
+.streak-evo-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.35rem 0 0.5rem;
+}
+
+.streak-evo-stage::before {
+  content: '';
+  position: absolute;
+  inset: -1.25rem -1rem 0.35rem -1rem;
+  background: var(--evo-aura, radial-gradient(circle at 50% 45%, #FFE8CC 0%, #FFF7ED 75%));
+  border-radius: 50% 50% 45% 45%;
+  opacity: 0.9;
+  pointer-events: none;
+  transition: background var(--transition-fast);
+}
+
+.streak-evo-glyph {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  filter: drop-shadow(0 8px 18px var(--evo-glow, rgba(234, 88, 12, 0.35)));
+  animation: evoFloat 3s infinite alternate ease-in-out;
+  will-change: transform;
+}
+
+@keyframes evoFloat {
+  0% { transform: translateY(0) scale(0.97) rotate(-1.5deg); }
+  100% { transform: translateY(-8px) scale(1.07) rotate(1.5deg); }
+}
+
+.streak-evo-stage.is-max .streak-evo-glyph {
+  animation: evoFloat 2.2s infinite alternate ease-in-out, evoGlowPulse 2.2s infinite alternate ease-in-out;
+}
+
+@keyframes evoGlowPulse {
+  0% { filter: drop-shadow(0 6px 14px var(--evo-glow, rgba(249, 115, 22, 0.5))) brightness(1); }
+  100% { filter: drop-shadow(0 10px 30px var(--evo-glow, rgba(249, 115, 22, 0.6))) brightness(1.14); }
+}
+
+/* Tên cấp hiện tại.
+   KHÔNG dùng text-transform: uppercase nữa — chuỗi dữ liệu đã ở dạng
+   "Ngọn Lửa Khởi Đầu" nên không cần, mà uppercase + letter-spacing rộng
+   trong cột hẹp làm dấu tiếng Việt tầng tầng bị cắt -> chữ méo. */
+.streak-evo-name {
+  position: relative;
+  z-index: 1;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.25;
+  max-width: 100%;
+  color: var(--evo-accent, var(--color-deep));
+  margin-top: 0.45rem;
+}
+
+.streak-evo-next {
+  position: relative;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* Thanh tiến độ tới cấp kế tiếp */
+.streak-evo-progress {
+  position: relative;
+  width: 100%;
+  max-width: 240px;
+  height: 8px;
+  margin: 0.55rem auto 0;
+  border-radius: 999px;
+  background: rgba(124, 45, 18, 0.12);
+  overflow: hidden;
+}
+
+.streak-evo-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--evo-accent, var(--color-primary)), var(--evo-secondary, var(--color-amber)));
+  box-shadow: 0 0 10px var(--evo-glow, rgba(234, 88, 12, 0.4));
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Nhãn ân hạn (3 ngày) */
+.streak-grace-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+/* ---- Bộ sưu tập ---- */
+.streak-collection {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #FFFDFB;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.streak-collection-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.streak-collection-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: var(--color-deep);
+}
+
+.streak-collection-count {
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: var(--color-cream);
+  color: var(--color-deep);
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.streak-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.evo-tile {
+  position: relative;
+  border-radius: 14px;
+  padding: 0.85rem 0.5rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+  border: 2px solid var(--evo-card-border, var(--color-border));
+  background: var(--evo-card-bg, #FFF7ED);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.evo-tile.unlocked {
+  box-shadow: var(--shadow-sm);
+}
+
+.evo-tile:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 18px var(--evo-glow, rgba(234, 88, 12, 0.35));
+}
+
+/* Cấp CHƯA MỞ KHOÁ: nền trắng trơn để cái BÓNG ĐEN nổi rõ.
+   Bóng do chính ảnh đổ đen bằng brightness(0) — không phải khối đen. */
+.evo-tile.locked {
+  border-color: #D4D4DB;
+  background: #FFFFFF;
+  box-shadow: none;
+}
+
+.evo-tile.locked:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(24, 24, 27, 0.14);
+}
+
+/* Khung chứa hình vẽ — cố định chiều cao để 6 ô luôn thẳng hàng */
+.evo-tile-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 86px;
+  margin: 0.15rem 0;
+}
+
+.evo-tile.unlocked .evo-tile-art img {
+  filter: drop-shadow(0 4px 10px var(--evo-glow, rgba(234, 88, 12, 0.3)));
+}
+
+/* Bóng đen đã là khối đặc nên không cần đổ bóng thêm */
+.evo-tile.locked .evo-tile-art img {
+  filter: brightness(0);
+}
+
+/* Không để flex bóp méo icon/hình vẽ trong ô hẹp */
+.evo-tile-art img,
+.evo-tile-days svg {
+  flex-shrink: 0;
+}
+
+/* Tên cấp trong ô bộ sưu tập.
+   KHÔNG dùng text-transform: uppercase — chuỗi dữ liệu đã ở dạng
+   "Ngọn Lửa Khởi Đầu", mà uppercase + ô hẹp làm dấu tiếng Việt bị cắt. */
+.evo-tile-name {
+  font-size: 0.7rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--evo-title, var(--color-deep));
+}
+
+/* Dòng mốc ngày: 30 ngày (1 tháng) */
+.evo-tile-days {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-text-muted);
+}
+
+.evo-tile.locked .evo-tile-days {
+  color: #90909A;
+}
+
+.evo-tile-now {
+  position: absolute;
+  top: -7px;
+  right: -5px;
+  font-size: 0.55rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+  background: var(--evo-accent, var(--color-primary));
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.evo-tile-lock {
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border-radius: 999px;
+  background: #52525B;
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(24, 24, 27, 0.25);
+}
+
+.streak-collection-note {
+  font-size: 0.66rem;
+  color: var(--color-text-muted);
+  line-height: 1.35;
+  display: flex;
+  gap: 0.35rem;
+}
+
+@media (max-width: 480px) {
+  .streak-collection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* Daily Quests & Topics Overview */
 .section-title-wrap {
   display: flex;
