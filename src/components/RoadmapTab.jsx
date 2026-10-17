@@ -37,8 +37,12 @@ import {
 
 import {
   fetchRemoteRoadmap,
-  downloadRoadmapJSON
+  downloadRoadmapJSON,
+  fetchRemoteRoadmapRaw,
+  saveRoadmapToSupabase
 } from '../lib/roadmapStorage';
+
+import AdminTheoryEditor from './AdminTheoryEditor';
 
 export default function RoadmapTab({
   completedLessonIds: propCompletedLessonIds,
@@ -103,6 +107,12 @@ export default function RoadmapTab({
   const [remoteTrackData, setRemoteTrackData] = useState({});
   const [syncStatus, setSyncStatus] = useState({});
   const [isSyncing, setIsSyncing] = useState(false);
+
+  // 7. Trình soạn thảo lý thuyết trực tiếp cho Admin (đồng bộ ngược lên Supabase Storage)
+  const [isEditingTheory, setIsEditingTheory] = useState(false);
+  const [isSavingTheory, setIsSavingTheory] = useState(false);
+  const [theorySaveStatus, setTheorySaveStatus] = useState(null);
+  const [rawRoadmapCache, setRawRoadmapCache] = useState({});
 
   // Tải dữ liệu lộ trình từ Supabase Storage
   const loadRoadmapFromSupabase = async (trackToLoad = activeTrack) => {
@@ -208,6 +218,8 @@ export default function RoadmapTab({
     setSelectedOption(null);
     setIsAnswerSubmitted(false);
     setCopiedCode(false);
+    setIsEditingTheory(false);
+    setTheorySaveStatus(null);
     if (startImmediately) {
       setIsStudyMode(true);
       setIsSidebarCollapsed(true);
@@ -224,6 +236,8 @@ export default function RoadmapTab({
     setIsStudyMode(false);
     setIsSidebarCollapsed(false);
     setIsFullScreen(false);
+    setIsEditingTheory(false);
+    setTheorySaveStatus(null);
   };
 
   // Chuyển đổi trạng thái đã học / chưa học của một bài (đồng bộ CSDL Supabase Realtime)
@@ -261,6 +275,82 @@ export default function RoadmapTab({
     navigator.clipboard.writeText(codeText);
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
+  };
+
+  // ====== TÍNH NĂNG QUẢN TRỊ: CHỈNH SỬA LÝ THUYẾT TRỰC TIẾP ======
+
+  // Nạp bản ghi roadmap gốc (raw) từ Supabase để Admin soạn thảo
+  const loadRawRoadmap = async (trackToLoad = activeTrack) => {
+    const res = await fetchRemoteRoadmapRaw(trackToLoad);
+    if (res?.raw) {
+      setRawRoadmapCache((prev) => ({ ...prev, [trackToLoad]: res.raw }));
+      return res.raw;
+    }
+    return null;
+  };
+
+  // Bắt đầu chỉnh sửa bài học đang mở trong modal
+  const handleStartEditTheory = async () => {
+    setTheorySaveStatus(null);
+    setIsEditingTheory(true);
+    if (!rawRoadmapCache[activeTrack]) {
+      await loadRawRoadmap(activeTrack);
+    }
+  };
+
+  const handleCancelEditTheory = () => {
+    setIsEditingTheory(false);
+    setTheorySaveStatus(null);
+  };
+
+  // Lưu thay đổi: cập nhật lesson vào đúng chặng -> upload toàn bộ JSON lên Supabase -> refresh UI
+  const handleSaveTheory = async (updatedLesson) => {
+    setIsSavingTheory(true);
+    setTheorySaveStatus(null);
+    try {
+      let baseRaw = rawRoadmapCache[activeTrack];
+      if (!baseRaw) baseRaw = await loadRawRoadmap(activeTrack);
+      if (!baseRaw || !Array.isArray(baseRaw.stations)) {
+        throw new Error('Không tải được dữ liệu lộ trình gốc từ Supabase.');
+      }
+
+      // Ghi đè bài học vừa sửa vào đúng vị trí trong cây dữ liệu
+      const newStations = baseRaw.stations.map((st) => ({
+        ...st,
+        lessons: (st.lessons || []).map((l) =>
+          l.id === updatedLesson.id ? { ...l, ...updatedLesson } : l
+        )
+      }));
+
+      const payload = { ...baseRaw, stations: newStations };
+      const result = await saveRoadmapToSupabase(activeTrack, payload);
+
+      if (!result?.success) {
+        throw new Error(result?.error || 'Upload lên Supabase thất bại.');
+      }
+
+      // Cập nhật cache + giao diện ngay lập tức (không cần tải lại trang)
+      setRawRoadmapCache((prev) => ({ ...prev, [activeTrack]: payload }));
+      setRemoteTrackData((prev) => ({ ...prev, [activeTrack]: payload }));
+      setSelectedStation((prev) =>
+        prev ? newStations.find((st) => st.id === prev.id) || prev : prev
+      );
+
+      setTheorySaveStatus({
+        type: 'success',
+        msg: `Đã lưu & đồng bộ lên Supabase Storage (${
+          activeTrack === TRACK_TYPES.CS ? 'csRoadmap.json' : 'ictRoadmap.json'
+        }). Học viên sẽ nhận nội dung mới ngay lập tức.`
+      });
+      setIsEditingTheory(false);
+    } catch (e) {
+      setTheorySaveStatus({
+        type: 'error',
+        msg: 'Lỗi khi đồng bộ lên Supabase: ' + (e?.message || 'Không xác định')
+      });
+    } finally {
+      setIsSavingTheory(false);
+    }
   };
 
   // Bài học hiện tại trong Modal
@@ -882,6 +972,31 @@ export default function RoadmapTab({
                     <span className="badge-exam-format">
                       {currentLesson.examFormat}
                     </span>
+
+                    {/* Nút Chỉnh sửa trực tiếp: chỉ hiển thị với tài khoản Admin */}
+                    {user?.isAdmin && (
+                      isEditingTheory ? (
+                        <button
+                          onClick={handleCancelEditTheory}
+                          className="theory-toolbar-btn"
+                          style={{ borderColor: '#FCA5A5', background: '#FEF2F2', color: '#DC2626', fontWeight: 800 }}
+                          title="Thoát chế độ chỉnh sửa"
+                        >
+                          <X size={14} />
+                          <span>Đang chỉnh sửa</span>
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handleStartEditTheory}
+                          className="theory-toolbar-btn"
+                          style={{ borderColor: '#FDBA74', background: '#FFF7ED', color: '#C2410C', fontWeight: 800 }}
+                          title="Bật chế độ chỉnh sửa lý thuyết bài này (Admin)"
+                        >
+                          <FileText size={14} />
+                          <span>Chỉnh sửa nội dung</span>
+                        </button>
+                      )
+                    )}
                   </div>
 
                   {/* Thanh công cụ phụ trợ (Cỡ chữ, Toàn màn hình, Thoát) */}
@@ -942,7 +1057,46 @@ export default function RoadmapTab({
                     fontSize: fontSizeLevel === 0 ? '0.94rem' : fontSizeLevel === 2 ? '1.14rem' : '1.03rem'
                   }}
                 >
-                  {!isStudyMode ? (
+                  {/* Banner kết quả lưu lý thuyết (Admin) */}
+                  {user?.isAdmin && theorySaveStatus?.msg && !isEditingTheory && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.55rem',
+                        padding: '0.85rem 1.1rem',
+                        marginBottom: '1rem',
+                        borderRadius: '10px',
+                        fontSize: '0.88rem',
+                        fontWeight: 700,
+                        background: theorySaveStatus.type === 'success' ? '#F0FDF4' : '#FEF2F2',
+                        border: `1.5px solid ${theorySaveStatus.type === 'success' ? '#BBF7D0' : '#FECACA'}`,
+                        color: theorySaveStatus.type === 'success' ? '#166534' : '#991B1B'
+                      }}
+                    >
+                      {theorySaveStatus.type === 'success' ? <CheckCircle size={18} /> : <AlertTriangle size={18} />}
+                      <span style={{ flex: 1 }}>{theorySaveStatus.msg}</span>
+                      <button
+                        onClick={() => setTheorySaveStatus(null)}
+                        style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', display: 'flex' }}
+                        title="Đóng thông báo"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                  )}
+
+                  {isEditingTheory && user?.isAdmin ? (
+                    /* TRÌNH SOẠN THẢO LÝ THUYẾT TRỰC TIẾP (ADMIN) */
+                    <AdminTheoryEditor
+                      key={currentLesson.id}
+                      lesson={currentLesson}
+                      isSaving={isSavingTheory}
+                      status={theorySaveStatus}
+                      onSave={handleSaveTheory}
+                      onCancel={handleCancelEditTheory}
+                    />
+                  ) : !isStudyMode ? (
                     /* MÀN HÌNH PREVIEW & NÚT BẮT ĐẦU HỌC TO RÕ RÀNG */
                     <div className="lesson-preview-card">
                       <div
@@ -1256,7 +1410,8 @@ export default function RoadmapTab({
                   )}
                 </div>
 
-                {/* Footer Modal: Chuyển bài & Đánh dấu hoàn thành */}
+                {/* Footer Modal: Chuyển bài & Đánh dấu hoàn thành (ẩn khi đang chỉnh sửa) */}
+                {!isEditingTheory && (
                 <div
                   style={{
                     padding: '0.9rem 1.75rem',
@@ -1363,6 +1518,7 @@ export default function RoadmapTab({
                     </button>
                   </div>
                 </div>
+                )}
               </div>
             </div>
           </div>

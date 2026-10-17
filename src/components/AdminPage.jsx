@@ -14,9 +14,12 @@ import {
   Copy,
   Check,
   ShieldAlert,
-  Database
+  Database,
+  Wrench,
+  ExternalLink
 } from 'lucide-react';
 import { isCompanyAdmin } from '../lib/roleService.js';
+import { testRoadmapStorageWrite } from '../lib/roadmapStorage.js';
 
 export default function AdminPage({ currentUser: propUser }) {
   const [currentUser, setCurrentUser] = useState(() => {
@@ -36,6 +39,8 @@ export default function AdminPage({ currentUser: propUser }) {
   const [copiedSql, setCopiedSql] = useState(false);
   const [showSqlGuide, setShowSqlGuide] = useState(false);
   const [tableExists, setTableExists] = useState(true);
+  const [storageTest, setStorageTest] = useState(null);
+  const [isTestingStorage, setIsTestingStorage] = useState(false);
 
   // Người dùng được coi là có quyền quản trị nếu profile có is_admin = true,
   // hoặc trong quá trình khởi tạo ban đầu khi bảng profiles chưa được tạo.
@@ -121,7 +126,7 @@ export default function AdminPage({ currentUser: propUser }) {
     }
   };
 
-  // CÂU LỆNH SQL CHUẨN ĐỂ CẤP ADMIN CHO TOÀN BỘ NGƯỜI DÙNG HIỆN CÓ TRÊN SUPABASE
+  // CÂU LỆNH SQL CHUẨN: TẠO BẢNG, ĐỒNG BỘ HỒ SƠ, PHÂN QUYỀN ADMIN VÀ MỞ QUYỀN GHI STORAGE
   const sqlSchemaSnippet = `-- ==============================================================
 -- 1. TẠO BẢNG PROFILES (NẾU CHƯA CÓ)
 -- ==============================================================
@@ -135,8 +140,8 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 );
 
 -- ==============================================================
--- 2. CẤP QUYỀN ADMIN CHO TOÀN BỘ TÀI KHOẢN ĐANG CÓ TRÊN SUPABASE
--- (Đổ toàn bộ tài khoản Google OAuth hiện có sang profiles với is_admin = TRUE)
+-- 2. ĐỔ TOÀN BỘ TÀI KHOẢN GOOGLE HIỆN CÓ SANG BẢNG PROFILES
+-- (Người đã có hồ sơ thì GIỮ NGUYÊN quyền hiện tại, không tự phong Admin)
 -- ==============================================================
 INSERT INTO public.profiles (id, userid, username, email, is_admin, created_at)
 SELECT 
@@ -144,13 +149,23 @@ SELECT
   COALESCE(raw_user_meta_data->>'user_name', split_part(email, '@', 1)),
   COALESCE(raw_user_meta_data->>'full_name', raw_user_meta_data->>'name', split_part(email, '@', 1)),
   email,
-  TRUE, -- <<< CẤP ADMIN CHO TOÀN BỘ NGƯỜI DÙNG ĐANG CÓ HỒ SƠ
+  FALSE, -- <<< MẶC ĐỊNH NGƯỜI DÙNG PHỔ THÔNG (an toàn)
   created_at
 FROM auth.users
-ON CONFLICT (id) DO UPDATE SET is_admin = TRUE;
+ON CONFLICT (id) DO NOTHING;
 
--- Nếu bảng profiles đã có sẵn dữ liệu từ trước, bật toàn bộ thành Admin:
-UPDATE public.profiles SET is_admin = TRUE;
+-- ==============================================================
+-- 2b. CẤP QUYỀN ADMIN CHO ĐÚNG DANH SÁCH EMAIL BÊN DƯỚI
+-- (Thêm/bớt email tại đây rồi chạy lại câu lệnh này mỗi khi cần)
+-- ==============================================================
+UPDATE public.profiles
+SET is_admin = TRUE
+WHERE email IN (
+  'jaxcater1906@gmail.com',
+  'thannhi0948@gmail.com',
+  'kado30az@gmail.com',
+  'killeran72@gmail.com'
+);
 
 -- ==============================================================
 -- 3. TỰ ĐỘNG: NGƯỜI ĐĂNG KÝ SAU NÀY SẼ LÀ NGƯỜI DÙNG PHỔ THÔNG (is_admin = FALSE)
@@ -178,19 +193,88 @@ CREATE TRIGGER on_auth_user_created
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 
 -- ==============================================================
--- 4. BẬT BẢO MẬT & CHO PHÉP TRUY VẤN
+-- 4. BẬT BẢO MẬT (RLS) & PHÂN QUYỀN CHẶT CHẼ CHO BẢNG PROFILES
 -- ==============================================================
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+-- Hàm phụ trợ kiểm tra người đang đăng nhập có phải Admin.
+-- Dùng SECURITY DEFINER để tránh lỗi "infinite recursion" khi policy truy vấn lại chính bảng profiles.
+CREATE OR REPLACE FUNCTION public.is_admin_user()
+RETURNS boolean
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+SET search_path = public
+AS $$
+  SELECT COALESCE((SELECT p.is_admin FROM public.profiles p WHERE p.id = auth.uid()), false);
+$$;
+
+-- XÓA các policy cũ đang mở toàn bộ (ai cũng tự phong được Admin cho chính mình)
 DROP POLICY IF EXISTS "Cho phép xem profiles" ON public.profiles;
-CREATE POLICY "Cho phép xem profiles" ON public.profiles FOR SELECT USING (true);
 DROP POLICY IF EXISTS "Cho phép cập nhật profiles" ON public.profiles;
-CREATE POLICY "Cho phép cập nhật profiles" ON public.profiles FOR ALL USING (true);`;
+DROP POLICY IF EXISTS "profiles_select_own_or_admin" ON public.profiles;
+DROP POLICY IF EXISTS "profiles_insert_self" ON public.profiles;
+DROP POLICY IF EXISTS "profiles_update_admin_only" ON public.profiles;
+
+-- XEM: mỗi người chỉ xem được hồ sơ của mình; riêng Admin xem được TẤT CẢ hồ sơ
+CREATE POLICY "profiles_select_own_or_admin" ON public.profiles
+  FOR SELECT USING (id = auth.uid() OR public.is_admin_user());
+
+-- THÊM MỚI: chỉ được tạo hồ sơ cho chính mình và KHÔNG được tự nâng quyền Admin
+CREATE POLICY "profiles_insert_self" ON public.profiles
+  FOR INSERT WITH CHECK (id = auth.uid() AND is_admin = false);
+
+-- CẬP NHẬT: chỉ Admin được đổi quyền (kể cả nâng/hạ quyền của người khác)
+CREATE POLICY "profiles_update_admin_only" ON public.profiles
+  FOR UPDATE USING (public.is_admin_user()) WITH CHECK (public.is_admin_user());
+
+-- ==============================================================
+-- 5. CHO PHÉP ADMIN GHI FILE JSON LÊN SUPABASE STORAGE
+-- (BẮT BUỘC phải có, nếu không nút "Lưu & Đồng bộ Supabase" sẽ báo lỗi 403
+--  "new row violates row-level security policy")
+-- ==============================================================
+DROP POLICY IF EXISTS "storage_insert_admin" ON storage.objects;
+DROP POLICY IF EXISTS "storage_update_admin" ON storage.objects;
+DROP POLICY IF EXISTS "storage_read_admin" ON storage.objects;
+DROP POLICY IF EXISTS "storage_delete_admin" ON storage.objects;
+
+CREATE POLICY "storage_insert_admin" ON storage.objects
+  FOR INSERT TO authenticated
+  WITH CHECK (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user());
+
+-- Đổi tên tài liệu dùng thao tác MOVE -> cần quyền UPDATE
+CREATE POLICY "storage_update_admin" ON storage.objects
+  FOR UPDATE TO authenticated
+  USING (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user())
+  WITH CHECK (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user());
+
+-- Xoá tài liệu trong Kho đề thi -> cần quyền DELETE (khác với INSERT/UPDATE)
+CREATE POLICY "storage_delete_admin" ON storage.objects
+  FOR DELETE TO authenticated
+  USING (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user());
+
+CREATE POLICY "storage_read_admin" ON storage.objects
+  FOR SELECT TO authenticated
+  USING (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user());`;
 
   const handleCopySql = () => {
     navigator.clipboard.writeText(sqlSchemaSnippet);
     setCopiedSql(true);
     setTimeout(() => setCopiedSql(false), 2500);
   };
+
+  // ===== CHẨN ĐOÁN: Kiểm tra quyền GHI lên Supabase Storage =====
+  const handleTestStorage = async () => {
+    setIsTestingStorage(true);
+    setStorageTest(null);
+    const result = await testRoadmapStorageWrite();
+    setStorageTest(result);
+    setIsTestingStorage(false);
+  };
+
+  // Tài liệu chính thức để cấu hình Storage Policy
+  const SUPABASE_STORAGE_POLICY_URL =
+    'https://supabase.com/dashboard/project/vxqvjffssebnuxtslghp/storage/buckets/KhoTaiLieuTinHocThiThu';
 
   // NẾU BẢNG ĐÃ TỒN TẠI VÀ USER ĐĂNG NHẬP KHÔNG PHẢI ADMIN: TỪ CHỐI TRUY CẬP
   if (tableExists && currentUser && !isCompanyAdmin(currentUser) && rows.length > 0) {
@@ -460,6 +544,29 @@ CREATE POLICY "Cho phép cập nhật profiles" ON public.profiles FOR ALL USING
             </button>
 
             <button
+              onClick={handleTestStorage}
+              disabled={isTestingStorage}
+              title="Thử ghi một file kiểm tra lên Supabase Storage để xem quyền RLS đã được mở chưa"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                padding: '0.6rem 0.9rem',
+                background: '#F0FDF4',
+                color: '#15803D',
+                border: '1px solid #BBF7D0',
+                borderRadius: '8px',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                cursor: isTestingStorage ? 'not-allowed' : 'pointer',
+                opacity: isTestingStorage ? 0.7 : 1
+              }}
+            >
+              <Wrench size={15} className={isTestingStorage ? 'spin-icon' : ''} />
+              <span>{isTestingStorage ? 'Đang kiểm tra...' : 'Kiểm tra quyền ghi Storage'}</span>
+            </button>
+
+            <button
               onClick={load}
               disabled={isLoading}
               style={{
@@ -483,6 +590,57 @@ CREATE POLICY "Cho phép cập nhật profiles" ON public.profiles FOR ALL USING
             </button>
           </div>
         </div>
+
+        {/* Kết quả chẩn đoán quyền ghi Storage */}
+        {storageTest && (
+          <div
+            style={{
+              padding: '1rem 1.25rem',
+              borderRadius: '10px',
+              marginBottom: '1rem',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              lineHeight: 1.6,
+              background: storageTest.success ? '#F0FDF4' : '#FEF2F2',
+              border: `1.5px solid ${storageTest.success ? '#BBF7D0' : '#FECACA'}`,
+              color: storageTest.success ? '#166534' : '#991B1B'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, marginBottom: '0.35rem' }}>
+              {storageTest.success ? <CheckCircle size={17} /> : <ShieldAlert size={17} />}
+              <span>
+                {storageTest.success
+                  ? 'Quyền ghi Storage: ĐÃ MỞ — nút Lưu sẽ hoạt động'
+                  : `Quyền ghi Storage: ĐANG BỊ CHẶN (HTTP ${storageTest.status ?? '?'})`}
+              </span>
+            </div>
+            <div style={{ fontWeight: 500, whiteSpace: 'pre-wrap' }}>{storageTest.message}</div>
+            {!storageTest.success && (
+              <div style={{ marginTop: '0.6rem', fontWeight: 500 }}>
+                ➜ Cách sửa: bấm nút <strong>“Xem câu lệnh SQL Supabase”</strong> phía trên, bấm{' '}
+                <strong>“Sao chép câu lệnh SQL”</strong>, rồi dán và bấm <strong>Run</strong> trong{' '}
+                Supabase → SQL Editor (phần số 5 mở quyền ghi Storage).
+              </div>
+            )}
+            <button
+              onClick={() => setStorageTest(null)}
+              style={{
+                marginTop: '0.7rem',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'inherit',
+                fontFamily: 'inherit',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                textDecoration: 'underline',
+                padding: 0
+              }}
+            >
+              Đóng thông báo
+            </button>
+          </div>
+        )}
 
         {/* Status Notice */}
         {msg && (
@@ -522,6 +680,24 @@ CREATE POLICY "Cho phép cập nhật profiles" ON public.profiles FOR ALL USING
                 <div style={{ fontSize: '0.75rem', color: '#94A3B8', marginTop: '2px' }}>
                   Chạy trong: <strong>Supabase Dashboard &gt; SQL Editor &gt; New Query &gt; Run</strong>
                 </div>
+                <a
+                  href={SUPABASE_STORAGE_POLICY_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                    marginTop: '0.45rem',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: '#38BDF8',
+                    textDecoration: 'underline'
+                  }}
+                >
+                  <ExternalLink size={13} />
+                  Mở trang Storage của dự án (kiểm tra bucket KhoTaiLieuTinHocThiThu)
+                </a>
               </div>
 
               <button

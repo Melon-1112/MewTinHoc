@@ -119,6 +119,98 @@ export async function fetchRemoteRoadmap(trackType) {
 }
 
 /**
+ * Lấy dữ liệu roadmap dạng RAW (đúng cấu trúc file JSON: examStructure, twelveWeekPlan, stations)
+ * dùng cho màn hình Quản trị của Admin.
+ * - Nếu file đã có trên Supabase Storage: lấy đúng nội dung đang lưu (kèm cache-busting).
+ * - Nếu chưa có file: trả về dữ liệu mặc định trong code làm bản nháp ban đầu.
+ */
+export async function fetchRemoteRoadmapRaw(trackType) {
+  const track = trackType?.toLowerCase() || TRACK_TYPES.ICT;
+  const fileName = ROADMAP_STORAGE_CONFIG.files[track] || 'ictRoadmap.json';
+  const filePath = `${ROADMAP_STORAGE_CONFIG.folder}/${fileName}`;
+  const defaultTrackData = TRACK_INFO[track] || TRACK_INFO[TRACK_TYPES.ICT];
+
+  const buildDefault = (message) => ({
+    success: false,
+    source: 'local',
+    message,
+    raw: {
+      examStructure: defaultTrackData.examStructure,
+      twelveWeekPlan: defaultTrackData.twelveWeekPlan,
+      stations: defaultTrackData.stations
+    }
+  });
+
+  if (!supabase) return buildDefault('Chưa khởi tạo Supabase Client');
+
+  try {
+    const { data: urlData } = supabase.storage
+      .from(ROADMAP_STORAGE_CONFIG.bucket)
+      .getPublicUrl(filePath);
+
+    if (!urlData || !urlData.publicUrl) return buildDefault('Không tìm thấy Public URL');
+
+    const res = await fetch(`${urlData.publicUrl}?t=${Date.now()}`, {
+      cache: 'no-cache',
+      headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' }
+    });
+
+    if (!res.ok) {
+      return buildDefault(`File ${fileName} chưa có trên Supabase (HTTP ${res.status})`);
+    }
+
+    const json = await res.json();
+
+    // Hỗ trợ cả 2 dạng: file chuẩn { examStructure, twelveWeekPlan, stations } hoặc mảng stations
+    const raw = Array.isArray(json)
+      ? { examStructure: defaultTrackData.examStructure, twelveWeekPlan: defaultTrackData.twelveWeekPlan, stations: json }
+      : {
+          examStructure: json.examStructure || defaultTrackData.examStructure,
+          twelveWeekPlan: json.twelveWeekPlan || defaultTrackData.twelveWeekPlan,
+          stations: Array.isArray(json.stations) ? json.stations : defaultTrackData.stations
+        };
+
+    return {
+      success: true,
+      source: 'supabase',
+      fileName,
+      updatedAt: new Date().toLocaleTimeString('vi-VN'),
+      raw
+    };
+  } catch (err) {
+    console.warn(`[RoadmapStorage] Lỗi tải RAW ${fileName}:`, err);
+    return buildDefault(err.message || 'Lỗi mạng khi tải từ Supabase');
+  }
+}
+
+/**
+ * Đóng gói dữ liệu roadmap thành payload chuẩn trước khi upload lên Supabase Storage.
+ * Chỉ giữ đúng 3 khoá gốc của file JSON để tránh ghi rác vào file.
+ */
+export function buildRoadmapPayload(roadmapData) {
+  if (!roadmapData) return null;
+  return {
+    examStructure: roadmapData.examStructure,
+    twelveWeekPlan: roadmapData.twelveWeekPlan,
+    stations: roadmapData.stations
+  };
+}
+
+/**
+ * Lưu toàn bộ dữ liệu roadmap (đã chỉnh sửa bởi Admin) lên file JSON trên Supabase Storage.
+ * Dùng chung cho nút "Lưu & Đồng bộ Supabase".
+ */
+export async function saveRoadmapToSupabase(trackType, roadmapData) {
+  const payload = buildRoadmapPayload(roadmapData);
+  if (!payload || !Array.isArray(payload.stations)) {
+    return { success: false, error: 'Dữ liệu roadmap không hợp lệ (thiếu danh sách stations).' };
+  }
+
+  const result = await uploadRoadmapToSupabase(trackType, payload);
+  return result;
+}
+
+/**
  * Tải file JSON xuống máy tính để người dùng dễ dàng kéo thả vào Supabase Dashboard
  */
 export function downloadRoadmapJSON(trackType) {
@@ -168,8 +260,82 @@ export async function uploadRoadmapToSupabase(trackType, jsonData) {
     });
 
   if (error) {
-    return { success: false, error: error.message };
+    // Diễn giải lỗi phổ biến sang tiếng Việt cho Admin dễ xử lý
+    const rawMsg = error.message || 'Không xác định';
+    const isRlsError =
+      /row-level security|violates|Unauthorized|AccessDenied/i.test(rawMsg) ||
+      error.statusCode === '403' ||
+      error.status === 403;
+
+    if (isRlsError) {
+      return {
+        success: false,
+        error:
+          'Supabase Storage đang chặn quyền ghi (RLS). ' +
+          'Hãy vào Supabase → SQL Editor và chạy đoạn SQL mở quyền ghi Storage ' +
+          'ở mục "Công cụ quản trị" trong trang Admin (phần số 5).'
+      };
+    }
+
+    return { success: false, error: rawMsg };
   }
 
   return { success: true, data };
+}
+
+/**
+ * CHẨN ĐOÁN: Kiểm tra quyền GHI lên Supabase Storage.
+ * Ghi 1 file nháp rất nhỏ vào thư mục kiểm tra rồi xóa ngay — KHÔNG đụng tới
+ * các file lộ trình thật (csRoadmap.json / ictRoadmap.json).
+ */
+export async function testRoadmapStorageWrite() {
+  if (!supabase) {
+    return {
+      success: false,
+      status: null,
+      message: 'Chưa cấu hình Supabase Client.'
+    };
+  }
+
+  const probePath = `${ROADMAP_STORAGE_CONFIG.folder}/__kiem_tra_quyen_ghi.json`;
+  const probeBody = new Blob([JSON.stringify({ test: true, at: new Date().toISOString() })], {
+    type: 'application/json'
+  });
+
+  try {
+    const { error } = await supabase.storage
+      .from(ROADMAP_STORAGE_CONFIG.bucket)
+      .upload(probePath, probeBody, { contentType: 'application/json', upsert: true });
+
+    if (error) {
+      const rawMsg = error.message || 'Không xác định';
+      const status = error.statusCode || error.status || null;
+      const isRls = /row-level security|violates|Unauthorized|AccessDenied/i.test(rawMsg) || Number(status) === 403;
+
+      return {
+        success: false,
+        status,
+        message: isRls
+          ? 'Supabase đã từ chối vì chưa có policy cho phép ghi (RLS).\n' +
+            'Đây chính là nguyên nhân nút "Lưu & Đồng bộ Supabase" báo lỗi.\n' +
+            'Chi tiết từ Supabase: ' + rawMsg
+          : 'Lỗi khác từ Supabase: ' + rawMsg
+      };
+    }
+
+    // Dọn file nháp để không để lại rác trong bucket
+    await supabase.storage.from(ROADMAP_STORAGE_CONFIG.bucket).remove([probePath]);
+
+    return {
+      success: true,
+      status: 200,
+      message: 'Đã ghi và xóa thành công một file kiểm tra.\nBây giờ bạn có thể bấm "Chỉnh sửa nội dung" rồi "Lưu & Đồng bộ Supabase".'
+    };
+  } catch (err) {
+    return {
+      success: false,
+      status: null,
+      message: 'Không gọi được Supabase Storage: ' + (err?.message || 'Lỗi mạng')
+    };
+  }
 }

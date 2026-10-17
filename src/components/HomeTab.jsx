@@ -12,16 +12,29 @@ import {
   AlertCircle,
   RotateCcw,
   FastForward,
+  Undo2,
   Code2,
   Database,
   Globe2,
-  ShieldAlert
+  ShieldAlert,
+  Lock,
+  Trophy,
+  CalendarClock,
+  CalendarDays
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { TABS } from './Navbar';
 import { isCompanyAdmin } from '../lib/roleService.js';
 
 import { Radio, Wifi, Database as DbIcon, CheckCircle2 as CheckIcon } from 'lucide-react';
+import { formatLocalDate } from '../lib/userProgress';
+import {
+  STREAK_EVOLUTIONS,
+  STREAK_EVOLUTION_MAX_DAYS,
+  getEvolutionByDays,
+  getEvolutionProgress
+} from '../lib/streakEvolutions';
+import StreakEvolutionArt from './StreakEvolutionArt';
 
 export default function HomeTab({
   user,
@@ -34,6 +47,7 @@ export default function HomeTab({
   onCheckIn,
   onSimulateNextDay,
   onSimulateMissedDays,
+  onResetSimulation,
   onNavigateTab
 }) {
   const triggerConfetti = () => {
@@ -64,7 +78,7 @@ export default function HomeTab({
     const isToday = index === currentDayOfWeek;
     const dayDate = new Date(now);
     dayDate.setDate(now.getDate() - (currentDayOfWeek - index));
-    const dayDateStr = dayDate.toISOString().split('T')[0];
+    const dayDateStr = formatLocalDate(dayDate);
 
     // Chỉ sáng ngọn lửa nếu ngày đó nằm trong lịch sử đã điểm danh (checkinHistory)
     // HOẶC hôm nay và đã bấm điểm danh
@@ -75,6 +89,26 @@ export default function HomeTab({
   });
 
   const checkedDaysCount = daysOfWeek.filter(d => d.checked).length;
+
+  // ---- Tiến hoá hình dạng Streak (Bộ sưu tập) ----
+  const streakCount = streak?.count || 0;
+  const curEvo = streak?.currentEvolution || getEvolutionByDays(streakCount);
+  const evoProg = streak?.evolutionProgress || getEvolutionProgress(streakCount);
+  const nextEvo = evoProg.next;
+  const isMaxEvo = !nextEvo && streakCount > 0;
+  const curEvoIndex = STREAK_EVOLUTIONS.findIndex(e => e.id === curEvo.id);
+  // Chưa điểm danh ngày nào thì coi như chưa sở hữu hình dạng nào cả (0/6).
+  const hasStarted = streakCount > 0;
+  const unlockedCount = hasStarted ? curEvoIndex + 1 : 0;
+  const graceDays = streak?.graceDays ?? 3;
+
+  // Biến CSS để "nhuộm" màu theo cấp tiến hoá đang sở hữu
+  const evoVars = {
+    '--evo-accent': curEvo.accent,
+    '--evo-secondary': curEvo.secondary,
+    '--evo-glow': curEvo.glow,
+    '--evo-aura': curEvo.aura
+  };
 
 
 
@@ -305,17 +339,45 @@ export default function HomeTab({
               </span>
             </div>
 
-            {/* Streak Giant Display */}
+            {/* Streak Giant Display + hình dạng tiến hoá hiện tại */}
             <div className="streak-display-center">
-              <span className="streak-flame-giant">{streak?.count > 0 ? '🔥' : '🌱'}</span>
+              <div
+                className={`streak-evo-stage ${isMaxEvo ? 'is-max' : ''}`}
+                style={evoVars}
+              >
+                <span
+                  className="streak-evo-glyph"
+                  title={hasStarted ? curEvo.name : 'Chưa mở khoá'}
+                >
+                  <StreakEvolutionArt
+                    id={hasStarted ? curEvo.id : STREAK_EVOLUTIONS[0].id}
+                    mono={!hasStarted}
+                    size={118}
+                  />
+                </span>
+                <span className="streak-evo-name">
+                  {streakCount > 0 ? curEvo.name : 'Chưa Bắt Đầu'}
+                </span>
+                {nextEvo ? (
+                  <span className="streak-evo-next">
+                    Học thêm <strong>{evoProg.daysToNext} ngày</strong> nữa để mở khoá một hình dạng mới 🔒
+                  </span>
+                ) : (
+                  <span className="streak-evo-next">🎉 Đã đạt cấp tối đa ({STREAK_EVOLUTION_MAX_DAYS} ngày)</span>
+                )}
+                <div className="streak-evo-progress">
+                  <div className="streak-evo-progress-fill" style={{ width: `${evoProg.percent}%` }} />
+                </div>
+              </div>
+
               <div className="streak-big-number">{streak?.count ?? 0}</div>
               <div className="streak-big-label">Ngày Học Liên Tục</div>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.4rem' }}>
                 {streak?.checkedToday
                   ? 'Tuyệt vời! Bạn đã điểm danh hôm nay.'
                   : (streak?.count > 0
-                      ? 'Chưa điểm danh hôm nay. Bấm nút bên dưới để nhận +1 Streak!'
-                      : 'Bạn mới bắt đầu học! Bấm điểm danh bên dưới để mở chuỗi streak 1 ngày đầu tiên.')}
+                    ? 'Chưa điểm danh hôm nay. Bấm nút bên dưới để nhận +1 Streak!'
+                    : 'Bạn mới bắt đầu học! Bấm điểm danh bên dưới để mở chuỗi streak 1 ngày đầu tiên.')}
               </p>
             </div>
 
@@ -358,44 +420,42 @@ export default function HomeTab({
               )}
             </button>
 
-            {/* Important Rule Warning */}
+            {/* Important Rule Warning — quy tắc ân hạn 3 ngày */}
             <div style={{ display: 'flex', gap: '0.5rem', background: '#FFF7ED', padding: '0.65rem 0.85rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
               <AlertCircle size={16} color="var(--color-primary)" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div style={{ fontSize: '0.75rem', color: 'var(--color-deep)', lineHeight: 1.4 }}>
-                <strong>Quy tắc Streak:</strong> Nếu qua 1 ngày mà bạn không bấm điểm danh học tập, chuỗi streak sẽ bị mất và trở về 0!
+                <strong>Quy tắc Streak:</strong> bạn được phép nghỉ tối đa <strong>{graceDays - 1} ngày</strong>. Nếu bỏ trống <strong>{graceDays} ngày liên tiếp</strong> mà không bấm điểm danh, chuỗi streak sẽ bị mất và trở về 0.
               </div>
             </div>
 
-            {/* Streak Simulation Testing Panel (Chỉ hiển thị cho tài khoản Admin) */}
-            {isCompanyAdmin(user) && (
-              <div className="streak-sim-box">
-                <div style={{ fontWeight: 800, fontSize: '0.78rem', color: 'var(--color-deep)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <span>🧪 Công cụ thử nghiệm chu kỳ ngày:</span>
-                </div>
-                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
-                  Bấm các nút dưới đây để kiểm tra việc tăng streak và mất streak khi qua ngày:
-                </div>
-                <div className="streak-sim-row">
-                  <button
-                    className="btn-sim"
-                    onClick={onSimulateNextDay}
-                    title="Giả lập hệ thống sang ngày hôm sau (được phép điểm danh tiếp)"
-                  >
-                    <FastForward size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
-                    Tua tới ngày mai (+1 ngày)
-                  </button>
-                  <button
-                    className="btn-sim"
-                    onClick={onSimulateMissedDays}
-                    style={{ color: '#DC2626' }}
-                    title="Giả lập học sinh bỏ lỡ 2 ngày không học -> mất streak về 0"
-                  >
-                    <RotateCcw size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
-                    Bỏ lỡ 2 ngày (Mất streak)
-                  </button>
-                </div>
+            {/* Streak Simulation Testing Panel (Giúp người dùng kiểm chứng yêu cầu "qua 1 ngày thì mất streak") */}
+            <div className="streak-sim-box">
+              <div style={{ fontWeight: 800, fontSize: '0.78rem', color: 'var(--color-deep)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <span>🧪 Công cụ thử nghiệm chu kỳ ngày:</span>
               </div>
-            )}
+              <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
+                Bấm các nút dưới đây để kiểm tra việc tăng streak và mất streak khi qua ngày:
+              </div>
+              <div className="streak-sim-row">
+                <button
+                  className="btn-sim"
+                  onClick={onSimulateNextDay}
+                  title="Giả lập hệ thống sang ngày hôm sau (được phép điểm danh tiếp)"
+                >
+                  <FastForward size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
+                  Tua tới ngày mai (+1 ngày)
+                </button>
+                <button
+                  className="btn-sim"
+                  onClick={onSimulateMissedDays}
+                  style={{ color: '#DC2626' }}
+                  title="Giả lập học sinh bỏ lỡ 2 ngày không học -> mất streak về 0"
+                >
+                  <RotateCcw size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
+                  Bỏ lỡ 2 ngày (Mất streak)
+                </button>
+              </div>
+            </div>
           </div>
 
 
