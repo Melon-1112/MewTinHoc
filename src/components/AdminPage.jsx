@@ -236,15 +236,22 @@ CREATE POLICY "profiles_update_admin_only" ON public.profiles
 DROP POLICY IF EXISTS "storage_insert_admin" ON storage.objects;
 DROP POLICY IF EXISTS "storage_update_admin" ON storage.objects;
 DROP POLICY IF EXISTS "storage_read_admin" ON storage.objects;
+DROP POLICY IF EXISTS "storage_delete_admin" ON storage.objects;
 
 CREATE POLICY "storage_insert_admin" ON storage.objects
   FOR INSERT TO authenticated
   WITH CHECK (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user());
 
+-- Đổi tên tài liệu dùng thao tác MOVE -> cần quyền UPDATE
 CREATE POLICY "storage_update_admin" ON storage.objects
   FOR UPDATE TO authenticated
   USING (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user())
   WITH CHECK (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user());
+
+-- Xoá tài liệu trong Kho đề thi -> cần quyền DELETE (khác với INSERT/UPDATE)
+CREATE POLICY "storage_delete_admin" ON storage.objects
+  FOR DELETE TO authenticated
+  USING (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user());
 
 CREATE POLICY "storage_read_admin" ON storage.objects
   FOR SELECT TO authenticated

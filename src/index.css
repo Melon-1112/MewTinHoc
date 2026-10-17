@@ -2278,6 +2278,448 @@ a {
   font-size: 0.9rem;
 }
 
+/* ============================================================
+   KHO ĐỀ THI — CÔNG CỤ QUẢN TRỊ (chỉ hiển thị với Admin)
+   ============================================================ */
+
+/* Nhãn "Chế độ Admin" trên tiêu đề trang */
+.doc-admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-amber-dark));
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.3);
+}
+
+/* Nút "Thêm tài liệu" (+) */
+.doc-btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.05rem;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-deep));
+  color: #FFFFFF;
+  font-size: 0.85rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(234, 88, 12, 0.28);
+  transition: all var(--transition-fast);
+}
+
+.doc-btn-add:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.4);
+}
+
+.doc-btn-add:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Khung kéo thả file */
+.doc-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #FFFDFA 0%, var(--color-cream) 140%);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.doc-dropzone:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  box-shadow: var(--shadow-md);
+}
+
+.doc-dropzone-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-deep);
+}
+
+.doc-dropzone-hint {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  max-width: 640px;
+}
+
+/* Trạng thái đang kéo file vào trang */
+.exam-repo-container.drag-over .doc-dropzone {
+  border-color: var(--color-primary);
+  border-style: solid;
+  background: var(--color-primary-light);
+  box-shadow: var(--shadow-glow);
+  transform: scale(1.01);
+}
+
+.exam-repo-container.drag-over .doc-dropzone-text {
+  color: var(--color-primary-hover);
+}
+
+@keyframes doc-dropzone-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.24); }
+  50% { box-shadow: 0 0 0 10px rgba(234, 88, 12, 0); }
+}
+
+.exam-repo-container.drag-over .doc-dropzone {
+  animation: doc-dropzone-pulse 1.4s ease-out infinite;
+}
+
+/* Ô nhập nội dung ngắn (tên thư mục mới) */
+.doc-inline-form {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-primary);
+  flex-wrap: wrap;
+}
+
+.doc-inline-form input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.doc-inline-form input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.14);
+}
+
+/* Nút Lưu / Huỷ / Xoá */
+.doc-btn-save,
+.doc-btn-cancel,
+.doc-btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.doc-btn-save {
+  background: linear-gradient(135deg, #16A34A, #15803D);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.28);
+}
+
+.doc-btn-save:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(22, 163, 74, 0.4);
+}
+
+.doc-btn-cancel {
+  background: #F3F4F6;
+  color: #4B5563;
+  border: 1px solid #D1D5DB;
+}
+
+.doc-btn-cancel:hover:not(:disabled) {
+  background: #E5E7EB;
+  color: #111827;
+}
+
+.doc-btn-danger {
+  background: linear-gradient(135deg, #DC2626, #B91C1C);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.28);
+}
+
+.doc-btn-danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(220, 38, 38, 0.4);
+}
+
+.doc-btn-save:disabled,
+.doc-btn-cancel:disabled,
+.doc-btn-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Nút icon nhỏ (đổi tên / xoá) */
+.doc-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: #F3F4F6;
+  color: #4B5563;
+  border: 1px solid #E5E7EB;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.doc-btn-icon:hover {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.doc-btn-icon-danger:hover {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* Hàng đang ở chế độ đổi tên */
+.doc-row.editing {
+  border-color: var(--color-primary);
+  border-style: dashed;
+  background: #FFFDFA;
+  box-shadow: var(--shadow-md);
+  transform: none;
+}
+
+.doc-rename-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+
+.doc-rename-input {
+  flex: 1;
+  min-width: 180px;
+  padding: 0.45rem 0.75rem;
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  background: #FFFFFF;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-deep);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.14);
+}
+
+.doc-rename-ext {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--color-text-muted);
+  font-family: var(--font-code);
+}
+
+.doc-rename-hint {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: var(--color-cream);
+  border: 1px solid var(--color-border);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-full);
+}
+
+/* Gợi ý đường dẫn thật trên Storage (chỉ Admin thấy) */
+.doc-path-hint {
+  font-family: var(--font-code);
+  font-size: 0.7rem;
+  background: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  color: #475569;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-sm);
+  word-break: break-all;
+}
+
+.doc-delete-confirm {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--color-danger);
+  white-space: nowrap;
+}
+
+/* Thông báo kết quả thao tác */
+.doc-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.15rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.5;
+  animation: doc-notice-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes doc-notice-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.doc-notice-success {
+  background: var(--color-success-bg);
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+.doc-notice-error {
+  background: var(--color-danger-bg);
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.doc-notice > span {
+  flex: 1;
+}
+
+.doc-notice-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all var(--transition-fast);
+}
+
+.doc-notice-close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* Đường dẫn thư mục đang xem (breadcrumb) */
+.doc-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  flex-wrap: wrap;
+}
+
+.doc-breadcrumb button {
+  background: none;
+  border: none;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.doc-breadcrumb button:hover {
+  background: var(--color-cream);
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+.doc-breadcrumb-current {
+  font-weight: 700;
+  color: var(--color-deep);
+}
+
+/* Thư mục con */
+.doc-folder-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.doc-folder-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  color: var(--color-deep);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.doc-folder-chip:hover {
+  border-color: var(--color-primary);
+  background: var(--color-cream);
+  color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Responsive: màn hình hẹp thì xếp dọc cho dễ bấm */
+@media (max-width: 640px) {
+  .doc-header-actions {
+    width: 100%;
+  }
+
+  .doc-header-actions .search-input-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .doc-btn-add span {
+    display: none;
+  }
+
+  .doc-btn-add {
+    padding: 0.6rem;
+    width: 40px;
+    justify-content: center;
+  }
+
+  .doc-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+
+
 .exam-filters-bar {
   background: var(--color-surface);
   border: 1.5px solid var(--color-border);
