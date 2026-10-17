@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { TABS } from './Navbar';
+import { isCompanyAdmin } from '../lib/roleService.js';
 
 import { Radio, Wifi, Database as DbIcon, CheckCircle2 as CheckIcon } from 'lucide-react';
 
@@ -90,33 +91,7 @@ export default function HomeTab({
                 <span>Chương trình ôn luyện bám sát ma trận 2025</span>
               </div>
 
-              {/* Realtime DB Status Badge */}
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
-                  padding: '0.25rem 0.65rem',
-                  borderRadius: '999px',
-                  background: isRealtimeActive ? '#ECFDF5' : '#FFFBEB',
-                  color: isRealtimeActive ? '#059669' : '#D97706',
-                  border: `1px solid ${isRealtimeActive ? '#A7F3D0' : '#FDE68A'}`
-                }}
-                title={isRealtimeActive ? 'Đang kết nối Supabase Realtime Channel' : (dbStatus === 'connected' ? 'Đã kết nối Supabase' : 'Chế độ đồng bộ LocalStorage Offline')}
-              >
-                <span
-                  style={{
-                    width: '7px',
-                    height: '7px',
-                    borderRadius: '50%',
-                    background: isRealtimeActive ? '#10B981' : '#F59E0B',
-                    boxShadow: isRealtimeActive ? '0 0 6px #10B981' : 'none'
-                  }}
-                />
-                <span>{isRealtimeActive ? 'Realtime Database Live' : (dbStatus === 'connected' ? 'Supabase Sync' : 'Offline Data')}</span>
-              </div>
+
             </div>
 
             <h1 className="hero-title">
@@ -391,49 +366,39 @@ export default function HomeTab({
               </div>
             </div>
 
-            {/* Streak Simulation Testing Panel (Giúp người dùng kiểm chứng yêu cầu "qua 1 ngày thì mất streak") */}
-            <div className="streak-sim-box">
-              <div style={{ fontWeight: 800, fontSize: '0.78rem', color: 'var(--color-deep)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                <span>🧪 Công cụ thử nghiệm chu kỳ ngày:</span>
+            {/* Streak Simulation Testing Panel (Chỉ hiển thị cho tài khoản Admin) */}
+            {isCompanyAdmin(user) && (
+              <div className="streak-sim-box">
+                <div style={{ fontWeight: 800, fontSize: '0.78rem', color: 'var(--color-deep)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <span>🧪 Công cụ thử nghiệm chu kỳ ngày:</span>
+                </div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
+                  Bấm các nút dưới đây để kiểm tra việc tăng streak và mất streak khi qua ngày:
+                </div>
+                <div className="streak-sim-row">
+                  <button
+                    className="btn-sim"
+                    onClick={onSimulateNextDay}
+                    title="Giả lập hệ thống sang ngày hôm sau (được phép điểm danh tiếp)"
+                  >
+                    <FastForward size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
+                    Tua tới ngày mai (+1 ngày)
+                  </button>
+                  <button
+                    className="btn-sim"
+                    onClick={onSimulateMissedDays}
+                    style={{ color: '#DC2626' }}
+                    title="Giả lập học sinh bỏ lỡ 2 ngày không học -> mất streak về 0"
+                  >
+                    <RotateCcw size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
+                    Bỏ lỡ 2 ngày (Mất streak)
+                  </button>
+                </div>
               </div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
-                Bấm các nút dưới đây để kiểm tra việc tăng streak và mất streak khi qua ngày:
-              </div>
-              <div className="streak-sim-row">
-                <button
-                  className="btn-sim"
-                  onClick={onSimulateNextDay}
-                  title="Giả lập hệ thống sang ngày hôm sau (được phép điểm danh tiếp)"
-                >
-                  <FastForward size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
-                  Tua tới ngày mai (+1 ngày)
-                </button>
-                <button
-                  className="btn-sim"
-                  onClick={onSimulateMissedDays}
-                  style={{ color: '#DC2626' }}
-                  title="Giả lập học sinh bỏ lỡ 2 ngày không học -> mất streak về 0"
-                >
-                  <RotateCcw size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
-                  Bỏ lỡ 2 ngày (Mất streak)
-                </button>
-              </div>
-            </div>
+            )}
           </div>
 
-          {/* Target Countdown Card */}
-          <div style={{ background: 'var(--color-surface)', border: '1.5px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-              <Award size={18} color="var(--color-amber-dark)" />
-              <span style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--color-deep)' }}>Mục tiêu THPTQG 2025</span>
-            </div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
-              Điểm số mục tiêu cá nhân: <strong style={{ color: 'var(--color-primary)', fontSize: '0.95rem' }}>9.8 Điểm</strong>
-            </div>
-            <div style={{ fontSize: '0.75rem', background: 'var(--color-cream)', padding: '0.5rem 0.75rem', borderRadius: 'var(--radius-sm)', color: 'var(--color-deep)' }}>
-              💡 Lời khuyên: Tập trung vào 4 câu trắc nghiệm Đúng/Sai ở chuyên đề CSDL SQL để không bị mất điểm phân hóa!
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
