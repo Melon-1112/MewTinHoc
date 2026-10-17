@@ -62,7 +62,7 @@ export default function Navbar({
               <span>Mew</span>TinHoc
               <span className="brand-tag">THPTQG</span>
             </div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>
+            <div className="brand-slogan">
               Đồng hành cùng bạn vượt qua kì thi
             </div>
           </div>
@@ -199,7 +199,8 @@ export default function Navbar({
               id="tab-roadmap"
             >
               <GitCommit size={17} />
-              <span>Lộ trình học (Dạng dây xích trực quan)</span>
+              <span className="tab-label-full">Lộ trình học (Dạng dây xích trực quan)</span>
+              <span className="tab-label-short">Lộ trình</span>
               <span className="tab-badge-hot">Mới</span>
             </button>
 
@@ -222,7 +223,8 @@ export default function Navbar({
               id="tab-ai-exam"
             >
               <Sparkles size={17} />
-              <span>Tạo bài thi thử & Đánh giá bằng AI</span>
+              <span className="tab-label-full">Tạo bài thi thử & Đánh giá bằng AI</span>
+              <span className="tab-label-short">Đề thi AI</span>
               <span className="tab-badge-hot">AI</span>
             </button>
           </nav>

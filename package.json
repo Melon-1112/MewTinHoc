@@ -8,9 +8,11 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
+    "server": "node server/server.js",
     "export:roadmap": "node scripts/exportRoadmaps.js"
   },
   "dependencies": {
+    "@botpress/client": "^2.8.0",
     "@supabase/supabase-js": "^2.117.3",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.56.0",

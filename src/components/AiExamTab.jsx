@@ -186,7 +186,7 @@ export default function AiExamTab({ user }) {
             <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-deep)', display: 'block', marginBottom: '0.5rem' }}>
               Mục tiêu điểm số & Độ phân hóa:
             </label>
-            <div className="selection-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            <div className="selection-grid selection-grid-3">
               <div
                 className={`choice-box ${difficulty === 'medium' ? 'selected' : ''}`}
                 onClick={() => setDifficulty('medium')}
@@ -216,7 +216,7 @@ export default function AiExamTab({ user }) {
             <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-deep)', display: 'block', marginBottom: '0.5rem' }}>
               Quy mô bài thi:
             </label>
-            <div style={{ display: 'flex', gap: '0.65rem' }}>
+            <div className="exam-scale-btn-group">
               {[
                 { count: 10, label: '10 câu (Siêu tốc 15p)' },
                 { count: 20, label: '20 câu (Tiêu chuẩn 30p)' },

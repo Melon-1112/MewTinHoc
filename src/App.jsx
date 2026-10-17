@@ -12,6 +12,7 @@ import AdminPage from './components/AdminPage';
 import { supabase } from './supabase';
 import { useUserProgress } from './lib/userProgress';
 import { resolveUserRole, syncUserRoleToSupabase } from './lib/roleService';
+import BotpressChatBubble from './components/BotpressChatBubble';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(TABS.HOME);
@@ -302,6 +303,9 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Botpress Cloud Floating AI Chat Bubble */}
+      <BotpressChatBubble user={user} />
 
       {/* Toast Notification */}
       {toastMessage && (

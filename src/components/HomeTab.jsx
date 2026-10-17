@@ -202,7 +202,7 @@ export default function HomeTab({
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+            <div className="knowledge-matrix-grid">
               {/* Khối Python */}
               <div style={{ padding: '1rem', background: '#FFFDF9', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border-subtle)', position: 'relative' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem' }}>
@@ -428,34 +428,36 @@ export default function HomeTab({
               </div>
             </div>
 
-            {/* Streak Simulation Testing Panel (Giúp người dùng kiểm chứng yêu cầu "qua 1 ngày thì mất streak") */}
-            <div className="streak-sim-box">
-              <div style={{ fontWeight: 800, fontSize: '0.78rem', color: 'var(--color-deep)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                <span>🧪 Công cụ thử nghiệm chu kỳ ngày:</span>
+            {/* Streak Simulation Testing Panel (Chỉ hiển thị cho Admin để tiết kiệm diện tích mobile cho học sinh) */}
+            {isCompanyAdmin(user) && (
+              <div className="streak-sim-box">
+                <div style={{ fontWeight: 800, fontSize: '0.78rem', color: 'var(--color-deep)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <span>🧪 Công cụ thử nghiệm chu kỳ ngày (Admin):</span>
+                </div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
+                  Bấm các nút dưới đây để kiểm tra việc tăng streak và mất streak khi qua ngày:
+                </div>
+                <div className="streak-sim-row">
+                  <button
+                    className="btn-sim"
+                    onClick={onSimulateNextDay}
+                    title="Giả lập hệ thống sang ngày hôm sau (được phép điểm danh tiếp)"
+                  >
+                    <FastForward size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
+                    Tua tới ngày mai (+1 ngày)
+                  </button>
+                  <button
+                    className="btn-sim"
+                    onClick={onSimulateMissedDays}
+                    style={{ color: '#DC2626' }}
+                    title="Giả lập học sinh bỏ lỡ 2 ngày không học -> mất streak về 0"
+                  >
+                    <RotateCcw size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
+                    Bỏ lỡ 2 ngày (Mất streak)
+                  </button>
+                </div>
               </div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
-                Bấm các nút dưới đây để kiểm tra việc tăng streak và mất streak khi qua ngày:
-              </div>
-              <div className="streak-sim-row">
-                <button
-                  className="btn-sim"
-                  onClick={onSimulateNextDay}
-                  title="Giả lập hệ thống sang ngày hôm sau (được phép điểm danh tiếp)"
-                >
-                  <FastForward size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
-                  Tua tới ngày mai (+1 ngày)
-                </button>
-                <button
-                  className="btn-sim"
-                  onClick={onSimulateMissedDays}
-                  style={{ color: '#DC2626' }}
-                  title="Giả lập học sinh bỏ lỡ 2 ngày không học -> mất streak về 0"
-                >
-                  <RotateCcw size={13} style={{ verticalAlign: 'middle', marginRight: '3px' }} />
-                  Bỏ lỡ 2 ngày (Mất streak)
-                </button>
-              </div>
-            </div>
+            )}
           </div>
 
 

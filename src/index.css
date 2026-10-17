@@ -53,6 +53,18 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
+#root, .app-container {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
 body {
   font-family: var(--font-main);
   background-color: var(--color-bg);
@@ -398,6 +410,36 @@ a {
   background: var(--color-amber);
   color: var(--color-deep);
   line-height: 1;
+}
+
+.brand-slogan {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  transition: opacity var(--transition-fast);
+}
+
+.tab-label-short {
+  display: none;
+}
+
+.tab-label-full {
+  display: inline;
+}
+
+.knowledge-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.selection-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.exam-scale-btn-group {
+  display: flex;
+  gap: 0.65rem;
 }
 
 /* Main Content Area */
@@ -3909,4 +3951,1175 @@ a {
     max-width: 100%;
   }
 }
+
+/* ============================================================
+   Botpress Floating Bubble Chat Component Styles
+   ============================================================ */
+.botpress-floating-bubble-wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.botpress-mascot-btn {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  outline: none;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.botpress-mascot-btn:hover {
+  transform: translateY(-5px) scale(1.08);
+}
+
+.botpress-mascot-btn:active {
+  transform: scale(0.95);
+}
+
+.botpress-mascot-inner {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botpress-mascot-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Đổ bóng tự nhiên theo đúng viền mặt con mèo đã xóa nền */
+  filter: drop-shadow(0 6px 14px rgba(234, 88, 12, 0.42)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  transition: filter 0.3s ease;
+  animation: mascotFloat 3s ease-in-out infinite;
+}
+
+.botpress-mascot-btn:hover .botpress-mascot-img {
+  filter: drop-shadow(0 10px 22px rgba(234, 88, 12, 0.6)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes mascotFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.botpress-mascot-ping {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  width: 12px;
+  height: 12px;
+  background: #10B981;
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10B981;
+  animation: pulse-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  z-index: 2;
+}
+
+/* Tooltip mời chat phía trên chú mèo */
+.botpress-mascot-tooltip {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  background: #FFFFFF;
+  color: var(--color-deep);
+  border: 1.5px solid var(--color-border);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(124, 45, 18, 0.12);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.botpress-mascot-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #FFFFFF transparent transparent transparent;
+}
+
+.botpress-mascot-btn:hover .botpress-mascot-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Chat Window Modal */
+.botpress-chat-window {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 390px;
+  max-width: calc(100vw - 32px);
+  height: 580px;
+  max-height: calc(100vh - 48px);
+  background: var(--color-surface);
+  border-radius: 20px;
+  box-shadow: 0 16px 45px rgba(67, 20, 7, 0.2), 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1.5px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 10000;
+  overflow: hidden;
+  animation: botpressSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes botpressSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Header */
+.botpress-header {
+  padding: 0.9rem 1rem;
+  background: linear-gradient(135deg, var(--color-deep) 0%, #431407 100%);
+  color: #FFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.botpress-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.botpress-avatar {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.botpress-avatar-img {
+  width: 100%;
+  height: 100%;
+  max-width: 38px;
+  max-height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.botpress-status-dot {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  background: #10B981;
+  border: 2px solid #FFF;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.botpress-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.botpress-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.botpress-pill-badge {
+  font-size: 0.65rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1px 6px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.botpress-subtitle {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.botpress-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.botpress-header-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #FFF;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.botpress-header-btn:hover,
+.botpress-header-btn.active {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* Demo Banner */
+.botpress-demo-banner {
+  background: #FFFBEB;
+  border-bottom: 1px solid #FDE68A;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.72rem;
+  color: #B45309;
+  line-height: 1.35;
+}
+
+/* Settings / API Tools Panel */
+.botpress-settings-panel {
+  flex: 1;
+  padding: 1.15rem;
+  overflow-y: auto;
+  background: #FAF7F2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.botpress-settings-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  color: var(--color-deep);
+}
+
+.botpress-settings-desc {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.botpress-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.botpress-form-group label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-deep);
+}
+
+.botpress-input-field {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+  background: #FFF;
+  outline: none;
+}
+
+.botpress-input-field:focus {
+  border-color: var(--color-primary);
+}
+
+.botpress-curl-box {
+  background: #1E1E2E;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.botpress-curl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: #94A3B8;
+  font-family: var(--font-code);
+}
+
+.botpress-btn-copy {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #FFF;
+  padding: 2px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.68rem;
+}
+
+.botpress-curl-code {
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  color: #38BDF8;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.botpress-btn-test {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--color-primary);
+  color: #FFF;
+  border: none;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.botpress-btn-test:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.botpress-btn-back {
+  background: #FFF;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-deep);
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.botpress-test-result {
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.botpress-test-result.success {
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: #065F46;
+}
+
+.botpress-test-result.error {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #991B1B;
+}
+
+/* Chat Messages Area */
+.botpress-messages-area {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: #FFFCF7;
+}
+
+.botpress-msg-bubble {
+  display: flex;
+  max-width: 85%;
+}
+
+.botpress-msg-bubble.user-msg {
+  align-self: flex-end;
+}
+
+.botpress-msg-bubble.bot-msg {
+  align-self: flex-start;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.botpress-msg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-top: 2px;
+  border: 1.5px solid var(--color-border);
+  background: #FFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.botpress-msg-content {
+  padding: 0.65rem 0.9rem;
+  border-radius: 16px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.user-msg .botpress-msg-content {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #C2410C 100%);
+  color: #FFF;
+  border-bottom-right-radius: 4px;
+}
+
+.bot-msg .botpress-msg-content {
+  background: #FFF;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-deep);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Rich Formatted Chat Message Styles (Bullet Lists, Bold, Headings, Paragraphs) */
+.botpress-formatted-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  line-height: 1.55;
+}
+
+.chat-paragraph {
+  margin: 0;
+  font-size: 0.84rem;
+  color: inherit;
+  word-break: break-word;
+  line-height: 1.55;
+}
+
+.chat-heading {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--color-deep);
+  margin-top: 0.45rem;
+  margin-bottom: 0.15rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1.5px dashed var(--color-border);
+  letter-spacing: -0.01em;
+}
+
+.chat-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  background: #FFFDF9;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+}
+
+.chat-bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+
+.chat-bullet-icon {
+  color: var(--color-primary);
+  font-weight: 900;
+  font-size: 1.05rem;
+  line-height: 1.1;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.chat-bullet-text {
+  flex: 1;
+  word-break: break-word;
+  color: var(--color-deep);
+}
+
+.chat-strong {
+  font-weight: 800;
+  color: var(--color-deep);
+}
+
+.user-msg .chat-strong {
+  color: #FFF;
+}
+
+.chat-em {
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.chat-inline-code {
+  font-family: var(--font-code);
+  font-size: 0.76rem;
+  background: rgba(234, 88, 12, 0.08);
+  color: var(--color-primary);
+  border: 1px solid rgba(234, 88, 12, 0.2);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.user-msg .chat-inline-code {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFF;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.botpress-msg-time {
+  font-size: 0.62rem;
+  opacity: 0.7;
+  margin-top: 0.25rem;
+  text-align: right;
+}
+
+.botpress-typing-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.65rem 1rem;
+  background: #FFF;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.botpress-typing-dots span {
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  animation: typing-bounce 1.4s infinite ease-in-out both;
+}
+
+.botpress-typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.botpress-typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+/* Input Box */
+.botpress-input-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #FFF;
+  border-top: 1.5px solid var(--color-border);
+}
+
+.botpress-chat-input {
+  flex: 1;
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  font-family: var(--font-main);
+  outline: none;
+  background: var(--color-bg);
+}
+
+.botpress-chat-input:focus {
+  border-color: var(--color-primary);
+  background: #FFF;
+}
+
+.botpress-send-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-primary);
+  color: #FFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.botpress-send-btn:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.botpress-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   MOBILE-FIRST RESPONSIVE OPTIMIZATION
+   ============================================================ */
+
+/* Mobile viewport (<= 640px) */
+@media (max-width: 640px) {
+  /* 1. Botpress Chat Bubble & Fullscreen Modal on Mobile */
+  .botpress-floating-bubble-wrap {
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .botpress-mascot-inner {
+    width: 58px;
+    height: 58px;
+  }
+
+  .botpress-mascot-tooltip {
+    display: none; /* Ẩn tooltip trên mobile */
+  }
+
+  .botpress-chat-window {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    margin: 0 !important;
+    z-index: 99999 !important;
+  }
+
+  .botpress-header {
+    padding: 0.75rem 0.9rem;
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+    border-radius: 0;
+  }
+
+  .botpress-header-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .botpress-messages-area {
+    padding: 0.75rem;
+    gap: 0.65rem;
+  }
+
+  .botpress-msg-bubble {
+    max-width: 90%;
+  }
+
+  .botpress-msg-content {
+    font-size: 0.82rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .botpress-input-box {
+    padding: 0.65rem 0.75rem;
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  .botpress-chat-input {
+    font-size: 16px !important; /* Chống iOS Safari tự động zoom trang khi focus input */
+    padding: 0.5rem 0.85rem;
+  }
+
+  .botpress-send-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* 2. Top Header & Navigation Bar on Mobile */
+  .top-nav-row {
+    padding: 0.45rem 0.65rem;
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
+
+  .brand-section {
+    gap: 0.5rem;
+  }
+
+  .brand-logo-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+
+  .brand-title {
+    font-size: 1.05rem;
+    line-height: 1.15;
+  }
+
+  .brand-tag {
+    display: none !important; /* Ẩn tag nhỏ để tiết kiệm không gian màn hình */
+  }
+
+  .brand-slogan {
+    display: none !important; /* Ẩn slogan dài trên mobile để navbar không bị tràn mép */
+  }
+
+  .student-bar-widget {
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .streak-pill {
+    padding: 0.22rem 0.45rem;
+    gap: 0.25rem;
+  }
+
+  .streak-number {
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .streak-label {
+    display: none !important; /* Rút gọn chỉ hiện số ngày streak */
+  }
+
+  .student-profile-chip {
+    padding: 2px;
+    max-width: 32px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .student-name {
+    display: none !important; /* Chỉ hiển thị ảnh đại diện tròn gọn gàng */
+  }
+
+  .student-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .student-logout-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+  }
+
+  /* 3. Navigation Tabs Bar (Category Dock) */
+  .category-dock-wrapper {
+    padding: 0.2rem 0.5rem;
+  }
+
+  .category-dock {
+    gap: 0.4rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .category-badge {
+    display: none !important; /* Ẩn nhãn tĩnh LEARNING trên mobile */
+  }
+
+  .category-tabs {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0.35rem;
+    padding-bottom: 2px;
+  }
+
+  .category-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-tab-btn {
+    flex-shrink: 0;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    gap: 0.35rem;
+  }
+
+  /* Chuyển đổi nhãn tab sang phiên bản ngắn gọn cho mobile */
+  .tab-label-full {
+    display: none !important;
+  }
+
+  .tab-label-short {
+    display: inline !important;
+  }
+
+  /* 4. Main Content Layout on Mobile */
+  .main-content {
+    padding: 0.75rem 0.6rem 3rem 0.6rem;
+  }
+
+  /* 5. Home Dashboard & Hero Banner on Mobile */
+  .home-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  .hero-welcome-card {
+    padding: 1.2rem 0.95rem;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .hero-welcome-card::after {
+    display: none !important; /* Ẩn watermark lớn để chống tràn viền ngang */
+  }
+
+  .hero-welcome-card::before {
+    width: 140px;
+    height: 140px;
+    right: -30px;
+    top: -30px;
+  }
+
+  .hero-title {
+    font-size: 1.3rem;
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+  }
+
+  .hero-desc {
+    font-size: 0.8rem;
+    line-height: 1.45;
+    margin-bottom: 1rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .btn-primary-glow,
+  .btn-outline-white {
+    width: 100%;
+    justify-content: center;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  /* 6. Metrics Grid on Mobile */
+  .metrics-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+    margin-top: 0.75rem !important;
+  }
+
+  .metric-card {
+    padding: 0.75rem 0.6rem;
+  }
+
+  .metric-val {
+    font-size: 1.15rem;
+  }
+
+  .metric-label {
+    font-size: 0.68rem;
+  }
+
+  /* 7. Ma trận 4 khối kiến thức & Lịch Streak on Mobile */
+  .knowledge-matrix-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  .streak-card {
+    padding: 1rem 0.85rem;
+    border-radius: var(--radius-md);
+  }
+
+  .streak-evo-stage {
+    padding: 0.85rem 0.6rem;
+  }
+
+  .streak-evo-glyph svg {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  .streak-big-number {
+    font-size: 2.5rem;
+  }
+
+  .streak-days-row {
+    gap: 0.25rem;
+    justify-content: space-between;
+  }
+
+  .day-bubble {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .day-bubble-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 0.78rem;
+  }
+
+  .day-name {
+    font-size: 0.65rem;
+  }
+
+  .btn-checkin-streak {
+    padding: 0.85rem;
+    font-size: 0.95rem;
+  }
+
+  .streak-sim-box {
+    padding: 0.75rem;
+  }
+
+  .streak-sim-row {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .btn-sim {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 8. Lộ Trình Dây Xích (Roadmap Tab) on Mobile */
+  .roadmap-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+  }
+
+  .roadmap-stats-badges {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .stat-chip {
+    min-width: unset;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .stat-chip-num {
+    font-size: 1.15rem;
+  }
+
+  .station-node-card {
+    padding: 0.85rem 0.95rem;
+    gap: 0.75rem;
+    border-radius: var(--radius-md);
+  }
+
+  .node-badge-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.15rem;
+  }
+
+  .node-left-col {
+    gap: 0.75rem;
+  }
+
+  .chain-link-connector {
+    height: 48px;
+  }
+
+  .theory-modal-container {
+    height: 94dvh !important;
+    max-height: 94dvh !important;
+    border-radius: var(--radius-md);
+  }
+
+  .theory-modal-sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .theory-main-content {
+    padding: 1rem 0.85rem;
+    gap: 1.25rem;
+  }
+
+  /* 9. Tab Đề Thi AI (AiExamTab) on Mobile */
+  .ai-banner-card {
+    flex-direction: column-reverse;
+    padding: 1.2rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .ai-banner-card > div:last-child {
+    display: none;
+  }
+
+  .ai-generator-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .selection-grid,
+  .selection-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem;
+  }
+
+  .exam-scale-btn-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.4rem;
+  }
+
+  .exam-scale-btn-group button {
+    width: 100%;
+    padding: 0.65rem;
+  }
+
+  /* 10. Kho Đề Thi (ExamRepoTab) on Mobile */
+  .doc-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .doc-header-actions {
+    width: 100%;
+  }
+
+  .doc-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.85rem 0.95rem;
+  }
+
+  .doc-actions {
+    width: 100%;
+    justify-content: flex-end;
+    border-top: 1px solid var(--color-border-subtle);
+    padding-top: 0.5rem;
+  }
+
+  .exams-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .exam-taker-modal-backdrop {
+    padding: 0 !important;
+  }
+
+  .exam-taker-window {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+
+  .exam-taker-body {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .exam-taker-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .modal-backdrop {
+    padding: 0.4rem;
+  }
+
+  .google-auth-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  /* 11. Chuẩn hóa Input trên Mobile chống Auto-Zoom iOS */
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Extra small devices (<= 380px) */
+@media (max-width: 380px) {
+  .top-nav-row {
+    padding: 0.35rem 0.45rem;
+    gap: 0.35rem;
+  }
+
+  .brand-title {
+    font-size: 0.95rem;
+  }
+
+  .day-bubble-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 0.72rem;
+  }
+
+  .day-name {
+    font-size: 0.6rem;
+  }
+
+  .metrics-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .nav-tab-btn {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.74rem;
+  }
+}
+
 
