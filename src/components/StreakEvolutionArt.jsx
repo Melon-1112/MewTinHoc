@@ -10,20 +10,15 @@ import React from 'react';
 //    nên ra một cái "bóng" đen, không lộ chi tiết lẫn màu sắc.
 // ============================================================
 
-import ngonLua from '../assets/streak/ngon-lua.png';
-import tinhLinhDo from '../assets/streak/tinh-linh-do.png';
-import luaTim from '../assets/streak/lua-tim.png';
-import tinhLinhTim from '../assets/streak/tinh-linh-tim.png';
-import rongLua from '../assets/streak/rong-lua.png';
-import daiCoThu from '../assets/streak/dai-co-thu.png';
+const BASE_PATH = import.meta.env.BASE_URL || '/';
 
 const ART = {
-  'ngon-lua': ngonLua,
-  'tinh-linh-do': tinhLinhDo,
-  'lua-tim': luaTim,
-  'tinh-linh-tim': tinhLinhTim,
-  'rong-lua': rongLua,
-  'dai-co-thu': daiCoThu
+  'ngon-lua': `${BASE_PATH}img/StreakLevel/1.png`,
+  'tinh-linh-do': `${BASE_PATH}img/StreakLevel/2.png`,
+  'lua-tim': `${BASE_PATH}img/StreakLevel/3.png`,
+  'tinh-linh-tim': `${BASE_PATH}img/StreakLevel/4.png`,
+  'rong-lua': `${BASE_PATH}img/StreakLevel/5.png`,
+  'dai-co-thu': `${BASE_PATH}img/StreakLevel/6.png`
 };
 
 /**

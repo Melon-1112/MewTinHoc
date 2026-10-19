@@ -152,6 +152,8 @@ export const getEvolutionProgress = (days) => {
   const next = getNextEvolutionByDays(d);
 
   if (!next) {
+    // Đã đạt cấp tối đa, nhưng vẫn cho phép streak tiếp tục tăng
+    // Thanh tiến trình sẽ luôn hiển thị 100%
     return { current, next: null, percent: 100, daysToNext: 0 };
   }
 

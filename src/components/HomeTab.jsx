@@ -50,6 +50,9 @@ export default function HomeTab({
   onResetSimulation,
   onNavigateTab
 }) {
+  const [showAllEvolutions, setShowAllEvolutions] = React.useState(false);
+  const [adminPreviewMode, setAdminPreviewMode] = React.useState(false);
+  const [adminPreviewStreak, setAdminPreviewStreak] = React.useState(null);
   const triggerConfetti = () => {
     confetti({
       particleCount: 80,
@@ -102,12 +105,35 @@ export default function HomeTab({
   const unlockedCount = hasStarted ? curEvoIndex + 1 : 0;
   const graceDays = streak?.graceDays ?? 3;
 
+  // Admin preview: override streak display
+  const displayStreak = adminPreviewStreak !== null && isCompanyAdmin(user) ? adminPreviewStreak : streakCount;
+  const displayEvo = adminPreviewStreak !== null && isCompanyAdmin(user) 
+    ? getEvolutionByDays(adminPreviewStreak) 
+    : curEvo;
+  const displayEvoProg = adminPreviewStreak !== null && isCompanyAdmin(user)
+    ? getEvolutionProgress(adminPreviewStreak)
+    : evoProg;
+  const displayNextEvo = displayEvoProg.next;
+  const displayIsMaxEvo = !displayNextEvo && displayStreak > 0;
+  const displayHasStarted = displayStreak > 0 || (adminPreviewStreak !== null && isCompanyAdmin(user));
+  
+  // Admin preview: fill all 7 days with fire
+  const displayDaysOfWeek = adminPreviewStreak !== null && isCompanyAdmin(user)
+    ? dayLabels.map((name, index) => ({
+        name,
+        checked: true,
+        isToday: index === currentDayOfWeek,
+        dateStr: ''
+      }))
+    : daysOfWeek;
+  const displayCheckedDaysCount = adminPreviewStreak !== null && isCompanyAdmin(user) ? 7 : checkedDaysCount;
+
   // Biến CSS để "nhuộm" màu theo cấp tiến hoá đang sở hữu
   const evoVars = {
-    '--evo-accent': curEvo.accent,
-    '--evo-secondary': curEvo.secondary,
-    '--evo-glow': curEvo.glow,
-    '--evo-aura': curEvo.aura
+    '--evo-accent': displayEvo.accent,
+    '--evo-secondary': displayEvo.secondary,
+    '--evo-glow': displayEvo.glow,
+    '--evo-aura': displayEvo.aura
   };
 
 
@@ -341,43 +367,79 @@ export default function HomeTab({
 
             {/* Streak Giant Display + hình dạng tiến hoá hiện tại */}
             <div className="streak-display-center">
+              {adminPreviewStreak !== null && isCompanyAdmin(user) && (
+                <div style={{
+                  position: 'absolute',
+                  top: '0.5rem',
+                  right: '0.5rem',
+                  zIndex: 10
+                }}>
+                  <button
+                    onClick={() => setAdminPreviewStreak(null)}
+                    style={{
+                      padding: '0.3rem 0.6rem',
+                      fontSize: '0.65rem',
+                      fontWeight: 700,
+                      background: '#DC2626',
+                      color: '#FFFFFF',
+                      border: 'none',
+                      borderRadius: '999px',
+                      cursor: 'pointer',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+                    }}
+                    title="Tắt chế độ xem trước Admin"
+                  >
+                    ✕ TẮT PREVIEW
+                  </button>
+                </div>
+              )}
               <div
-                className={`streak-evo-stage ${isMaxEvo ? 'is-max' : ''}`}
+                className={`streak-evo-stage ${displayIsMaxEvo ? 'is-max' : ''}`}
                 style={evoVars}
               >
                 <span
                   className="streak-evo-glyph"
-                  title={hasStarted ? curEvo.name : 'Chưa mở khoá'}
+                  title={displayHasStarted ? displayEvo.name : 'Chưa mở khoá'}
                 >
                   <StreakEvolutionArt
-                    id={hasStarted ? curEvo.id : STREAK_EVOLUTIONS[0].id}
-                    mono={!hasStarted}
+                    id={displayHasStarted ? displayEvo.id : STREAK_EVOLUTIONS[0].id}
+                    mono={!displayHasStarted}
                     size={118}
                   />
                 </span>
                 <span className="streak-evo-name">
-                  {streakCount > 0 ? curEvo.name : 'Chưa Bắt Đầu'}
+                  {displayStreak > 0 ? displayEvo.name : 'Chưa Bắt Đầu'}
                 </span>
-                {nextEvo ? (
+                {displayNextEvo ? (
                   <span className="streak-evo-next">
-                    Học thêm <strong>{evoProg.daysToNext} ngày</strong> nữa để mở khoá một hình dạng mới 🔒
+                    Học thêm <strong>{displayEvoProg.daysToNext} ngày</strong> nữa để mở khoá một hình dạng mới 🔒
+                  </span>
+                ) : displayStreak >= STREAK_EVOLUTION_MAX_DAYS ? (
+                  <span className="streak-evo-next">
+                    🎉 Cấp tối đa! Đã học <strong>{displayStreak} ngày</strong> liên tục
                   </span>
                 ) : (
-                  <span className="streak-evo-next">🎉 Đã đạt cấp tối đa ({STREAK_EVOLUTION_MAX_DAYS} ngày)</span>
+                  <span className="streak-evo-next">
+                    🎉 Đã đạt cấp tối đa ({STREAK_EVOLUTION_MAX_DAYS} ngày)
+                  </span>
                 )}
                 <div className="streak-evo-progress">
-                  <div className="streak-evo-progress-fill" style={{ width: `${evoProg.percent}%` }} />
+                  <div className="streak-evo-progress-fill" style={{ width: `${displayEvoProg.percent}%` }} />
                 </div>
               </div>
 
-              <div className="streak-big-number">{streak?.count ?? 0}</div>
+              <div className="streak-big-number">{displayStreak}</div>
               <div className="streak-big-label">Ngày Học Liên Tục</div>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.4rem' }}>
-                {streak?.checkedToday
-                  ? 'Tuyệt vời! Bạn đã điểm danh hôm nay.'
-                  : (streak?.count > 0
-                    ? 'Chưa điểm danh hôm nay. Bấm nút bên dưới để nhận +1 Streak!'
-                    : 'Bạn mới bắt đầu học! Bấm điểm danh bên dưới để mở chuỗi streak 1 ngày đầu tiên.')}
+                {adminPreviewStreak !== null && isCompanyAdmin(user) ? (
+                  <strong style={{ color: '#10B981' }}>🧪 Chế độ xem trước Admin đang bật</strong>
+                ) : (
+                  streak?.checkedToday
+                    ? 'Tuyệt vời! Bạn đã điểm danh hôm nay.'
+                    : (streak?.count > 0
+                      ? 'Chưa điểm danh hôm nay. Bấm nút bên dưới để nhận +1 Streak!'
+                      : 'Bạn mới bắt đầu học! Bấm điểm danh bên dưới để mở chuỗi streak 1 ngày đầu tiên.')
+                )}
               </p>
             </div>
 
@@ -385,10 +447,10 @@ export default function HomeTab({
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '0.5rem' }}>
                 <span>Chu kỳ tuần này</span>
-                <span style={{ color: 'var(--color-primary)', fontWeight: 700 }}>{checkedDaysCount} / 7 ngày</span>
+                <span style={{ color: 'var(--color-primary)', fontWeight: 700 }}>{displayCheckedDaysCount} / 7 ngày</span>
               </div>
               <div className="streak-days-row">
-                {daysOfWeek.map((d, i) => (
+                {displayDaysOfWeek.map((d, i) => (
                   <div key={i} className={`day-bubble ${d.checked ? 'checked' : ''} ${d.isToday ? 'today' : ''}`}>
                     <div className="day-bubble-circle">
                       {d.checked ? '🔥' : d.name}
@@ -426,6 +488,231 @@ export default function HomeTab({
               <div style={{ fontSize: '0.75rem', color: 'var(--color-deep)', lineHeight: 1.4 }}>
                 <strong>Quy tắc Streak:</strong> bạn được phép nghỉ tối đa <strong>{graceDays - 1} ngày</strong>. Nếu bỏ trống <strong>{graceDays} ngày liên tiếp</strong> mà không bấm điểm danh, chuỗi streak sẽ bị mất và trở về 0.
               </div>
+            </div>
+
+            {/* Streak Evolution Collection - Expandable Panel */}
+            <div style={{ 
+              borderTop: '1px solid var(--color-border)', 
+              paddingTop: '0.75rem',
+              marginTop: '0.5rem'
+            }}>
+              <button
+                onClick={() => setShowAllEvolutions(!showAllEvolutions)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.6rem 0.75rem',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  color: 'var(--color-deep)',
+                  borderRadius: 'var(--radius-sm)',
+                  transition: 'background 0.2s'
+                }}
+                onMouseEnter={(e) => e.target.style.background = 'var(--color-cream)'}
+                onMouseLeave={(e) => e.target.style.background = 'transparent'}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Trophy size={16} color="var(--color-primary)" />
+                  <span>Bộ sưu tập ({unlockedCount}/{STREAK_EVOLUTIONS.length})</span>
+                </div>
+                <span style={{ 
+                  transform: showAllEvolutions ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.3s',
+                  display: 'inline-block',
+                  fontSize: '0.7rem'
+                }}>
+                  ▼
+                </span>
+              </button>
+
+              {showAllEvolutions && (
+                <div style={{ marginTop: '0.5rem' }}>
+                  {/* Admin Preview Mode Toggle */}
+                  {isCompanyAdmin(user) && (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                      gap: '0.5rem',
+                      marginBottom: '0.5rem',
+                      padding: '0.5rem 0.75rem',
+                      background: '#FFF7ED',
+                      borderRadius: 'var(--radius-sm)',
+                      border: '1px solid var(--color-border)'
+                    }}>
+                      <span style={{ fontSize: '0.7rem', color: 'var(--color-deep)', fontWeight: 600 }}>
+                        🧪 Xem tất cả hình thái (Admin):
+                      </span>
+                      <button
+                        onClick={() => setAdminPreviewMode(!adminPreviewMode)}
+                        style={{
+                          padding: '0.25rem 0.6rem',
+                          fontSize: '0.7rem',
+                          fontWeight: 700,
+                          border: '1px solid var(--color-primary)',
+                          borderRadius: '999px',
+                          background: adminPreviewMode ? 'var(--color-primary)' : '#FFFFFF',
+                          color: adminPreviewMode ? '#FFFFFF' : 'var(--color-primary)',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s'
+                        }}
+                      >
+                        {adminPreviewMode ? 'BẬT ✓' : 'TẮT'}
+                      </button>
+                    </div>
+                  )}
+
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gap: '0.75rem',
+                    padding: '0.75rem',
+                    background: 'var(--color-cream)',
+                    borderRadius: 'var(--radius-md)'
+                  }}>
+                    {STREAK_EVOLUTIONS.map((evo, index) => {
+                      const isUnlocked = (hasStarted && index <= curEvoIndex) || (isCompanyAdmin(user) && adminPreviewMode);
+                      const isCurrent = hasStarted && evo.id === curEvo.id;
+                      const isPreviewActive = adminPreviewStreak === evo.minDays && isCompanyAdmin(user);
+                      
+                      return (
+                        <div
+                          key={evo.id}
+                          onClick={() => {
+                            if (isCompanyAdmin(user)) {
+                              setAdminPreviewStreak(isPreviewActive ? null : evo.minDays);
+                            }
+                          }}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            padding: '0.75rem',
+                            background: isPreviewActive ? '#DCFCE7' : (isCurrent ? evo.aura : '#FFFFFF'),
+                            borderRadius: 'var(--radius-md)',
+                            border: isPreviewActive ? '2px solid #10B981' : (isCurrent ? `2px solid ${evo.accent}` : '1px solid var(--color-border-subtle)'),
+                            position: 'relative',
+                            transition: 'all 0.2s',
+                            boxShadow: isPreviewActive ? '0 2px 8px rgba(16, 185, 129, 0.4)' : (isCurrent ? `0 2px 8px ${evo.glow}` : 'none'),
+                            cursor: isCompanyAdmin(user) ? 'pointer' : 'default',
+                            transform: isPreviewActive ? 'scale(1.05)' : 'scale(1)'
+                          }}
+                          onMouseEnter={(e) => {
+                            if (isCompanyAdmin(user)) {
+                              e.currentTarget.style.transform = 'scale(1.05)';
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (isCompanyAdmin(user) && !isPreviewActive) {
+                              e.currentTarget.style.transform = 'scale(1)';
+                            }
+                          }}
+                        >
+                          {isCurrent && !isPreviewActive && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '-6px',
+                              right: '-6px',
+                              background: evo.accent,
+                              color: '#FFFFFF',
+                              fontSize: '0.55rem',
+                              fontWeight: 800,
+                              padding: '0.15rem 0.4rem',
+                              borderRadius: '999px',
+                              boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+                            }}>
+                              ✓
+                            </div>
+                          )}
+
+                          {isPreviewActive && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '-6px',
+                              right: '-6px',
+                              background: '#10B981',
+                              color: '#FFFFFF',
+                              fontSize: '0.55rem',
+                              fontWeight: 800,
+                              padding: '0.15rem 0.4rem',
+                              borderRadius: '999px',
+                              boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+                            }}>
+                              👁️
+                            </div>
+                          )}
+
+                          {isCompanyAdmin(user) && adminPreviewMode && !isUnlocked && !isPreviewActive && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '-6px',
+                              left: '-6px',
+                              background: '#6366F1',
+                              color: '#FFFFFF',
+                              fontSize: '0.55rem',
+                              fontWeight: 800,
+                              padding: '0.15rem 0.4rem',
+                              borderRadius: '999px',
+                              boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+                            }}>
+                              🔓
+                            </div>
+                          )}
+
+                          <StreakEvolutionArt
+                            id={evo.id}
+                            mono={!isUnlocked}
+                            size={60}
+                            style={{ 
+                              marginBottom: '0.5rem',
+                              opacity: isUnlocked ? 1 : 0.25
+                            }}
+                          />
+
+                          <div style={{
+                            fontSize: '0.7rem',
+                            fontWeight: 700,
+                            textAlign: 'center',
+                            color: isUnlocked ? 'var(--color-deep)' : '#999',
+                            marginBottom: '0.2rem',
+                            minHeight: '2.1em',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            {isUnlocked ? evo.name : '???'}
+                          </div>
+
+                          <div style={{
+                            fontSize: '0.6rem',
+                            color: 'var(--color-text-muted)',
+                            textAlign: 'center'
+                          }}>
+                            {isUnlocked ? evo.dateLabel : `${evo.minDays} ngày`}
+                          </div>
+
+                          {isCompanyAdmin(user) && (
+                            <div style={{
+                              fontSize: '0.55rem',
+                              color: '#10B981',
+                              textAlign: 'center',
+                              marginTop: '0.3rem',
+                              fontWeight: 600
+                            }}>
+                              Click để xem
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Streak Simulation Testing Panel (Chỉ hiển thị cho Admin để tiết kiệm diện tích mobile cho học sinh) */}
