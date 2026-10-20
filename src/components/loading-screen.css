@@ -1,0 +1,48 @@
+/* ============================================================
+   LOADING SCREEN — Animations cho @ThanhNhi gif + spinner
+   ============================================================ */
+
+@keyframes loading-credit-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(234,88,12, 0.65); }
+  50%      { box-shadow: 0 0 0 6px rgba(234,88,12, 0); }
+}
+
+@keyframes loading-dot-bounce {
+  0%, 80%, 100% {
+    transform: translateY(0) scale(0.85);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-6px) scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes loading-bar-slide {
+  0% {
+    left: -45%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Dấu 3 chấm nhịp ngay sau text "Đang tải..." */
+.loading-dots-anim::after {
+  content: '';
+  display: inline-block;
+  width: 1.2em;
+  text-align: left;
+  animation: loading-dots-cycle 1.2s infinite steps(4, end);
+}
+
+@keyframes loading-dots-cycle {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+  100% { content: ''; }
+}
+
+/* Vì pseudo-element không support content động trên mọi browser,
+   fallback dùng span dots đơn giản — class loading-dots-anim chỉ là hint. */

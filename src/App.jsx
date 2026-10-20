@@ -6,6 +6,7 @@ import RoadmapTab from './components/RoadmapTab';
 import ExamRepoTab from './components/ExamRepoTab';
 import AiExamTab from './components/AiExamTab';
 import LoginPage from './components/LoginPage';
+import LoadingScreen from './components/LoadingScreen';
 import { DEFAULT_USER } from './mockData';
 import { Flame, CheckCircle, AlertTriangle, ShieldCheck } from 'lucide-react';
 import AdminPage from './components/AdminPage';
@@ -17,6 +18,14 @@ import BotpressChatBubble from './components/BotpressChatBubble';
 export default function App() {
   const [activeTab, setActiveTab] = useState(TABS.HOME);
   const [toastMessage, setToastMessage] = useState(null);
+
+  // Màn hình Loading lúc khởi động app (lần đầu mở web / refresh)
+  // Hiển thị tối thiểu ~700ms để tránh "flash" gây khó chịu, đồng thời mask quá trình rehydrate state.
+  const [appBooting, setAppBooting] = useState(true);
+  useEffect(() => {
+    const t = setTimeout(() => setAppBooting(false), 800);
+    return () => clearTimeout(t);
+  }, []);
 
   // User state: null = not logged in, object = logged in
   const [user, setUser] = useState(() => {
@@ -207,6 +216,10 @@ export default function App() {
         )}
       </>
     );
+  }
+
+  if (appBooting) {
+    return <LoadingScreen text="Đang khởi động MewTinHoc" fullScreen />;
   }
 
   return (

@@ -16,10 +16,13 @@ import {
   ShieldAlert,
   Database,
   Wrench,
-  ExternalLink
+  ExternalLink,
+  Loader2,
+  X
 } from 'lucide-react';
 import { isCompanyAdmin } from '../lib/roleService.js';
 import { testRoadmapStorageWrite } from '../lib/roadmapStorage.js';
+import LoadingScreen from './LoadingScreen.jsx';
 
 export default function AdminPage({ currentUser: propUser }) {
   const [currentUser, setCurrentUser] = useState(() => {
@@ -41,6 +44,8 @@ export default function AdminPage({ currentUser: propUser }) {
   const [tableExists, setTableExists] = useState(true);
   const [storageTest, setStorageTest] = useState(null);
   const [isTestingStorage, setIsTestingStorage] = useState(false);
+  // Demo màn hình Loading (chỉ Admin mới thấy)
+  const [isLoadingDemoOpen, setIsLoadingDemoOpen] = useState(false);
 
   // Người dùng được coi là có quyền quản trị nếu profile có is_admin = true,
   // hoặc trong quá trình khởi tạo ban đầu khi bảng profiles chưa được tạo.
@@ -566,6 +571,29 @@ CREATE POLICY "storage_read_admin" ON storage.objects
               <span>{isTestingStorage ? 'Đang kiểm tra...' : 'Kiểm tra quyền ghi Storage'}</span>
             </button>
 
+            {/* Nút Xem Demo màn hình Loading (chỉ Admin) */}
+            <button
+              onClick={() => setIsLoadingDemoOpen(true)}
+              title="Mở thử màn hình Loading (con mèo cam + @ThanhNhi) để kiểm tra giao diện"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                padding: '0.6rem 0.9rem',
+                background: 'linear-gradient(135deg, #FFF7ED, #FFEDD5)',
+                color: '#C2410C',
+                border: '1px solid #FED7AA',
+                borderRadius: '8px',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                boxShadow: '0 2px 6px -2px rgba(234,88,12,0.25)'
+              }}
+            >
+              <Loader2 size={15} className="spin-icon" />
+              <span>Xem demo Loading</span>
+            </button>
+
             <button
               onClick={load}
               disabled={isLoading}
@@ -847,6 +875,42 @@ CREATE POLICY "storage_read_admin" ON storage.objects
           </table>
         </div>
       </div>
+
+      {/* ============================================================ */}
+      {/* DEMO MÀN HÌNH LOADING (chỉ Admin mới thấy) */}
+      {/* ============================================================ */}
+      {isLoadingDemoOpen && (
+        <>
+          <LoadingScreen text="Demo Loading - MewTinHoc" fullScreen />
+          {/* Nút đóng demo nổi ở góc phải trên cùng */}
+          <button
+            onClick={() => setIsLoadingDemoOpen(false)}
+            title="Đóng demo Loading"
+            style={{
+              position: 'fixed',
+              top: '20px',
+              right: '20px',
+              zIndex: 10000,
+              background: 'rgba(15,23,42,0.92)',
+              color: '#FFFFFF',
+              border: '1.5px solid rgba(251,191,36,0.6)',
+              borderRadius: '999px',
+              padding: '8px 18px',
+              fontSize: '0.85rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 8px 24px -8px rgba(0,0,0,0.45)',
+              fontFamily: 'inherit'
+            }}
+          >
+            <X size={15} />
+            Đóng demo
+          </button>
+        </>
+      )}
     </div>
   );
 }

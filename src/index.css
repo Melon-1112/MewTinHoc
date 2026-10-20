@@ -4377,7 +4377,14 @@ a {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  background: #FFFCF7;
+  /* Nền đoạn chat: ảnh con mèo CamCam, phủ nhẹ để tin nhắn dễ đọc */
+  background-color: #FFFCF7;
+  background-image:
+    linear-gradient(180deg, rgba(255,252,247,0.55) 0%, rgba(255,252,247,0.80) 100%),
+    url('./assets/cat-chat-bg.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 .botpress-msg-bubble {
