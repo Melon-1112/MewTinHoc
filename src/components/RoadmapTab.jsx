@@ -1118,7 +1118,7 @@ export default function RoadmapTab({
                         <h2 style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--color-deep)', marginBottom: '0.65rem', lineHeight: 1.3 }}>
                           {currentLesson.title}
                         </h2>
-                        <p style={{ fontSize: '0.98rem', color: '#475569', lineHeight: 1.65, maxWidth: '640px', margin: '0 auto' }}>
+                        <p className="theory-summary-text" style={{ fontSize: '0.98rem', color: '#475569', lineHeight: 1.65, maxWidth: '640px', margin: '0 auto', textAlign: 'left' }}>
                           {currentLesson.summary}
                         </p>
                       </div>
@@ -1132,7 +1132,7 @@ export default function RoadmapTab({
                           </h4>
                           <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.9rem', color: '#4C1D95', lineHeight: 1.6 }}>
                             {currentLesson.theory.objectives.map((obj, oIdx) => (
-                              <li key={oIdx} style={{ marginBottom: '0.35rem' }}>
+                              <li key={oIdx} className="theory-objective-item" style={{ marginBottom: '0.35rem' }}>
                                 {obj}
                               </li>
                             ))}
@@ -1171,7 +1171,7 @@ export default function RoadmapTab({
                         <h1 style={{ fontSize: '1.85rem', fontWeight: 900, color: 'var(--color-deep)', marginBottom: '0.75rem', lineHeight: 1.3 }}>
                           {currentLesson.title}
                         </h1>
-                        <p style={{ fontSize: '1.02rem', color: '#475569', lineHeight: 1.7, background: '#F8FAFC', padding: '1rem 1.35rem', borderRadius: 'var(--radius-md)', borderLeft: `5px solid ${currentTrackData.badgeColor}` }}>
+                        <p className="theory-summary-text" style={{ fontSize: '1.02rem', color: '#475569', lineHeight: 1.7, background: '#F8FAFC', padding: '1rem 1.35rem', borderRadius: 'var(--radius-md)', borderLeft: `5px solid ${currentTrackData.badgeColor}`, margin: 0 }}>
                           {currentLesson.summary}
                         </p>
                       </div>
@@ -1185,7 +1185,7 @@ export default function RoadmapTab({
                           </h4>
                           <ul style={{ margin: 0, paddingLeft: '1.35rem', fontSize: '0.95rem', color: '#4C1D95', lineHeight: 1.7 }}>
                             {currentLesson.theory.objectives.map((obj, oIdx) => (
-                              <li key={oIdx} style={{ marginBottom: '0.35rem' }}>
+                              <li key={oIdx} className="theory-objective-item" style={{ marginBottom: '0.35rem' }}>
                                 {obj}
                               </li>
                             ))}
@@ -1296,7 +1296,7 @@ export default function RoadmapTab({
                             <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#B45309', marginBottom: '0.35rem' }}>
                               ⚠️ CẠM BẪY ĐỀ THI & MẸO TRÁNH MẤT ĐIỂM THPTQG:
                             </div>
-                            <div style={{ fontSize: '0.94rem', color: '#78350F', lineHeight: 1.65 }}>
+                            <div className="theory-exam-tips-text" style={{ fontSize: '0.94rem', color: '#78350F', lineHeight: 1.65 }}>
                               {currentLesson.theory && currentLesson.theory.examTips ? (
                                 currentLesson.theory.examTips
                               ) : (

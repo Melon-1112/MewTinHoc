@@ -29,8 +29,8 @@
   --color-danger: #DC2626;
   --color-danger-bg: #FEE2E2;
 
-  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-code: 'JetBrains Mono', monospace;
+  --font-main: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif;
+  --font-code: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Menlo', 'Courier New', monospace;
 
   --shadow-sm: 0 1px 3px rgba(124, 45, 18, 0.06), 0 1px 2px rgba(124, 45, 18, 0.04);
   --shadow-md: 0 4px 14px rgba(124, 45, 18, 0.08), 0 2px 6px rgba(234, 88, 12, 0.04);
@@ -1818,13 +1818,21 @@ a {
   gap: 0.5rem;
   border-bottom: 1.5px dashed var(--color-border);
   padding-bottom: 0.5rem;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
+/* Lý thuyết: giữ nguyên ký tự đặc biệt ($ * # _ ...) Admin gõ ra sao hiển thị y vậy */
 .theory-section-text {
+  font-family: var(--font-main);
   font-size: var(--theory-font-size, 1.02rem);
   color: #334155;
   line-height: 1.75;
   margin-bottom: 0.85rem;
+  white-space: pre-wrap;        /* GIỮ nguyên xuống dòng do Admin nhấn Enter */
+  word-break: break-word;       /* Không bị vỡ layout vì chuỗi dài không có khoảng trắng */
+  overflow-wrap: anywhere;      /* Tránh tràn ngang khi có ký tự đặc biệt dài */
+  unicode-bidi: plaintext;      /* Hiển thị đúng thứ tự ký tự $ * # ngay cả khi trộn RTL */
 }
 
 .theory-bullet-list {
@@ -1836,9 +1844,22 @@ a {
 }
 
 .theory-bullet-item {
+  font-family: var(--font-main);
   font-size: var(--theory-font-size, 0.98rem);
   color: #1E293B;
   line-height: 1.7;
+  white-space: pre-wrap;        /* Giữ xuống dòng nếu Admin nhập nhiều dòng trong 1 bullet */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Summary + exam tips + heading: cũng phải giữ xuống dòng và ký tự đặc biệt */
+.theory-summary-text,
+.theory-exam-tips-text,
+.theory-objective-item {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* Lesson Preview Call To Action Screen */

@@ -129,15 +129,33 @@ const inputStyle = {
   padding: '0.65rem 0.85rem',
   borderRadius: '8px',
   border: '1.5px solid #CBD5E1',
-  fontSize: '0.92rem',
+  fontSize: '0.95rem',
   color: '#0F172A',
   background: '#FFFFFF',
   outline: 'none',
-  fontFamily: 'inherit',
-  lineHeight: 1.6
+  fontFamily: "'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif",
+  lineHeight: 1.65,
+  whiteSpace: 'pre-wrap'  // Giữ nguyên xuống dòng + các khoảng trắng đặc biệt WYSIWYG
 };
 
-const textareaStyle = { ...inputStyle, resize: 'vertical' };
+// Style riêng cho textarea — KHÔNG dùng font monospace, KHÔNG xuống dòng tự động
+// nhằm đảm bảo những gì Admin gõ ($ * # ...) sẽ hiển thị y hệt ngoài giao diện học viên.
+const textareaStyle = {
+  ...inputStyle,
+  resize: 'vertical',
+  minHeight: '60px',
+  wordBreak: 'break-word',
+  overflowWrap: 'anywhere'
+};
+
+const codeEditorTextareaStyle = {
+  ...inputStyle,
+  fontFamily:
+    "'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace",
+  fontSize: '0.88rem',
+  lineHeight: 1.6,
+  whiteSpace: 'pre'
+};
 
 const boxStyle = {
   background: '#FFFFFF',
@@ -215,8 +233,8 @@ export default function AdminTheoryEditor({ lesson, isSaving, status, onSave, on
           <div>
             <div style={{ fontSize: '0.9rem', fontWeight: 800 }}>Chế độ chỉnh sửa lý thuyết (Admin)</div>
             <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
-              Bấm <strong style={{ color: '#FDBA74' }}>Lưu &amp; Đồng bộ Supabase</strong> để ghi trực tiếp vào
-              file JSON trên Storage.
+              Admin gõ <strong style={{ color: '#FDBA74' }}>gì</strong> thì sau khi Lưu sẽ hiển thị{' '}
+              <strong style={{ color: '#FDBA74' }}>y như vậy</strong> cho học viên — không escape, không tự ý thay đổi ký tự <code style={{ color: '#FDBA74' }}>$ * # _</code>...
             </div>
           </div>
         </div>
@@ -482,7 +500,7 @@ export default function AdminTheoryEditor({ lesson, isSaving, status, onSave, on
             />
             <textarea
               rows={7}
-              style={{ ...textareaStyle, fontFamily: 'monospace', fontSize: '0.86rem' }}
+              style={codeEditorTextareaStyle}
               value={draft.codeSnippet.code}
               onChange={(e) => patch({ codeSnippet: { ...draft.codeSnippet, code: e.target.value } })}
               placeholder={'def binary_search(a, x):\n    lo, hi = 0, len(a) - 1\n    ...'}
