@@ -4383,7 +4383,8 @@ a {
     linear-gradient(180deg, rgba(255,252,247,0.55) 0%, rgba(255,252,247,0.80) 100%),
     url('./assets/cat-chat-bg.png');
   background-repeat: no-repeat;
-  background-position: center;
+  /* Neo phần DƯỚI của ảnh nền con mèo */
+  background-position: center bottom;
   background-size: cover;
 }
 
@@ -4619,6 +4620,216 @@ a {
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   SITE FOOTER (MewTinHoc THPTQG)
+   ============================================================ */
+.site-footer {
+  margin-top: auto;
+  border-top: 1.5px solid var(--color-border);
+  background: linear-gradient(180deg, #FFF9F2 0%, var(--color-cream) 100%);
+  padding: 2.25rem 1.5rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.site-footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(251, 191, 36, 0.18) 0%, transparent 42%),
+    radial-gradient(circle at 88% 100%, rgba(234, 88, 12, 0.12) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+.site-footer-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* Brand block */
+.site-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.site-footer-logo {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-deep));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-glow);
+  flex-shrink: 0;
+}
+
+.site-footer-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.site-footer-brand-text {
+  text-align: left;
+}
+
+.site-footer-brand-name {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-deep);
+  line-height: 1.1;
+}
+
+.site-footer-brand-accent {
+  color: var(--color-primary);
+  text-shadow: 0 0 14px rgba(234, 88, 12, 0.35);
+}
+
+.site-footer-brand-name-text {
+  color: var(--color-deep);
+}
+
+.site-footer-brand-tag {
+  font-size: 0.66rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-amber), var(--color-primary));
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.3);
+}
+
+.site-footer-brand-slogan {
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin-top: 0.15rem;
+}
+
+/* Mô tả */
+.site-footer-desc {
+  font-size: 0.83rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  max-width: 680px;
+}
+
+/* Dải highlight */
+.site-footer-highlight {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.15rem;
+}
+
+.site-footer-highlight-item {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--color-deep);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--color-border);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.site-footer-highlight-item:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.site-footer-highlight-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-amber);
+  flex-shrink: 0;
+}
+
+/* Hàng dưới */
+.site-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.9rem;
+  width: 100%;
+  max-width: 780px;
+  border-top: 1px dashed var(--color-border);
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+}
+
+.site-footer-copyright strong {
+  color: var(--color-deep);
+  font-weight: 800;
+}
+
+.site-footer-account strong {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+/* Footer trên mobile */
+@media (max-width: 640px) {
+  .site-footer {
+    padding: 1.5rem 1rem 1.15rem;
+  }
+
+  .site-footer-brand-name {
+    font-size: 1.1rem;
+  }
+
+  .site-footer-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .site-footer-desc {
+    font-size: 0.78rem;
+  }
+
+  .site-footer-highlight {
+    gap: 0.4rem 0.5rem;
+  }
+
+  .site-footer-highlight-item {
+    font-size: 0.7rem;
+    padding: 0.26rem 0.6rem;
+  }
+
+  .site-footer-bottom {
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+  }
 }
 
 /* ============================================================

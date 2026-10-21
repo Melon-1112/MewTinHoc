@@ -14,6 +14,7 @@ import { supabase } from './supabase';
 import { useUserProgress } from './lib/userProgress';
 import { resolveUserRole, syncUserRoleToSupabase } from './lib/roleService';
 import BotpressChatBubble from './components/BotpressChatBubble';
+import logoMeoCam from '../img/logomeocam.png';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(TABS.HOME);
@@ -299,20 +300,47 @@ export default function App() {
 
 
       {/* Footer */}
-      <footer style={{ borderTop: '1.5px solid var(--color-border)', background: '#FFF9F2', padding: '2rem 1.5rem', textAlign: 'center', marginTop: 'auto' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '1.1rem', color: 'var(--color-deep)' }}>
-            <span>TinHocPro THPTQG</span>
-            <span style={{ fontSize: '0.75rem', background: 'var(--color-cream)', color: 'var(--color-primary)', padding: '2px 8px', borderRadius: '999px', border: '1px solid var(--color-border)' }}>
-              Energy Orange Edition
-            </span>
+      <footer className="site-footer">
+        <div className="site-footer-inner">
+          {/* Brand */}
+          <div className="site-footer-brand">
+            <div className="site-footer-logo">
+              <img src={logoMeoCam} alt="MewTinHoc" className="site-footer-logo-img" />
+            </div>
+            <div className="site-footer-brand-text">
+              <div className="site-footer-brand-name">
+                <span className="site-footer-brand-accent">Mew</span>
+                <span className="site-footer-brand-name-text">TinHoc</span>
+                <span className="site-footer-brand-tag">THPTQG</span>
+              </div>
+              <div className="site-footer-brand-slogan">
+                Đồng hành cùng bạn vượt qua kì thi
+              </div>
+            </div>
           </div>
-          <p style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)', maxWidth: '650px' }}>
-            Nền tảng luyện thi Tin học tốt nghiệp THPT chuẩn cấu trúc mới của Bộ Giáo dục & Đào tạo. Lộ trình dây xích trực quan, kho đề thi chuyên sâu và đánh giá phân hóa bằng trí tuệ nhân tạo (AI).
+
+          {/* Mô tả */}
+          <p className="site-footer-desc">
+            Nền tảng luyện thi Tin học tốt nghiệp THPT chuẩn cấu trúc mới của Bộ Giáo dục &amp; Đào tạo. Lộ trình trực quan, kho đề thi chuyên sâu và đánh giá phân hóa bằng trí tuệ nhân tạo (AI).
           </p>
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', display: 'flex', gap: '1.5rem', marginTop: '0.5rem' }}>
-            <span>© 2025 TinHocPro. Bảo lưu mọi quyền.</span>
-            <span>Tài khoản Google đang kết nối: <strong>{user?.name}</strong></span>
+
+          {/* Dải highlight */}
+          <div className="site-footer-highlight">
+            <span className="site-footer-highlight-item">Lộ trình dây xích trực quan</span>
+            <span className="site-footer-highlight-dot" />
+            <span className="site-footer-highlight-item">Kho đề thi chuyên sâu</span>
+            <span className="site-footer-highlight-dot" />
+            <span className="site-footer-highlight-item">Chấm điểm &amp; đánh giá bằng AI</span>
+          </div>
+
+          {/* Hàng dưới */}
+          <div className="site-footer-bottom">
+            <span className="site-footer-copyright">
+              © 2026 <strong>MewTinHoc</strong>. Bảo lưu mọi quyền.
+            </span>
+            <span className="site-footer-account">
+              Tài khoản Google đang kết nối: <strong>{user?.name || 'Khách'}</strong>
+            </span>
           </div>
         </div>
       </footer>
