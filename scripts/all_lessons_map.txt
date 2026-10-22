@@ -1,0 +1,86 @@
+=== CS ROADMAP ===
+
+[Station: cs_station_1] Code: Chủ đề A - Máy Tính & Xã Hội Tri Thức
+   - [cs_a_1] Bài 1: Hệ điều hành & Phần mềm ứng dụng (SGK KNTT Tin 11 - Trang 5)
+   - [cs_a_2] Bài 2: Lưu trữ dữ liệu & Số hóa thông tin (SGK KNTT Tin 11 - Trang 12)
+   - [cs_a_3] Bài 1: Khái niệm & Lịch sử phát triển AI (SGK KNTT Tin 12 - Trang 5)
+   - [cs_a_4] Bài 2: AI trong đời sống & Kinh tế tri thức (SGK KNTT Tin 12 - Trang 10)
+
+[Station: cs_station_2] Code: Chủ đề B - Mạng Máy Tính & Internet
+   - [cs_b_1] Bài 3: Thiết bị mạng & Mạng cục bộ LAN (SGK KNTT Tin 11 - Trang 24)
+   - [cs_b_2] Bài 4: Dịch vụ mạng & Giao thức IP/TCP (SGK KNTT Tin 11 - Trang 30)
+   - [cs_b_3] Bài 3: Thiết bị kết nối mạng Switch/Router nâng cao (SGK KNTT Tin 12 - Trang 14)
+   - [cs_b_4] Bài 4: Mạng không dây Wi-Fi & Điện toán đám mây (SGK KNTT Tin 12 - Trang 20)
+
+[Station: cs_station_3] Code: Chủ đề C (CS) - Cơ Sở Dữ Liệu & Ngôn Ngữ SQL
+   - [cs_c_1] Bài 5: Giới thiệu CSDL & Hệ QTCSDL (SGK KNTT Tin 11 CS - Trang 49)
+   - [cs_c_2] Bài 6: Mô hình CSDL Quan hệ & Khóa chính (SGK KNTT Tin 11 CS - Trang 56)
+   - [cs_c_3] Bài 7: Khóa ngoại & Liên kết bảng (SGK KNTT Tin 11 CS - Trang 63)
+   - [cs_c_4] Bài 8: Ngôn ngữ SQL & Lệnh SELECT (SGK KNTT Tin 11 CS - Trang 70)
+   - [cs_c_5] Bài 9: Truy vấn SQL liên kết đa bảng & Gom nhóm (SGK KNTT Tin 11 CS - Trang 78)
+   - [cs_c_6] Bài 10: Cập nhật dữ liệu INSERT, UPDATE, DELETE (SGK KNTT Tin 11 CS - Trang 85)
+
+[Station: cs_station_4] Code: Chủ đề D - Đạo Đức, Pháp Luật & Văn Hóa Số
+   - [cs_d_1] Bài 11: Bản quyền phần mềm & Giấy phép (SGK KNTT Tin 11 - Trang 38)
+   - [cs_d_2] Bài 5: Luật An ninh mạng & Giữ an toàn số (SGK KNTT Tin 12 - Trang 34)
+
+[Station: cs_station_5] Code: Chủ đề F (CS) - Giải Thuật, Lập Trình Python & Trí Tuệ Nhân Tạo
+   - [cs_f_1] Bài 12: Thuật toán tìm kiếm Tuyến tính & Nhị phân (SGK KNTT Tin 11 CS - Trang 90)
+   - [cs_f_2] Bài 13: Thuật toán sắp xếp Nổi bọt & Chọn (SGK KNTT Tin 11 CS - Trang 98)
+   - [cs_f_3] Bài 14: Thuật toán sắp xếp Chèn & QuickSort (SGK KNTT Tin 11 CS - Trang 106)
+   - [cs_f_4] Bài 15: Kỹ thuật Chia để trị & Đồ thị (SGK KNTT Tin 11 CS - Trang 114)
+   - [cs_f_5] Bài 6: Thuật toán Học máy Supervised & Unsupervised (SGK KNTT Tin 12 CS - Trang 5)
+   - [cs_f_6] Bài 7: Thuật toán Phân loại Classification & KNN (SGK KNTT Tin 12 CS - Trang 15)
+   - [cs_f_7] Bài 8: Thuật toán Phân cụm K-Means (SGK KNTT Tin 12 CS - Trang 25)
+   - [cs_f_8] Bài 9: Viết kịch bản Python nâng cao & Xử lý mảng (SGK KNTT Tin 12 CS - Trang 32)
+
+[Station: cs_station_6] Code: Chủ đề G - Hướng Nghiệp Với Tin Học
+   - [cs_g_1] Bài 16: Các nhóm nghề thuộc ngành CNTT (SGK KNTT Tin 11 - Trang 115)
+   - [cs_g_2] Bài 10: Hướng nghiệp Khoa học dữ liệu & Trí tuệ nhân tạo (SGK KNTT Tin 12 - Trang 106)
+
+[Station: cs_station_7] Code: Chặng Boss - Lộ Trình Về Đích 12 Tuần — Chinh Phục Điểm 9-10 CS
+   - [cs_boss_1] Chiến thuật phân bổ 50 phút cho 22 câu đề thi CS (Cẩm nang ôn thi THPTQG 2025-2026)
+
+=== ICT ROADMAP ===
+
+[Station: ict_station_1] Code: Chủ đề A - Máy Tính & Xã Hội Tri Thức
+   - [ict_a_1] Bài 1: Thiết bị số & Môi trường làm việc số (SGK KNTT Tin 11 - Trang 5)
+   - [ict_a_2] Bài 2: Hệ điều hành thông dụng & Phần mềm ứng dụng (SGK KNTT Tin 11 - Trang 12)
+   - [ict_a_3] Bài 1: Khái niệm & Ứng dụng thực tế của AI (SGK KNTT Tin 12 - Trang 5)
+   - [ict_a_4] Bài 2: AI trong đời sống xã hội & Công việc số (SGK KNTT Tin 12 - Trang 10)
+
+[Station: ict_station_2] Code: Chủ đề B - Mạng Máy Tính & Dịch Vụ Internet
+   - [ict_b_1] Bài 3: Mạng cục bộ LAN & Thiết bị kết nối (SGK KNTT Tin 11 - Trang 24)
+   - [ict_b_2] Bài 4: Khái niệm & Dịch vụ trên Internet (SGK KNTT Tin 11 - Trang 30)
+   - [ict_b_3] Bài 3: Kết nối thiết bị mạng Switch, Router, AP (SGK KNTT Tin 12 - Trang 14)
+   - [ict_b_4] Bài 4: Mạng Wi-Fi & Dịch vụ Lưu trữ đám mây (SGK KNTT Tin 12 - Trang 20)
+
+[Station: ict_station_3] Code: Chủ đề C (ICT) - Bảng Tính Excel Nâng Cao
+   - [ict_c_1] Bài 5: Bảng tính Excel & Địa chỉ ô tuyệt đối/tương đối (SGK KNTT Tin 11 - Trang 49)
+   - [ict_c_2] Bài 6: Các hàm Logic IF, AND, OR trong Excel (SGK KNTT Tin 11 - Trang 58)
+   - [ict_c_3] Bài 7: Các hàm tìm kiếm VLOOKUP, HLOOKUP (SGK KNTT Tin 11 - Trang 66)
+   - [ict_c_4] Bài 8: Hàm thống kê điều kiện SUMIF, COUNTIF (SGK KNTT Tin 11 - Trang 75)
+   - [ict_c_5] Bài 9: Kỹ thuật Pivot Table & Báo cáo thống kê (SGK KNTT Tin 11 - Trang 84)
+   - [ict_c_6] Bài 10: Biểu đồ & Lọc dữ liệu Advanced Filter (SGK KNTT Tin 11 - Trang 92)
+
+[Station: ict_station_4] Code: Chủ đề D - Đạo Đức, Pháp Luật & Văn Hóa Số
+   - [ict_d_1] Bài 11: Bản quyền phần mềm & Tác quyền số (SGK KNTT Tin 11 - Trang 38)
+   - [ict_d_2] Bài 5: An toàn thông tin & Văn hóa mạng (SGK KNTT Tin 12 - Trang 34)
+
+[Station: ict_station_5] Code: Chủ đề E (ICT) - Thiết Kế Web (HTML/CSS) & Đồ Họa Đa Phương Tiện
+   - [ict_e_1] Bài 12: Giới thiệu HTML & Cấu trúc trang Web (SGK KNTT Tin 12 (ICT) - Trang 39)
+   - [ict_e_2] Bài 13: Các thẻ định dạng văn bản & Thẻ ảnh (SGK KNTT Tin 12 (ICT) - Trang 48)
+   - [ict_e_3] Bài 14: Thẻ tạo Bảng Table & Form nhập liệu (SGK KNTT Tin 12 (ICT) - Trang 58)
+   - [ict_e_4] Bài 15: Thẻ liên kết a & Danh sách ul, ol (SGK KNTT Tin 12 (ICT) - Trang 68)
+   - [ict_e_5] Bài 16: Ngôn ngữ CSS & Nhúng CSS vào HTML (SGK KNTT Tin 12 (ICT) - Trang 78)
+   - [ict_e_6] Bài 17: Thuộc tính CSS cơ bản (Color, Font, Margin) (SGK KNTT Tin 12 (ICT) - Trang 88)
+   - [ict_e_7] Bài 18: Cây cấu trúc Website & Xuất bản Web (SGK KNTT Tin 12 (ICT) - Trang 98)
+   - [ict_e_8] Bài 12: Chỉnh sửa ảnh lớp (Layer) & Đồ họa (SGK KNTT Tin 11 (ICT) - Trang 102)
+   - [ict_e_9] Bài 13: Biên tập & Chỉnh sửa Video clip (SGK KNTT Tin 11 (ICT) - Trang 110)
+
+[Station: ict_station_6] Code: Chủ đề G - Nghề Nghiệp & Hướng Nghiệp CNTT Ứng Dụng
+   - [ict_g_1] Bài 14: Các ngành nghề ứng dụng CNTT (SGK KNTT Tin 11 - Trang 115)
+   - [ict_g_2] Bài 10: Hướng nghiệp Quản trị Web & Thiết kế đồ họa (SGK KNTT Tin 12 - Trang 106)
+
+[Station: ict_station_7] Code: Tổng Ôn - Chiến Thuật Bứt Phá Điểm 10 THPTQG (ICT)
+   - [ict_exam_strategy] Bài 1: Chiến thuật giải đề THPTQG môn Tin học (THUD) (Cẩm nang ôn thi THPTQG 2025-2026)

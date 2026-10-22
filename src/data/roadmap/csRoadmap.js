@@ -1,9 +1,7 @@
 /**
  * ==============================================================================
- * DỮ LIỆU LỘ TRÌNH & BÀI GIẢNG LÝ THUYẾT
- * PHÂN BAN: KHOA HỌC MÁY TÍNH (CS / CS-KHMT)
- * BỘ SÁCH THỐNG NHẤT DUY NHẤT: KẾT NỐI TRI THỨC VỚI CUỘC SỐNG (KNTT)
- * CHUẨN ĐỀ THI TỐT NGHIỆP THPT QUỐC GIA 2025 - 2026
+ * DỮ LIỆU LỘ TRÌNH DÂY XÍCH & BÀI GIẢNG LÝ THUYẾT (CHUẨN 2025)
+ * BÁM SÁT MỤC LỤC TÀI LIỆU ÔN TẬP THEO CHỦ ĐỀ VÀ ĐỀ ÔN TẬP
  * ==============================================================================
  */
 
@@ -31,21 +29,21 @@ export const CS_12_WEEK_PLAN = [
   {
     "phase": "Giai đoạn 1",
     "weeks": "Tuần 1 - 4",
-    "title": "Luyện chắc Lý thuyết & Trắc nghiệm Phần I",
+    "title": "Ôn chắc 6 Chủ đề chung & Trắc nghiệm Phần I",
     "targetScore": "4.5 - 5.0 điểm nền tảng",
-    "content": "Ôn tập toàn bộ lý thuyết Chủ đề A, B, D, G trong SGK. Đảm bảo làm nhanh và chính xác 100% các câu hỏi nhận biết - thông hiểu (Phần I) để nắm chắc 4.5 - 5.0 điểm nền tảng."
+    "content": "Ôn tập toàn bộ 6 chủ đề chung của cả CS và ICT: Chủ đề 1 (Trí tuệ nhân tạo), Chủ đề 2 (Mạng máy tính & Internet), Chủ đề 3 (Đạo đức, pháp luật & văn hóa số), Chủ đề 4 (Giới thiệu CSDL), Chủ đề 5 (Tạo trang web HTML & CSS), Chủ đề 6 (Hướng nghiệp với Tin học). Đảm bảo làm nhanh và chính xác 100% các câu hỏi nhận biết - thông hiểu (Phần I) để nắm chắc 4.5 - 5.0 điểm nền tảng."
   },
   {
     "phase": "Giai đoạn 2",
     "weeks": "Tuần 5 - 9",
-    "title": "Cày sâu CSDL, SQL & Lập trình Python",
+    "title": "Cày sâu CSDL, SQL & Lập trình Python (Chuyên sâu CS)",
     "targetScore": "7.5 - 8.5 điểm",
-    "content": "Tập trung giải các bài tập trắc nghiệm Đúng/Sai Phần II. Đọc thuộc và truy vết chính xác các truy vấn SQL (JOIN, GROUP BY) và kịch bản Python (xử lý xâu, mảng 2 chiều, hàm đệ quy, thuật toán sắp xếp)."
+    "content": "Tập trung giải các bài tập trắc nghiệm Đúng/Sai Phần II dành riêng cho CS: Đọc thuộc và truy vết chính xác các truy vấn SQL nâng cao (JOIN, GROUP BY, Subquery) và kịch bản Python (xử lý xâu, mảng 2 chiều, hàm đệ quy, thuật toán sắp xếp/tìm kiếm, AI/Machine Learning)."
   },
   {
     "phase": "Giai đoạn 3",
     "weeks": "Tuần 10 - 12",
-    "title": "Giả định thời gian thật & Tối ưu bài thi Đúng/Sai",
+    "title": "Luyện đề Tổng hợp 50 phút & Tối ưu bài thi Đúng/Sai",
     "targetScore": "9.0 - 10.0 điểm tuyệt đối",
     "content": "Luyện đề thi thử tổng hợp 50 phút. Áp dụng chiến thuật đánh câu Đúng/Sai lũy tiến: Đọc kỹ từng ý a, b, c, d để giành trọn 1.0 điểm cho mỗi câu hỏi Phần II."
   }
@@ -55,79 +53,27 @@ export const csRoadmapStations = [
   {
     "id": "cs_station_1",
     "stepNumber": "01",
-    "code": "Chủ đề A",
-    "title": "Máy Tính & Xã Hội Tri Thức",
-    "category": "Lý thuyết nền tảng",
-    "priority": "Trung bình",
-    "priorityBadge": "normal",
+    "code": "Chủ đề 1",
+    "title": "Giới thiệu Trí tuệ nhân tạo",
+    "category": "Kiến thức chung",
+    "priority": "Cao",
+    "priorityBadge": "high",
     "questionType": "Trắc nghiệm Phần I (2 - 3 câu)",
-    "description": "Hệ điều hành, phần mềm ứng dụng thương mại vs mã nguồn mở, lưu trữ dữ liệu số và khái niệm Trí tuệ nhân tạo (AI).",
+    "bookRef": "Trang 4 - 9",
+    "pdfUrl": "https://vxqvjffssebnuxtslghp.supabase.co/storage/v1/object/public/KhoTaiLieuTinHocThiThu/Chuong%201/Tai_Lieu_On_Thi_Chu_De_1_Gioi_Thieu_AI%20(1).pdf",
+    "description": "Khái niệm Trí tuệ nhân tạo (AI), phép thử Turing, lịch sử phát triển, phân loại AI hẹp (ANI) vs AI tổng quát (AGI), tác động của AI trong đời sống và kinh tế tri thức.",
     "skills": [
-      "Hệ điều hành (OS)",
-      "Phần mềm nguồn mở",
-      "Số hóa thông tin",
-      "Khái niệm & Lịch sử AI"
+      "Khái niệm & Lịch sử phát triển AI",
+      "Phép thử Turing (Turing Test)",
+      "Phân loại AI hẹp (ANI) vs AGI",
+      "Tác động xã hội & Đạo đức AI"
     ],
-    "xp": 250,
+    "xp": 260,
     "lessons": [
-      {
-        "id": "cs_a_1",
-        "title": "Bài 1: Hệ điều hành & Phần mềm ứng dụng",
-        "bookRef": "SGK KNTT Tin 11 - Trang 5",
-        "priority": "Trung bình",
-        "examFormat": "Trắc nghiệm Phần I",
-        "summary": "Khái niệm OS (Windows, Linux, iOS), vai trò quản lý tài nguyên máy tính, phân biệt phần mềm thương mại và mã nguồn mở.",
-        "theory": {
-          "objectives": [
-            "Hiểu chức năng cơ bản của Hệ điều hành (quản lý phần cứng, phần mềm, giao tiếp người dùng).",
-            "Phân biệt rõ ràng phần mềm ứng dụng, phần mềm thương mại và phần mềm nguồn mở."
-          ],
-          "contentSections": [],
-          "examTips": "⚠️ Lưu ý bẫy: Phần mềm mã nguồn mở không đồng nghĩa với phần mềm \"không có bản quyền\". Mã nguồn mở vẫn chịu sự ràng buộc bởi các giấy phép bản quyền như GNU GPL, Apache hoặc MIT."
-        },
-        "quiz": {
-          "question": "Phát biểu nào sau đây là ĐÚNG về phần mềm nguồn mở?",
-          "options": [
-            "Người dùng không được phép chỉnh sửa mã nguồn của phần mềm.",
-            "Mã nguồn được công khai và cho phép người dùng tùy chỉnh, phân phối theo giấy phép.",
-            "Phần mềm nguồn mở không bao giờ có bản quyền sở hữu trí tuệ.",
-            "Hệ điều hành Microsoft Windows là một ví dụ điển hình về phần mềm nguồn mở."
-          ],
-          "answer": 1,
-          "explanation": "Phần mềm nguồn mở công khai mã nguồn theo các giấy phép tự do (như GPL, MIT), cho phép người dùng nghiên cứu, sửa đổi và phân phối lại."
-        }
-      },
-      {
-        "id": "cs_a_2",
-        "title": "Bài 2: Lưu trữ dữ liệu & Số hóa thông tin",
-        "bookRef": "SGK KNTT Tin 11 - Trang 12",
-        "priority": "Trung bình",
-        "examFormat": "Trắc nghiệm Phần I",
-        "summary": "Các đơn vị đo lường thông tin (Byte, KB, MB, GB, TB), nguyên lý số hóa văn bản, hình ảnh và âm thanh.",
-        "theory": {
-          "objectives": [
-            "Nắm chắc bảng đơn vị đo thông tin theo bội số 2^10 = 1024 (hoặc 10^3).",
-            "Hiểu quy trình số hóa thông tin: Rời rạc hóa (lấy mẫu) và lượng tử hóa."
-          ],
-          "contentSections": [],
-          "examTips": "⚠️ Bẫy tính toán: Phân biệt 1 Byte = 8 bits. Khi đề bài hỏi dung lượng lưu trữ của ảnh 1000x1000 pixel 24-bit màu, dung lượng = 1000 * 1000 * 3 Bytes = 3.000.000 Bytes (~2.86 MB)."
-        },
-        "quiz": {
-          "question": "Một bức ảnh có kích thước 800 x 600 pixel, sử dụng chuẩn màu 24-bit (3 bytes mỗi pixel). Dung lượng thô của ảnh khi chưa nén là bao nhiêu?",
-          "options": [
-            "480.000 Bytes",
-            "1.440.000 Bytes",
-            "3.840.000 Bytes",
-            "1.200.000 Bytes"
-          ],
-          "answer": 1,
-          "explanation": "Dung lượng thô = 800 * 600 * 3 Bytes = 1.440.000 Bytes (khoảng 1.37 MB)."
-        }
-      },
       {
         "id": "cs_a_3",
         "title": "Bài 1: Khái niệm & Lịch sử phát triển AI",
-        "bookRef": "SGK KNTT Tin 12 - Trang 5",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 1 (Trang 4)",
         "priority": "Trung bình",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Định nghĩa Trí tuệ nhân tạo (AI), phép thử Turing (Turing Test), các giai đoạn phát triển và bước ngoặt Deep Learning.",
@@ -154,7 +100,7 @@ export const csRoadmapStations = [
       {
         "id": "cs_a_4",
         "title": "Bài 2: AI trong đời sống & Kinh tế tri thức",
-        "bookRef": "SGK KNTT Tin 12 - Trang 10",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 1 (Trang 7)",
         "priority": "Trung bình",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Phân loại AI hẹp (Narrow AI) vs AI tổng quát (AGI), Machine Learning, Deep Learning và AI tạo sinh (Generative AI).",
@@ -183,25 +129,26 @@ export const csRoadmapStations = [
   {
     "id": "cs_station_2",
     "stepNumber": "02",
-    "code": "Chủ đề B",
-    "title": "Mạng Máy Tính & Internet",
-    "category": "Hạ tầng mạng & Kết nối",
+    "code": "Chủ đề 2",
+    "title": "Mạng máy tính và Internet",
+    "category": "Kiến thức chung",
     "priority": "Trung bình",
     "priorityBadge": "normal",
     "questionType": "Trắc nghiệm Phần I (2 câu)",
-    "description": "Thiết bị mạng Switch, Router, Access Point; Địa chỉ IPv4/IPv6; Tên miền DNS; Mô hình Điện toán đám mây IaaS, PaaS, SaaS.",
+    "bookRef": "Trang 10 - 19",
+    "description": "Thiết bị mạng Switch, Router, Access Point; mạng cục bộ LAN; giao thức mạng TCP/IP; địa chỉ IPv4/IPv6; mạng không dây Wi-Fi và Điện toán đám mây (IaaS, PaaS, SaaS).",
     "skills": [
-      "Switch vs Router vs AP",
-      "Giao thức TCP/IP",
-      "IPv4 & IPv6 & DNS",
-      "Đám mây IaaS, PaaS, SaaS"
+      "Switch, Router & Access Point",
+      "Giao thức TCP/IP & Địa chỉ IP/DNS",
+      "Mạng không dây Wi-Fi",
+      "Điện toán đám mây (Cloud Computing)"
     ],
     "xp": 280,
     "lessons": [
       {
         "id": "cs_b_1",
-        "title": "Bài 3: Thiết bị mạng & Mạng cục bộ LAN",
-        "bookRef": "SGK KNTT Tin 11 - Trang 24",
+        "title": "Bài 1: Thiết bị mạng & Mạng cục bộ LAN",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 10)",
         "priority": "Trung bình",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Chức năng Switch, Router, Access Point (AP), Modem; môi trường truyền dẫn có dây và không dây.",
@@ -227,8 +174,8 @@ export const csRoadmapStations = [
       },
       {
         "id": "cs_b_2",
-        "title": "Bài 4: Dịch vụ mạng & Giao thức IP/TCP",
-        "bookRef": "SGK KNTT Tin 11 - Trang 30",
+        "title": "Bài 2: Dịch vụ mạng & Giao thức IP/TCP",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 13)",
         "priority": "Trung bình",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Bộ giao thức TCP/IP, địa chỉ IPv4 (32-bit), IPv6 (128-bit), cơ chế phân giải tên miền DNS.",
@@ -254,8 +201,8 @@ export const csRoadmapStations = [
       },
       {
         "id": "cs_b_3",
-        "title": "Bài 3: Thiết bị kết nối mạng Switch/Router nâng cao",
-        "bookRef": "SGK KNTT Tin 12 - Trang 14",
+        "title": "Bài 3: Thiết bị kết nối Switch/Router nâng cao",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 15)",
         "priority": "Trung bình",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Bảng định tuyến (Routing table), cơ chế lọc gói tin, phân chia mạng con (Subnet).",
@@ -282,7 +229,7 @@ export const csRoadmapStations = [
       {
         "id": "cs_b_4",
         "title": "Bài 4: Mạng không dây Wi-Fi & Điện toán đám mây",
-        "bookRef": "SGK KNTT Tin 12 - Trang 20",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 17)",
         "priority": "Trung bình",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Các mô hình dịch vụ đám mây: IaaS (Hạ tầng), PaaS (Nền tảng), SaaS (Phần mềm) và ứng dụng thực tiễn.",
@@ -311,207 +258,26 @@ export const csRoadmapStations = [
   {
     "id": "cs_station_3",
     "stepNumber": "03",
-    "code": "Chủ đề C (CS)",
-    "title": "Cơ Sở Dữ Liệu & Ngôn Ngữ SQL",
-    "category": "Trọng tâm Phần I & II",
-    "priority": "Rất cao",
-    "priorityBadge": "high",
-    "questionType": "Trắc nghiệm Phần I & Phần II (Đúng/Sai)",
-    "description": "Bảng quan hệ, Khóa chính (PK), Khóa ngoại (FK), Ràng buộc toàn vẹn, Câu lệnh SELECT, WHERE, JOIN, GROUP BY, HAVING, INSERT, UPDATE, DELETE.",
-    "skills": [
-      "Khóa chính & Khóa ngoại",
-      "Truy vấn SELECT SQL",
-      "Phép nối INNER JOIN",
-      "Gom nhóm GROUP BY & HAVING"
-    ],
-    "xp": 450,
-    "lessons": [
-      {
-        "id": "cs_c_1",
-        "title": "Bài 5: Giới thiệu CSDL & Hệ QTCSDL",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 49",
-        "priority": "Rất cao",
-        "examFormat": "Trắc nghiệm Phần I & II",
-        "summary": "Khái niệm CSDL, Hệ quản trị CSDL (DBMS), các đặc trưng an toàn, tính toàn vẹn và độc lập dữ liệu.",
-        "theory": {
-          "objectives": [
-            "Phân biệt được CSDL (Database) và Hệ quản trị CSDL (DBMS).",
-            "Nắm vai trò tránh dư thừa dữ liệu và đảm bảo nhất quán."
-          ],
-          "contentSections": [],
-          "examTips": "CSDL là dữ liệu; DBMS là phần mềm quản lý dữ liệu đó."
-        },
-        "quiz": {
-          "question": "Phần mềm nào sau đây là Hệ quản trị cơ sở dữ liệu (DBMS)?",
-          "options": [
-            "Python",
-            "MySQL",
-            "Visual Studio Code",
-            "Git"
-          ],
-          "answer": 1,
-          "explanation": "MySQL là một Hệ quản trị cơ sở dữ liệu quan hệ (RDBMS) rất phổ biến."
-        }
-      },
-      {
-        "id": "cs_c_2",
-        "title": "Bài 6: Mô hình CSDL Quan hệ & Khóa chính",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 56",
-        "priority": "Rất cao",
-        "examFormat": "Trắc nghiệm Phần I & II",
-        "summary": "Cấu trúc bảng, bản ghi (dòng), thuộc tính (cột), khái niệm Khóa chính (Primary Key) và tính duy nhất, khác NULL.",
-        "theory": {
-          "objectives": [
-            "Hiểu định nghĩa Khóa chính (Primary Key).",
-            "Nắm hai điều kiện bắt buộc của Khóa chính: DUY NHẤT (Unique) và KHÔNG ĐƯỢC RỖNG (NOT NULL)."
-          ],
-          "contentSections": [],
-          "examTips": "⚠️ Bẫy đề Đúng/Sai Phần II: \"Một bảng có thể có nhiều khóa chính\" -> SAI (chỉ có duy nhất 1 khóa chính, nhưng có thể gồm nhiều thuộc tính kết hợp)."
-        },
-        "quiz": {
-          "question": "Hai tính chất bắt buộc của một Khóa chính (Primary Key) trong bảng quan hệ là:",
-          "options": [
-            "Giá trị phải là số nguyên và tự động tăng",
-            "Giá trị phải mang tính DUY NHẤT và KHÔNG ĐƯỢC RỖNG (NOT NULL)",
-            "Giá trị có thể trùng nhau nhưng không được rỗng",
-            "Chỉ áp dụng cho trường văn bản"
-          ],
-          "answer": 1,
-          "explanation": "Khóa chính bắt buộc phải duy nhất trên toàn bảng và không được mang giá trị NULL."
-        }
-      },
-      {
-        "id": "cs_c_3",
-        "title": "Bài 7: Khóa ngoại & Liên kết bảng",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 63",
-        "priority": "Rất cao",
-        "examFormat": "Trắc nghiệm Phần I & II",
-        "summary": "Khái niệm Khóa ngoại (Foreign Key), ràng buộc toàn vẹn tham chiếu, liên kết quan hệ 1 - 1, 1 - N, N - N.",
-        "theory": {
-          "objectives": [
-            "Hiểu Khóa ngoại là cầu nối tham chiếu đến Khóa chính của bảng khác.",
-            "Nắm quy tắc toàn vẹn tham chiếu: Giá trị khóa ngoại phải tồn tại ở bảng cha hoặc mang giá trị NULL."
-          ],
-          "contentSections": [],
-          "examTips": "⚠️ Bẫy xóa dữ liệu: Không thể xóa một dòng ở bảng cha (chứa khóa chính) nếu đang có dòng ở bảng con (chứa khóa ngoại) tham chiếu tới nó (trừ khi có thiết lập ON DELETE CASCADE)."
-        },
-        "quiz": {
-          "question": "Ràng buộc toàn vẹn tham chiếu của Khóa ngoại (Foreign Key) quy định điều gì?",
-          "options": [
-            "Giá trị khóa ngoại luôn luôn bằng 0",
-            "Giá trị khóa ngoại phải tồn tại trong tập giá trị khóa chính của bảng được tham chiếu (hoặc là NULL)",
-            "Bảng chứa khóa ngoại bắt buộc phải có ít hơn 10 cột",
-            "Khóa ngoại không được phép trùng lặp trong bảng của nó"
-          ],
-          "answer": 1,
-          "explanation": "Toàn vẹn tham chiếu đảm bảo không có bản ghi \"mồ côi\" tham chiếu tới một đối tượng không tồn tại ở bảng cha."
-        }
-      },
-      {
-        "id": "cs_c_4",
-        "title": "Bài 8: Ngôn ngữ SQL & Lệnh SELECT",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 70",
-        "priority": "Rất cao",
-        "examFormat": "Trắc nghiệm Phần I & II",
-        "summary": "Cú pháp câu lệnh SELECT căn bản, lọc dữ liệu với WHERE, toán tử so sánh, LIKE, BETWEEN, ORDER BY sắp xếp.",
-        "theory": {
-          "objectives": [
-            "Viết đúng thứ tự các mệnh đề SQL: SELECT ... FROM ... WHERE ... ORDER BY ...",
-            "Sử dụng thành thạo toán tử LIKE với ký tự đại diện % và _."
-          ],
-          "contentSections": [],
-          "examTips": "⚠️ Trật tự thực thi trong SQL: FROM -> WHERE -> SELECT -> ORDER BY. Do đó không thể dùng bí danh (Alias) đặt trong SELECT để lọc ở WHERE."
-        },
-        "quiz": {
-          "question": "Để lọc các học sinh có tên bắt đầu bằng chữ cái \"N\" trong bảng HOC_SINH, mệnh đề WHERE nào sau đây là chính xác?",
-          "options": [
-            "WHERE HoTen = 'N*'",
-            "WHERE HoTen LIKE 'N%'",
-            "WHERE HoTen IN ('N')",
-            "WHERE HoTen CONTAINS 'N'"
-          ],
-          "answer": 1,
-          "explanation": "Trong chuẩn SQL, toán tử LIKE kết hợp với ký tự '%' đại diện cho chuỗi ký tự bất kỳ."
-        }
-      },
-      {
-        "id": "cs_c_5",
-        "title": "Bài 9: Truy vấn SQL liên kết đa bảng & Gom nhóm",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 78",
-        "priority": "Rất cao",
-        "examFormat": "Trọng tâm Phần II Đúng/Sai",
-        "summary": "Phép nối INNER JOIN, LEFT JOIN; Gom nhóm GROUP BY kết hợp điều kiện lọc HAVING và các hàm tổng hợp COUNT, SUM, AVG, MAX, MIN.",
-        "theory": {
-          "objectives": [
-            "Phân biệt rõ ràng sự khác nhau giữa WHERE và HAVING.",
-            "Hiểu bản chất của INNER JOIN dựa trên điều kiện khóa chính - khóa ngoại."
-          ],
-          "contentSections": [],
-          "examTips": "⚠️ Ghi nhớ vàng: Nếu thấy \"WHERE COUNT(*) > 5\" trong bất kỳ phương án nào -> Chắc chắn phương án đó SAI!"
-        },
-        "quiz": {
-          "question": "Phát biểu nào sau đây là ĐÚNG về mệnh đề WHERE và HAVING trong SQL?",
-          "options": [
-            "Hàm tổng hợp như COUNT(*), SUM() có thể đặt trực tiếp trong mệnh đề WHERE.",
-            "WHERE lọc các dòng trước khi gom nhóm, còn HAVING lọc các nhóm sau khi GROUP BY.",
-            "HAVING luôn luôn phải đứng trước mệnh đề WHERE trong câu truy vấn.",
-            "Nếu có HAVING thì bắt buộc không được dùng WHERE."
-          ],
-          "answer": 1,
-          "explanation": "WHERE lọc các dòng trước khi nhóm. HAVING lọc các nhóm dữ liệu sau khi GROUP BY và có thể chứa hàm tổng hợp."
-        }
-      },
-      {
-        "id": "cs_c_6",
-        "title": "Bài 10: Cập nhật dữ liệu INSERT, UPDATE, DELETE",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 85",
-        "priority": "Rất cao",
-        "examFormat": "Trắc nghiệm Phần I & II",
-        "summary": "Cú pháp thêm bản ghi mới (INSERT INTO), sửa dữ liệu (UPDATE SET WHERE), xóa bản ghi (DELETE FROM WHERE).",
-        "theory": {
-          "objectives": [
-            "Viết đúng cú pháp 3 thao tác biến đổi dữ liệu.",
-            "Nhận biết nguy cơ xóa/sửa toàn bộ bảng nếu quên mệnh đề WHERE."
-          ],
-          "contentSections": [],
-          "examTips": "⚠️ Cực kỳ cẩn trọng: Nếu câu lệnh UPDATE hoặc DELETE không có mệnh đề WHERE, toàn bộ các dòng trong bảng sẽ bị thay đổi hoặc xóa sạch."
-        },
-        "quiz": {
-          "question": "Câu lệnh SQL nào dùng để tăng điểm Tin của học sinh có mã \"HS01\" lên 10.0?",
-          "options": [
-            "MODIFY HOC_SINH SET DiemTin = 10.0 WHERE MaHS = 'HS01';",
-            "UPDATE HOC_SINH SET DiemTin = 10.0 WHERE MaHS = 'HS01';",
-            "CHANGE HOC_SINH DiemTin = 10.0 WHERE MaHS = 'HS01';",
-            "INSERT INTO HOC_SINH (DiemTin) VALUES (10.0) WHERE MaHS = 'HS01';"
-          ],
-          "answer": 1,
-          "explanation": "Cú pháp sửa dữ liệu chuẩn trong SQL là: UPDATE TenBang SET Cot = GiaTri WHERE DieuKien."
-        }
-      }
-    ]
-  },
-  {
-    "id": "cs_station_4",
-    "stepNumber": "04",
-    "code": "Chủ đề D",
-    "title": "Đạo Đức, Pháp Luật & Văn Hóa Số",
-    "category": "Pháp lý & Đạo đức",
+    "code": "Chủ đề 3",
+    "title": "Đạo đức, pháp luật và văn hoá trong môi trường số",
+    "category": "Kiến thức chung",
     "priority": "Trung bình",
     "priorityBadge": "normal",
     "questionType": "Trắc nghiệm Phần I (1 - 2 câu)",
-    "description": "Bản quyền phần mềm, Các loại giấy phép bản quyền (Creative Commons, GPL), Luật An ninh mạng, Bảo vệ quyền riêng tư và dữ liệu số.",
+    "bookRef": "Trang 20 - 24",
+    "description": "Bản quyền phần mềm, sở hữu trí tuệ, giấy phép phần mềm mã nguồn mở (GPL, Apache, MIT), Luật An ninh mạng và văn hóa ứng xử, bảo vệ dữ liệu cá nhân trên không gian số.",
     "skills": [
-      "Giấy phép CC (Creative Commons)",
-      "Bản quyền GPL & Free Software",
-      "Luật An ninh mạng 2018",
-      "Bảo vệ thông tin cá nhân"
+      "Bản quyền phần mềm & Tác quyền số",
+      "Giấy phép mã nguồn mở (GPL, MIT)",
+      "Luật An ninh mạng Việt Nam",
+      "Văn hóa ứng xử & An toàn số"
     ],
     "xp": 220,
     "lessons": [
       {
         "id": "cs_d_1",
-        "title": "Bài 11: Bản quyền phần mềm & Giấy phép",
-        "bookRef": "SGK KNTT Tin 11 - Trang 38",
+        "title": "Bài 1: Bản quyền phần mềm & Giấy phép nguồn mở",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 3 (Trang 20)",
         "priority": "Trung bình",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Các loại bản quyền phần mềm, giấy phép nguồn mở GNU GPL, bản quyền tác giả Creative Commons (CC BY, CC NC, CC ND, CC SA).",
@@ -537,8 +303,8 @@ export const csRoadmapStations = [
       },
       {
         "id": "cs_d_2",
-        "title": "Bài 5: Luật An ninh mạng & Giữ an toàn số",
-        "bookRef": "SGK KNTT Tin 12 - Trang 34",
+        "title": "Bài 2: Luật An ninh mạng & Giữ an toàn số",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 3 (Trang 22)",
         "priority": "Trung bình",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Luật An ninh mạng Việt Nam (2018), phòng ngừa tấn công mạng, phòng chống lừa đảo trực tuyến (Phishing) và bảo vệ dữ liệu cá nhân.",
@@ -565,237 +331,367 @@ export const csRoadmapStations = [
     ]
   },
   {
-    "id": "cs_station_5",
-    "stepNumber": "05",
-    "code": "Chủ đề F (CS)",
-    "title": "Giải Thuật, Lập Trình Python & Trí Tuệ Nhân Tạo",
-    "category": "TRỌNG TÂM CAO NHẤT PHẦN II",
-    "priority": "Cực kỳ cao",
-    "priorityBadge": "extreme",
-    "questionType": "Trắc nghiệm Đúng/Sai (Câu 3 & 4 Phần II)",
-    "description": "TRỌNG TÂM ĐIỂM 9-10 ĐỊNH HƯỚNG CS! Đọc hiểu code Python, Xâu, List, Đệ quy, Tìm kiếm tuyến tính & nhị phân, Sắp xếp nổi bọt/chọn/chèn/QuickSort, Thuật toán Học máy KNN & K-Means.",
+    "id": "cs_station_4",
+    "stepNumber": "04",
+    "code": "Chủ đề 4",
+    "title": "Giới thiệu các hệ Cơ sở dữ liệu",
+    "category": "Kiến thức chung",
+    "priority": "Rất cao",
+    "priorityBadge": "high",
+    "questionType": "Trắc nghiệm Phần I & II",
+    "bookRef": "Trang 25 - 39",
+    "description": "Khái niệm CSDL & Hệ Quản trị CSDL (DBMS), mô hình CSDL quan hệ, bảng dữ liệu, khóa chính (Primary Key), khóa ngoại (Foreign Key), liên kết bảng và ngôn ngữ truy vấn SQL.",
     "skills": [
-      "Truy vết vòng lặp Python",
-      "Tìm kiếm nhị phân",
-      "Độ phức tạp O(n) & O(n log n)",
-      "Thuật toán KNN & K-Means"
+      "Khái niệm CSDL & Hệ QTCSDL",
+      "Bảng dữ liệu & Khóa chính (PK)",
+      "Khóa ngoại & Mối quan hệ liên kết bảng",
+      "Ngôn ngữ SQL (SELECT, JOIN, UPDATE)"
     ],
-    "xp": 600,
+    "xp": 350,
     "lessons": [
       {
-        "id": "cs_f_1",
-        "title": "Bài 12: Thuật toán tìm kiếm Tuyến tính & Nhị phân",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 90",
-        "priority": "Cực kỳ cao",
-        "examFormat": "Trắc nghiệm Đúng/Sai Phần II",
-        "summary": "Linear Search O(n), Binary Search O(log n), điều kiện áp dụng tìm kiếm nhị phân (danh sách ĐÃ ĐƯỢC SẮP XẾP).",
-        "theory": {
-          "objectives": [
-            "Hiểu bản chất và số phép so sánh của tìm kiếm tuyến tính vs tìm kiếm nhị phân.",
-            "Đọc hiểu và truy vết từng bước chạy của đoạn mã Python cài đặt tìm kiếm nhị phân."
-          ],
-          "contentSections": [],
-          "examTips": "⚠️ Bẫy đề Đúng/Sai: \"Có thể áp dụng ngay thuật toán tìm kiếm nhị phân cho một danh sách bất kỳ chưa được sắp xếp\" -> SAI hoàn toàn!"
-        },
-        "quiz": {
-          "question": "Cho mảng đã sắp xếp gồm 1024 phần tử. Số lần so sánh tối đa trong trường hợp xấu nhất của thuật toán Tìm kiếm nhị phân là bao nhiêu?",
-          "options": [
-            "1024 lần",
-            "512 lần",
-            "11 lần (khoảng log2(1024) + 1)",
-            "100 lần"
-          ],
-          "answer": 2,
-          "explanation": "Với mảng n = 1024 phần tử, số lần lặp tối đa là log2(1024) + 1 = 10 + 1 = 11 phép so sánh."
-        }
-      },
-      {
-        "id": "cs_f_2",
-        "title": "Bài 13: Thuật toán sắp xếp Nổi bọt & Chọn",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 98",
-        "priority": "Cực kỳ cao",
-        "examFormat": "Trắc nghiệm Đúng/Sai Phần II",
-        "summary": "Bubble Sort và Selection Sort: Ý tưởng hoán đổi, trạng thái của mảng sau mỗi lượt lặp, độ phức tạp O(n^2).",
-        "theory": {
-          "objectives": [
-            "Nắm chắc trạng thái của mảng sau mỗi vòng lặp i.",
-            "Đọc hiểu mã nguồn Python và xác định số lần hoán đổi (swap)."
-          ],
-          "contentSections": [],
-          "examTips": "Đề bài rất hay hỏi: \"Sau vòng lặp ngoài đầu tiên (i = 0), danh sách [5, 1, 4, 2, 8] sẽ trở thành dãy số nào?\". Hãy truy vết từng cặp liền kề!"
-        },
-        "quiz": {
-          "question": "Độ phức tạp thời gian trong trường hợp xấu nhất của cả 2 thuật toán Sắp xếp nổi bọt (Bubble Sort) và Sắp xếp chọn (Selection Sort) là:",
-          "options": [
-            "O(1)",
-            "O(n)",
-            "O(n log n)",
-            "O(n^2)"
-          ],
-          "answer": 3,
-          "explanation": "Cả Bubble Sort và Selection Sort sử dụng 2 vòng lặp lồng nhau nên độ phức tạp là O(n^2)."
-        }
-      },
-      {
-        "id": "cs_f_3",
-        "title": "Bài 14: Thuật toán sắp xếp Chèn & QuickSort",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 106",
-        "priority": "Cực kỳ cao",
-        "examFormat": "Trắc nghiệm Đúng/Sai Phần II",
-        "summary": "Insertion Sort, thuật toán sắp xếp nhanh QuickSort theo kỹ thuật phân hoạch chốt (Pivot), độ phức tạp O(n log n).",
-        "theory": {
-          "objectives": [
-            "Hiểu cơ chế chọn Pivot và phân hoạch mảng trong QuickSort.",
-            "Nắm độ phức tạp trung bình của QuickSort là O(n log n)."
-          ],
-          "contentSections": [],
-          "examTips": ""
-        },
-        "quiz": {
-          "question": "Thuật toán sắp xếp nhanh (QuickSort) dựa trên kỹ thuật thiết kế thuật toán nào?",
-          "options": [
-            "Tham lam (Greedy)",
-            "Chia để trị (Divide and Conquer)",
-            "Quy hoạch động (Dynamic Programming)",
-            "Tìm kiếm vét cạn"
-          ],
-          "answer": 1,
-          "explanation": "QuickSort chọn chốt (Pivot) và phân hoạch dãy thành 2 phần độc lập để đệ quy sắp xếp, áp dụng chiến lược Chia để trị."
-        }
-      },
-      {
-        "id": "cs_f_4",
-        "title": "Bài 15: Kỹ thuật Chia để trị & Đồ thị",
-        "bookRef": "SGK KNTT Tin 11 CS - Trang 114",
-        "priority": "Cực kỳ cao",
+        "id": "cs_c_1",
+        "title": "Bài 1: Giới thiệu CSDL & Hệ QTCSDL",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 25)",
+        "priority": "Rất cao",
         "examFormat": "Trắc nghiệm Phần I & II",
-        "summary": "Tư tưởng chia nhỏ bài toán thành các bài toán con cùng dạng, hàm đệ quy trong Python và các khái niệm đồ thị đỉnh/cạnh.",
+        "summary": "Khái niệm CSDL, Hệ quản trị CSDL (DBMS), các đặc trưng an toàn, tính toàn vẹn và độc lập dữ liệu.",
         "theory": {
           "objectives": [
-            "Xác định điểm dừng (Base case) và bước đệ quy của hàm.",
-            "Đọc hiểu ma trận kề, danh sách kề biểu diễn đồ thị."
+            "Phân biệt được CSDL (Database) và Hệ quản trị CSDL (DBMS).",
+            "Nắm vai trò tránh dư thừa dữ liệu và đảm bảo nhất quán."
           ],
           "contentSections": [],
-          "examTips": ""
+          "examTips": "CSDL là dữ liệu; DBMS là phần mềm quản lý dữ liệu đó."
         },
         "quiz": {
-          "question": "Một hàm đệ quy trong Python bắt buộc phải có thành phần nào để không rơi vào vòng lặp vô hạn (RecursionError)?",
+          "question": "Phần mềm nào sau đây là Hệ quản trị cơ sở dữ liệu (DBMS)?",
           "options": [
-            "Vòng lặp while",
-            "Điểm dừng (Base case / Neo đệ quy)",
-            "Lệnh try-except",
-            "Khối lệnh else"
+            "Python",
+            "MySQL",
+            "Visual Studio Code",
+            "Git"
           ],
           "answer": 1,
-          "explanation": "Mọi hàm đệ quy bắt buộc phải có điều kiện dừng (Base case) để chấm dứt chuỗi gọi đệ quy."
+          "explanation": "MySQL là một Hệ quản trị cơ sở dữ liệu quan hệ (RDBMS) rất phổ biến."
         }
       },
       {
-        "id": "cs_f_5",
-        "title": "Bài 6: Thuật toán Học máy Supervised & Unsupervised",
-        "bookRef": "SGK KNTT Tin 12 CS - Trang 5",
-        "priority": "Cực kỳ cao",
-        "examFormat": "Trắc nghiệm Đúng/Sai Phần II",
-        "summary": "Phân biệt Học có giám sát (Supervised Learning - dữ liệu có nhãn) vs Học không giám sát (Unsupervised Learning - dữ liệu chưa có nhãn).",
+        "id": "cs_c_2",
+        "title": "Bài 2: Mô hình CSDL Quan hệ & Khóa chính",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 28)",
+        "priority": "Rất cao",
+        "examFormat": "Trắc nghiệm Phần I & II",
+        "summary": "Cấu trúc bảng, bản ghi (dòng), thuộc tính (cột), khái niệm Khóa chính (Primary Key) và tính duy nhất, khác NULL.",
         "theory": {
           "objectives": [
-            "Hiểu bản chất dữ liệu có nhãn (Labeled data) vs không nhãn (Unlabeled data).",
-            "Phân loại bài toán Phân lớp (Classification) / Hồi quy (Regression) vs Phân cụm (Clustering)."
+            "Hiểu định nghĩa Khóa chính (Primary Key).",
+            "Nắm hai điều kiện bắt buộc của Khóa chính: DUY NHẤT (Unique) và KHÔNG ĐƯỢC RỖNG (NOT NULL)."
           ],
           "contentSections": [],
-          "examTips": "⚠️ Bẫy đề: Học có giám sát bắt buộc phải có nhãn kết quả (Label). Học không giám sát thì không có nhãn!"
+          "examTips": "⚠️ Bẫy đề Đúng/Sai Phần II: \"Một bảng có thể có nhiều khóa chính\" -> SAI (chỉ có duy nhất 1 khóa chính, nhưng có thể gồm nhiều thuộc tính kết hợp)."
         },
         "quiz": {
-          "question": "Bài toán phân loại email thành \"Hộp thư đến\" hoặc \"Thư rác (Spam)\" dựa trên tập hàng ngàn email đã được đánh dấu mẫu thuộc loại học máy nào?",
+          "question": "Hai tính chất bắt buộc của một Khóa chính (Primary Key) trong bảng quan hệ là:",
           "options": [
-            "Học không giám sát (Unsupervised Learning)",
-            "Học có giám sát (Supervised Learning)",
-            "Học tăng cường (Reinforcement Learning)",
-            "Học tự quản (Self-supervised)"
+            "Giá trị phải là số nguyên và tự động tăng",
+            "Giá trị phải mang tính DUY NHẤT và KHÔNG ĐƯỢC RỖNG (NOT NULL)",
+            "Giá trị có thể trùng nhau nhưng không được rỗng",
+            "Chỉ áp dụng cho trường văn bản"
           ],
           "answer": 1,
-          "explanation": "Vì tập dữ liệu đã có nhãn \"Spam\" hoặc \"Không Spam\" nên đây là bài toán Học có giám sát (Supervised Learning)."
+          "explanation": "Khóa chính bắt buộc phải duy nhất trên toàn bảng và không được mang giá trị NULL."
         }
       },
       {
-        "id": "cs_f_6",
-        "title": "Bài 7: Thuật toán Phân loại Classification & KNN",
-        "bookRef": "SGK KNTT Tin 12 CS - Trang 15",
+        "id": "cs_c_3",
+        "title": "Bài 3: Khóa ngoại & Liên kết bảng",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 31)",
+        "priority": "Rất cao",
+        "examFormat": "Trắc nghiệm Phần I & II",
+        "summary": "Khái niệm Khóa ngoại (Foreign Key), ràng buộc toàn vẹn tham chiếu, liên kết quan hệ 1 - 1, 1 - N, N - N.",
+        "theory": {
+          "objectives": [
+            "Hiểu Khóa ngoại là cầu nối tham chiếu đến Khóa chính của bảng khác.",
+            "Nắm quy tắc toàn vẹn tham chiếu: Giá trị khóa ngoại phải tồn tại ở bảng cha hoặc mang giá trị NULL."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Bẫy xóa dữ liệu: Không thể xóa một dòng ở bảng cha (chứa khóa chính) nếu đang có dòng ở bảng con (chứa khóa ngoại) tham chiếu tới nó (trừ khi có thiết lập ON DELETE CASCADE)."
+        },
+        "quiz": {
+          "question": "Ràng buộc toàn vẹn tham chiếu của Khóa ngoại (Foreign Key) quy định điều gì?",
+          "options": [
+            "Giá trị khóa ngoại luôn luôn bằng 0",
+            "Giá trị khóa ngoại phải tồn tại trong tập giá trị khóa chính của bảng được tham chiếu (hoặc là NULL)",
+            "Bảng chứa khóa ngoại bắt buộc phải có ít hơn 10 cột",
+            "Khóa ngoại không được phép trùng lặp trong bảng của nó"
+          ],
+          "answer": 1,
+          "explanation": "Toàn vẹn tham chiếu đảm bảo không có bản ghi \"mồ côi\" tham chiếu tới một đối tượng không tồn tại ở bảng cha."
+        }
+      },
+      {
+        "id": "cs_c_4",
+        "title": "Bài 4: Ngôn ngữ SQL & Lệnh truy vấn SELECT",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 34)",
+        "priority": "Rất cao",
+        "examFormat": "Trắc nghiệm Phần I & II",
+        "summary": "Cú pháp câu lệnh SELECT căn bản, lọc dữ liệu với WHERE, toán tử so sánh, LIKE, BETWEEN, ORDER BY sắp xếp.",
+        "theory": {
+          "objectives": [
+            "Viết đúng thứ tự các mệnh đề SQL: SELECT ... FROM ... WHERE ... ORDER BY ...",
+            "Sử dụng thành thạo toán tử LIKE với ký tự đại diện % và _."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Trật tự thực thi trong SQL: FROM -> WHERE -> SELECT -> ORDER BY. Do đó không thể dùng bí danh (Alias) đặt trong SELECT để lọc ở WHERE."
+        },
+        "quiz": {
+          "question": "Để lọc các học sinh có tên bắt đầu bằng chữ cái \"N\" trong bảng HOC_SINH, mệnh đề WHERE nào sau đây là chính xác?",
+          "options": [
+            "WHERE HoTen = 'N*'",
+            "WHERE HoTen LIKE 'N%'",
+            "WHERE HoTen IN ('N')",
+            "WHERE HoTen CONTAINS 'N'"
+          ],
+          "answer": 1,
+          "explanation": "Trong chuẩn SQL, toán tử LIKE kết hợp với ký tự '%' đại diện cho chuỗi ký tự bất kỳ."
+        }
+      },
+      {
+        "id": "cs_c_5",
+        "title": "Bài 5: Truy vấn SQL liên kết đa bảng & Gom nhóm",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 36)",
+        "priority": "Rất cao",
+        "examFormat": "Trọng tâm Phần II Đúng/Sai",
+        "summary": "Phép nối INNER JOIN, LEFT JOIN; Gom nhóm GROUP BY kết hợp điều kiện lọc HAVING và các hàm tổng hợp COUNT, SUM, AVG, MAX, MIN.",
+        "theory": {
+          "objectives": [
+            "Phân biệt rõ ràng sự khác nhau giữa WHERE và HAVING.",
+            "Hiểu bản chất của INNER JOIN dựa trên điều kiện khóa chính - khóa ngoại."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Ghi nhớ vàng: Nếu thấy \"WHERE COUNT(*) > 5\" trong bất kỳ phương án nào -> Chắc chắn phương án đó SAI!"
+        },
+        "quiz": {
+          "question": "Phát biểu nào sau đây là ĐÚNG về mệnh đề WHERE và HAVING trong SQL?",
+          "options": [
+            "Hàm tổng hợp như COUNT(*), SUM() có thể đặt trực tiếp trong mệnh đề WHERE.",
+            "WHERE lọc các dòng trước khi gom nhóm, còn HAVING lọc các nhóm sau khi GROUP BY.",
+            "HAVING luôn luôn phải đứng trước mệnh đề WHERE trong câu truy vấn.",
+            "Nếu có HAVING thì bắt buộc không được dùng WHERE."
+          ],
+          "answer": 1,
+          "explanation": "WHERE lọc các dòng trước khi nhóm. HAVING lọc các nhóm dữ liệu sau khi GROUP BY và có thể chứa hàm tổng hợp."
+        }
+      },
+      {
+        "id": "cs_c_6",
+        "title": "Bài 6: Cập nhật dữ liệu INSERT, UPDATE, DELETE",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 38)",
+        "priority": "Rất cao",
+        "examFormat": "Trắc nghiệm Phần I & II",
+        "summary": "Cú pháp thêm bản ghi mới (INSERT INTO), sửa dữ liệu (UPDATE SET WHERE), xóa bản ghi (DELETE FROM WHERE).",
+        "theory": {
+          "objectives": [
+            "Viết đúng cú pháp 3 thao tác biến đổi dữ liệu.",
+            "Nhận biết nguy cơ xóa/sửa toàn bộ bảng nếu quên mệnh đề WHERE."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Cực kỳ cẩn trọng: Nếu câu lệnh UPDATE hoặc DELETE không có mệnh đề WHERE, toàn bộ các dòng trong bảng sẽ bị thay đổi hoặc xóa sạch."
+        },
+        "quiz": {
+          "question": "Câu lệnh SQL nào dùng để tăng điểm Tin của học sinh có mã \"HS01\" lên 10.0?",
+          "options": [
+            "MODIFY HOC_SINH SET DiemTin = 10.0 WHERE MaHS = 'HS01';",
+            "UPDATE HOC_SINH SET DiemTin = 10.0 WHERE MaHS = 'HS01';",
+            "CHANGE HOC_SINH DiemTin = 10.0 WHERE MaHS = 'HS01';",
+            "INSERT INTO HOC_SINH (DiemTin) VALUES (10.0) WHERE MaHS = 'HS01';"
+          ],
+          "answer": 1,
+          "explanation": "Cú pháp sửa dữ liệu chuẩn trong SQL là: UPDATE TenBang SET Cot = GiaTri WHERE DieuKien."
+        }
+      }
+    ]
+  },
+  {
+    "id": "cs_station_5",
+    "stepNumber": "05",
+    "code": "Chủ đề 5",
+    "title": "Tạo trang web với HTML và CSS",
+    "category": "Kiến thức chung",
+    "priority": "Cao",
+    "priorityBadge": "high",
+    "questionType": "Trắc nghiệm Phần I (2 - 3 câu)",
+    "bookRef": "Trang 40 - 74",
+    "description": "Cấu trúc văn bản siêu liên kết HTML, các thẻ định dạng, chèn hình ảnh, tạo bảng (table), biểu mẫu (form), danh sách, siêu liên kết và ngôn ngữ định kiểu CSS.",
+    "skills": [
+      "Cấu trúc tài liệu HTML",
+      "Thẻ định dạng, Bảng (table) & Form",
+      "Thẻ liên kết (a) & Danh sách (ul, ol)",
+      "Định kiểu CSS (Color, Font, Box Model)"
+    ],
+    "xp": 320,
+    "lessons": [
+      {
+        "id": "cs_web_1",
+        "title": "Bài 1: Giới thiệu HTML & Cấu trúc trang Web",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 40)",
         "priority": "Cực kỳ cao",
         "examFormat": "Trọng tâm Phần II Đúng/Sai",
-        "summary": "Thuật toán K láng giềng gần nhất (K-Nearest Neighbors - KNN), tính khoảng cách Euclidean, nguyên tắc biểu quyết theo đa số (Majority Voting).",
+        "summary": "Cấu trúc tài liệu chuẩn: <!DOCTYPE html>, <html>, <head>, <title>, <body>; sự khác biệt giữa phần tử khối và nội dòng.",
         "theory": {
           "objectives": [
-            "Hiểu cách tính khoảng cách giữa điểm dữ liệu mới với các điểm huấn luyện.",
-            "Nắm cơ chế biểu quyết chọn nhãn phổ biến nhất trong k láng giềng gần nhất."
+            "Nhận biết cấu trúc khung xương của một tệp HTML chuẩn đề thi.",
+            "Phân biệt rõ ràng nội dung trong thẻ <head> (thông tin cấu hình) và nội dung trong <body> (vùng hiển thị cho người xem)."
           ],
           "contentSections": [],
-          "examTips": "⚠️ Khi k = 1, điểm mới sẽ mang chính xác nhãn của điểm láng giềng gần nhất với nó."
+          "examTips": "⚠️ Bẫy đề thi Đúng/Sai: \"Nội dung thẻ <title> được hiển thị trực tiếp trong vùng nội dung bài viết của trang web\" -> SAI! Thẻ <title> nằm trong <head> và chỉ hiển thị trên thanh tiêu đề hoặc tab của trình duyệt web."
         },
         "quiz": {
-          "question": "Trong thuật toán KNN với k = 3, giả sử trong 3 điểm gần nhất có 2 điểm thuộc nhãn \"Đậu\" và 1 điểm thuộc nhãn \"Rớt\". Điểm mới sẽ được dự đoán là nhãn gì?",
+          "question": "Phần tử nào trong tài liệu HTML chứa nội dung sẽ được hiển thị trực tiếp lên vùng hiển thị của trình duyệt web?",
           "options": [
-            "Rớt",
-            "Đậu",
-            "Không xác định được",
-            "Cả Đậu và Rớt"
+            "<head>",
+            "<body>",
+            "<title>",
+            "<meta>"
           ],
           "answer": 1,
-          "explanation": "Theo cơ chế biểu quyết đa số, nhãn \"Đậu\" chiếm 2/3 phiếu nên điểm mới sẽ được phân loại là \"Đậu\"."
+          "explanation": "Thẻ <body> chứa toàn bộ các văn bản, hình ảnh, liên kết và thành phần đồ họa hiển thị trên trang web."
         }
       },
       {
-        "id": "cs_f_7",
-        "title": "Bài 8: Thuật toán Phân cụm K-Means",
-        "bookRef": "SGK KNTT Tin 12 CS - Trang 25",
+        "id": "cs_web_2",
+        "title": "Bài 2: Các thẻ định dạng văn bản & Thẻ ảnh",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 46)",
         "priority": "Cực kỳ cao",
         "examFormat": "Trọng tâm Phần II Đúng/Sai",
-        "summary": "Thuật toán K-Means Clustering: Chọn ngẫu nhiên k tâm cụm (Centroids), gán điểm vào cụm gần nhất, cập nhật lại tọa độ tâm cụm trung bình, điều kiện dừng.",
+        "summary": "Các thẻ tiêu đề <h1> đến <h6>, thẻ đoạn văn <p>, in đậm <b>, in nghiêng <i>; thẻ chèn ảnh <img src=\"...\" alt=\"...\">.",
         "theory": {
           "objectives": [
-            "Nắm chắc 4 bước lặp của thuật toán K-Means.",
-            "Hiểu K-Means là thuật toán học KHÔNG giám sát (Unsupervised)."
+            "Nắm các thuộc tính bắt buộc của thẻ ảnh <img>: src (đường dẫn nguồn) và alt (văn bản thay thế khi lỗi ảnh).",
+            "Lưu ý thẻ <img> là thẻ đơn (thẻ rỗng - không cần thẻ đóng </img>)."
           ],
           "contentSections": [],
-          "examTips": "K-Means là Học KHÔNG giám sát; còn KNN là Học CÓ giám sát. Rất nhiều học sinh nhầm lẫn 2 thuật toán này!"
+          "examTips": "⚠️ Bẫy thẻ đơn HTML: Thẻ <img>, <br>, <hr>, <input> là các thẻ đơn (void element), không có thẻ đóng tương ứng như </img>."
         },
         "quiz": {
-          "question": "Phát biểu nào sau đây phân biệt chính xác nhất giữa K-Means và KNN?",
+          "question": "Cú pháp chèn hình ảnh nào sau đây là ĐÚNG trong chuẩn ngôn ngữ HTML?",
           "options": [
-            "K-Means là học có giám sát; KNN là học không giám sát",
-            "Cả hai đều là học có giám sát",
-            "K-Means là thuật toán phân cụm (Học không giám sát); còn KNN là thuật toán phân loại (Học có giám sát)",
-            "Cả hai đều không cần tính khoảng cách giữa các điểm"
+            "<image src=\"logo.png\" alt=\"Logo\">",
+            "<img src=\"logo.png\" alt=\"Logo\" />",
+            "<img href=\"logo.png\" title=\"Logo\"></img>",
+            "<picture url=\"logo.png\">"
           ],
-          "answer": 2,
-          "explanation": "K-Means là học không giám sát dùng để phân cụm. KNN là học có giám sát dùng để phân loại/dự đoán nhãn."
+          "answer": 1,
+          "explanation": "Thẻ HTML chuẩn là <img> với thuộc tính bắt buộc src chỉ định đường dẫn hình ảnh."
         }
       },
       {
-        "id": "cs_f_8",
-        "title": "Bài 9: Viết kịch bản Python nâng cao & Xử lý mảng",
-        "bookRef": "SGK KNTT Tin 12 CS - Trang 32",
+        "id": "cs_web_3",
+        "title": "Bài 3: Thẻ tạo Bảng Table & Form nhập liệu",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 52)",
         "priority": "Cực kỳ cao",
         "examFormat": "Trọng tâm Phần II Đúng/Sai",
-        "summary": "Đọc hiểu mã nguồn Python phức hợp: Mảng 2 chiều (Nested List), Lát cắt Slice [start:stop:step], Xử lý chuỗi ký tự, Truy vết biến.",
+        "summary": "Thẻ <table>, <tr> (dòng), <th> (tiêu đề cột), <td> (ô dữ liệu); Thuộc tính gộp ô rowspan, colspan; Thẻ <form>, <input type=\"text|password|radio|checkbox|submit\">.",
         "theory": {
           "objectives": [
-            "Truy vết chính xác các biểu thức lát cắt list / xâu slice s[start:stop:step].",
-            "Đọc hiểu và dự đoán chính xác biến cờ, biến đếm sau khi kết thúc vòng lặp."
+            "Phân biệt: rowspan gộp nhiều DÒNG; colspan gộp nhiều CỘT.",
+            "Đọc hiểu và truy vết chính xác các trường trong biểu mẫu form nhập liệu."
           ],
           "contentSections": [],
-          "examTips": "⚠️ Lưu ý chỉ số âm trong Python: a[-1] là phần tử cuối cùng, a[::-1] tạo ra bản sao đảo ngược danh sách hoặc xâu ký tự."
+          "examTips": "⚠️ Bẫy đề Đúng/Sai kinh điển: \"colspan=2 gộp 2 dòng lại với nhau\" -> SAI hoàn toàn! Nhớ quy tắc: COLspan = gộp CỘT (ngang); ROWspan = gộp DÒNG (dọc)."
         },
         "quiz": {
-          "question": "Cho đoạn code Python: s = \"THPTQG2025\"; print(s[-4:]). Kết quả in ra màn hình là gì?",
+          "question": "Để gộp 3 ô trên cùng một HÀNG ngang thành một ô duy nhất trong bảng HTML, ta dùng thuộc tính nào cho thẻ <td> hoặc <th>?",
           "options": [
-            "THPT",
-            "2025",
-            "QG20",
-            "TQG2025"
+            "rowspan=\"3\"",
+            "colspan=\"3\"",
+            "mergerow=\"3\"",
+            "span=\"3\""
           ],
           "answer": 1,
-          "explanation": "Lát cắt s[-4:] lấy từ 4 ký tự cuối cùng trở về sau, kết quả là chuỗi \"2025\"."
+          "explanation": "Thuộc tính colspan (Column Span) dùng để gộp các ô theo chiều ngang của các cột."
+        }
+      },
+      {
+        "id": "cs_web_4",
+        "title": "Bài 4: Thẻ liên kết a & Danh sách ul, ol",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 58)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trọng tâm Phần II Đúng/Sai",
+        "summary": "Thẻ tạo siêu liên kết <a href=\"...\" target=\"_blank\">; Danh sách không có thứ tự <ul><li> và danh sách có thứ tự <ol><li>.",
+        "theory": {
+          "objectives": [
+            "Thuộc tính href chỉ định địa chỉ liên kết đích.",
+            "Thuộc tính target=\"_blank\" mở liên kết trong một tab hoặc cửa sổ mới."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Bẫy đề thi: \"Mặc định nếu không chỉ định target, trình duyệt sẽ mở liên kết ở một tab mới\" -> SAI! Mặc định là target=\"_self\" (mở ngay tại tab hiện tại)."
+        },
+        "quiz": {
+          "question": "Thuộc tính nào của thẻ <a> quy định việc mở trang web liên kết trong một tab trình duyệt mới?",
+          "options": [
+            "target=\"_blank\"",
+            "target=\"_self\"",
+            "window=\"new\"",
+            "href=\"_new\""
+          ],
+          "answer": 0,
+          "explanation": "Thuộc tính target=\"_blank\" điều khiển trình duyệt mở liên kết ở một tab hoặc cửa sổ mới."
+        }
+      },
+      {
+        "id": "cs_web_5",
+        "title": "Bài 5: Ngôn ngữ CSS & Nhúng CSS vào HTML",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 64)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trọng tâm Phần II Đúng/Sai",
+        "summary": "Ba cách nhúng CSS: Inline (trong thẻ), Internal (thẻ <style> trong <head>), External (tệp .css qua thẻ <link>); Cú pháp bộ chọn selector (tag, .class, #id).",
+        "theory": {
+          "objectives": [
+            "Phân biệt: Dấu chấm (.) đại diện cho bộ chọn class; Dấu thăng (#) đại diện cho bộ chọn id.",
+            "Hiểu thứ tự ưu tiên áp dụng style khi có xung đột định dạng CSS."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Bẫy đề thi: Dấu chấm (.) là chọn theo CLASS; Dấu thăng (#) là chọn theo ID. Nếu đề bài cho <p class=\"chu-do\"> thì trong CSS phải viết là .chu-do chứ không phải #chu-do."
+        },
+        "quiz": {
+          "question": "Để áp dụng định dạng CSS cho tất cả các phần tử có thuộc tính class=\"highlight\", bộ chọn (selector) nào được sử dụng?",
+          "options": [
+            "#highlight",
+            ".highlight",
+            "highlight",
+            "*highlight"
+          ],
+          "answer": 1,
+          "explanation": "Trong CSS, dấu chấm (.) đứng trước tên để định danh cho bộ chọn lớp (class selector)."
+        }
+      },
+      {
+        "id": "cs_web_6",
+        "title": "Bài 6: Thuộc tính CSS cơ bản (Color, Font, Margin)",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 70)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trọng tâm Phần II Đúng/Sai",
+        "summary": "Mô hình hộp (Box Model): Content -> Padding -> Border -> Margin; Các thuộc tính font-family, font-size, background-color.",
+        "theory": {
+          "objectives": [
+            "Phân biệt rõ ràng: Padding là khoảng đệm BÊN TRONG đường viền; Margin là khoảng cách BÊN NGOÀI đường viền.",
+            "Nắm chắc các thuộc tính định dạng chữ font và màu sắc."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Bẫy Box Model kinh điển: \"Margin là khoảng cách nằm giữa nội dung và đường viền\" -> SAI! Khoảng giữa nội dung và đường viền là PADDING. Margin là khoảng cách BÊN NGOÀI đường viền."
+        },
+        "quiz": {
+          "question": "Trong mô hình hộp (Box Model) của CSS, vùng khoảng cách nằm giữa nội dung (content) và đường viền (border) được gọi là:",
+          "options": [
+            "Margin",
+            "Padding",
+            "Outline",
+            "Spacing"
+          ],
+          "answer": 1,
+          "explanation": "Padding là khoảng đệm nằm bên trong bao quanh nội dung cho tới mép đường viền (Border)."
         }
       }
     ]
@@ -803,24 +699,26 @@ export const csRoadmapStations = [
   {
     "id": "cs_station_6",
     "stepNumber": "06",
-    "code": "Chủ đề G",
-    "title": "Hướng Nghiệp Với Tin Học",
-    "category": "Định hướng nghề nghiệp",
+    "code": "Chủ đề 6",
+    "title": "Hướng nghiệp với tin học",
+    "category": "Kiến thức chung",
     "priority": "Thấp",
     "priorityBadge": "low",
     "questionType": "Trắc nghiệm Phần I (1 câu)",
-    "description": "Đặc thù công việc nhóm nghề Khoa học máy tính: Kỹ sư Phần mềm (Software Engineer), Kỹ sư AI, Chuyên viên Dữ liệu (Data Scientist).",
+    "bookRef": "Trang 75 - 80",
+    "description": "Các nhóm ngành nghề trong lĩnh vực Công nghệ thông tin, yêu cầu năng lực, phẩm chất kỷ nguyên số, cơ hội nghề nghiệp trong Khoa học dữ liệu, AI và kỹ sư phần mềm.",
     "skills": [
-      "Kỹ sư phần mềm",
-      "Kỹ sư Trí tuệ nhân tạo (AI)",
-      "Chuyên viên Khoa học dữ liệu"
+      "Nhóm ngành nghề CNTT",
+      "Năng lực & Phẩm chất người làm nghề",
+      "Định hướng nghề AI & Khoa học dữ liệu",
+      "Kỷ nguyên số & Xu hướng việc làm"
     ],
     "xp": 200,
     "lessons": [
       {
         "id": "cs_g_1",
-        "title": "Bài 16: Các nhóm nghề thuộc ngành CNTT",
-        "bookRef": "SGK KNTT Tin 11 - Trang 115",
+        "title": "Bài 1: Các nhóm nghề thuộc ngành CNTT",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 6 (Trang 75)",
         "priority": "Thấp",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Các vị trí nghề nghiệp: Phát triển phần mềm, Quản trị hệ thống, Kiểm thử phần mềm (Tester), Chuyên viên an ninh mạng.",
@@ -845,8 +743,8 @@ export const csRoadmapStations = [
       },
       {
         "id": "cs_g_2",
-        "title": "Bài 10: Hướng nghiệp Khoa học dữ liệu & Trí tuệ nhân tạo",
-        "bookRef": "SGK KNTT Tin 12 - Trang 106",
+        "title": "Bài 2: Hướng nghiệp Khoa học dữ liệu & Trí tuệ nhân tạo",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 6 (Trang 78)",
         "priority": "Thấp",
         "examFormat": "Trắc nghiệm Phần I",
         "summary": "Vai trò của Kỹ sư AI (AI Engineer), Nhà khoa học dữ liệu (Data Scientist) trong kỷ nguyên kinh tế số.",
@@ -874,25 +772,312 @@ export const csRoadmapStations = [
   {
     "id": "cs_station_7",
     "stepNumber": "07",
-    "code": "Chặng Boss",
-    "title": "Lộ Trình Về Đích 12 Tuần — Chinh Phục Điểm 9-10 CS",
-    "category": "Tổng ôn chiến lược",
-    "priority": "Cực kỳ cao",
+    "code": "Chủ đề CS 1",
+    "title": "Kĩ thuật lập trình",
+    "category": "Chuyên sâu Khoa học máy tính",
+    "priority": "Cực kỳ quan trọng",
     "priorityBadge": "extreme",
-    "questionType": "Luyện đề 50 phút chuẩn Bộ GD&ĐT",
-    "description": "Tổng hợp chiến thuật phòng thi, phân bổ 50 phút cho 22 câu hỏi, tránh bẫy Đúng/Sai lũy tiến để giành trọn 10 điểm tuyệt đối.",
+    "questionType": "Trắc nghiệm Đúng/Sai Phần II (Câu 3 - 4)",
+    "bookRef": "Trang 81 - 95",
+    "description": "Kĩ thuật lập trình Python nâng cao: Thuật toán tìm kiếm (Tuyến tính, Nhị phân), thuật toán sắp xếp (Nổi bọt, Chọn, Chèn, QuickSort), kỹ thuật Chia để trị, hàm đệ quy và cấu trúc dữ liệu mảng.",
     "skills": [
-      "Chiến thuật 50 phút",
-      "Bẫy Đúng/Sai Phần II",
-      "Kỹ năng dò code Python",
-      "Tối đa hóa điểm lũy tiến"
+      "Tìm kiếm Tuyến tính & Nhị phân",
+      "Sắp xếp Nổi bọt, Chọn, Chèn, QuickSort",
+      "Kỹ thuật Chia để trị & Đệ quy",
+      "Đọc hiểu & Truy vết mã nguồn Python"
     ],
-    "xp": 800,
+    "xp": 400,
     "lessons": [
       {
+        "id": "cs_f_1",
+        "title": "Bài 1: Thuật toán tìm kiếm Tuyến tính & Nhị phân",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề CS 1 (Trang 81)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trắc nghiệm Đúng/Sai Phần II",
+        "summary": "Linear Search O(n), Binary Search O(log n), điều kiện áp dụng tìm kiếm nhị phân (danh sách ĐÃ ĐƯỢC SẮP XẾP).",
+        "theory": {
+          "objectives": [
+            "Hiểu bản chất và số phép so sánh của tìm kiếm tuyến tính vs tìm kiếm nhị phân.",
+            "Đọc hiểu và truy vết từng bước chạy của đoạn mã Python cài đặt tìm kiếm nhị phân."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Bẫy đề Đúng/Sai: \"Có thể áp dụng ngay thuật toán tìm kiếm nhị phân cho một danh sách bất kỳ chưa được sắp xếp\" -> SAI hoàn toàn!"
+        },
+        "quiz": {
+          "question": "Cho mảng đã sắp xếp gồm 1024 phần tử. Số lần so sánh tối đa trong trường hợp xấu nhất của thuật toán Tìm kiếm nhị phân là bao nhiêu?",
+          "options": [
+            "1024 lần",
+            "512 lần",
+            "11 lần (khoảng log2(1024) + 1)",
+            "100 lần"
+          ],
+          "answer": 2,
+          "explanation": "Với mảng n = 1024 phần tử, số lần lặp tối đa là log2(1024) + 1 = 10 + 1 = 11 phép so sánh."
+        }
+      },
+      {
+        "id": "cs_f_2",
+        "title": "Bài 2: Thuật toán sắp xếp Nổi bọt & Chọn",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề CS 1 (Trang 84)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trắc nghiệm Đúng/Sai Phần II",
+        "summary": "Bubble Sort và Selection Sort: Ý tưởng hoán đổi, trạng thái của mảng sau mỗi lượt lặp, độ phức tạp O(n^2).",
+        "theory": {
+          "objectives": [
+            "Nắm chắc trạng thái của mảng sau mỗi vòng lặp i.",
+            "Đọc hiểu mã nguồn Python và xác định số lần hoán đổi (swap)."
+          ],
+          "contentSections": [],
+          "examTips": "Đề bài rất hay hỏi: \"Sau vòng lặp ngoài đầu tiên (i = 0), danh sách [5, 1, 4, 2, 8] sẽ trở thành dãy số nào?\". Hãy truy vết từng cặp liền kề!"
+        },
+        "quiz": {
+          "question": "Độ phức tạp thời gian trong trường hợp xấu nhất của cả 2 thuật toán Sắp xếp nổi bọt (Bubble Sort) và Sắp xếp chọn (Selection Sort) là:",
+          "options": [
+            "O(1)",
+            "O(n)",
+            "O(n log n)",
+            "O(n^2)"
+          ],
+          "answer": 3,
+          "explanation": "Cả Bubble Sort và Selection Sort sử dụng 2 vòng lặp lồng nhau nên độ phức tạp là O(n^2)."
+        }
+      },
+      {
+        "id": "cs_f_3",
+        "title": "Bài 3: Thuật toán sắp xếp Chèn & QuickSort",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề CS 1 (Trang 88)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trắc nghiệm Đúng/Sai Phần II",
+        "summary": "Insertion Sort, thuật toán sắp xếp nhanh QuickSort theo kỹ thuật phân hoạch chốt (Pivot), độ phức tạp O(n log n).",
+        "theory": {
+          "objectives": [
+            "Hiểu cơ chế chọn Pivot và phân hoạch mảng trong QuickSort.",
+            "Nắm độ phức tạp trung bình của QuickSort là O(n log n)."
+          ],
+          "contentSections": [],
+          "examTips": ""
+        },
+        "quiz": {
+          "question": "Thuật toán sắp xếp nhanh (QuickSort) dựa trên kỹ thuật thiết kế thuật toán nào?",
+          "options": [
+            "Tham lam (Greedy)",
+            "Chia để trị (Divide and Conquer)",
+            "Quy hoạch động (Dynamic Programming)",
+            "Tìm kiếm vét cạn"
+          ],
+          "answer": 1,
+          "explanation": "QuickSort chọn chốt (Pivot) và phân hoạch dãy thành 2 phần độc lập để đệ quy sắp xếp, áp dụng chiến lược Chia để trị."
+        }
+      },
+      {
+        "id": "cs_f_4",
+        "title": "Bài 4: Kỹ thuật Chia để trị & Đồ thị",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề CS 1 (Trang 91)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trắc nghiệm Phần I & II",
+        "summary": "Tư tưởng chia nhỏ bài toán thành các bài toán con cùng dạng, hàm đệ quy trong Python và các khái niệm đồ thị đỉnh/cạnh.",
+        "theory": {
+          "objectives": [
+            "Xác định điểm dừng (Base case) và bước đệ quy của hàm.",
+            "Đọc hiểu ma trận kề, danh sách kề biểu diễn đồ thị."
+          ],
+          "contentSections": [],
+          "examTips": ""
+        },
+        "quiz": {
+          "question": "Một hàm đệ quy trong Python bắt buộc phải có thành phần nào để không rơi vào vòng lặp vô hạn (RecursionError)?",
+          "options": [
+            "Vòng lặp while",
+            "Điểm dừng (Base case / Neo đệ quy)",
+            "Lệnh try-except",
+            "Khối lệnh else"
+          ],
+          "answer": 1,
+          "explanation": "Mọi hàm đệ quy bắt buộc phải có điều kiện dừng (Base case) để chấm dứt chuỗi gọi đệ quy."
+        }
+      },
+      {
+        "id": "cs_f_8",
+        "title": "Bài 5: Viết kịch bản Python nâng cao & Xử lý mảng",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề CS 1 (Trang 93)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trọng tâm Phần II Đúng/Sai",
+        "summary": "Đọc hiểu mã nguồn Python phức hợp: Mảng 2 chiều (Nested List), Lát cắt Slice [start:stop:step], Xử lý chuỗi ký tự, Truy vết biến.",
+        "theory": {
+          "objectives": [
+            "Truy vết chính xác các biểu thức lát cắt list / xâu slice s[start:stop:step].",
+            "Đọc hiểu và dự đoán chính xác biến cờ, biến đếm sau khi kết thúc vòng lặp."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Lưu ý chỉ số âm trong Python: a[-1] là phần tử cuối cùng, a[::-1] tạo ra bản sao đảo ngược danh sách hoặc xâu ký tự."
+        },
+        "quiz": {
+          "question": "Cho đoạn code Python: s = \"THPTQG2025\"; print(s[-4:]). Kết quả in ra màn hình là gì?",
+          "options": [
+            "THPT",
+            "2025",
+            "QG20",
+            "TQG2025"
+          ],
+          "answer": 1,
+          "explanation": "Lát cắt s[-4:] lấy từ 4 ký tự cuối cùng trở về sau, kết quả là chuỗi \"2025\"."
+        }
+      }
+    ]
+  },
+  {
+    "id": "cs_station_8",
+    "stepNumber": "08",
+    "code": "Chủ đề CS 2",
+    "title": "Học máy và Khoa học dữ liệu",
+    "category": "Chuyên sâu Khoa học máy tính",
+    "priority": "Rất cao",
+    "priorityBadge": "extreme",
+    "questionType": "Trắc nghiệm Đúng/Sai Phần II",
+    "bookRef": "Trang 96 - 130",
+    "description": "Tổng quan Học máy (Machine Learning) có giám sát (Supervised) vs không giám sát (Unsupervised), thuật toán phân loại K-láng giềng gần nhất (KNN), thuật toán phân cụm K-Means và quy trình Khoa học dữ liệu.",
+    "skills": [
+      "Học máy có giám sát & Không giám sát",
+      "Thuật toán phân loại KNN",
+      "Thuật toán phân cụm K-Means",
+      "Quy trình xử lý & Phân tích dữ liệu"
+    ],
+    "xp": 380,
+    "lessons": [
+      {
+        "id": "cs_f_5",
+        "title": "Bài 1: Thuật toán Học máy Supervised & Unsupervised",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề CS 2 (Trang 96)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trắc nghiệm Đúng/Sai Phần II",
+        "summary": "Phân biệt Học có giám sát (Supervised Learning - dữ liệu có nhãn) vs Học không giám sát (Unsupervised Learning - dữ liệu chưa có nhãn).",
+        "theory": {
+          "objectives": [
+            "Hiểu bản chất dữ liệu có nhãn (Labeled data) vs không nhãn (Unlabeled data).",
+            "Phân loại bài toán Phân lớp (Classification) / Hồi quy (Regression) vs Phân cụm (Clustering)."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Bẫy đề: Học có giám sát bắt buộc phải có nhãn kết quả (Label). Học không giám sát thì không có nhãn!"
+        },
+        "quiz": {
+          "question": "Bài toán phân loại email thành \"Hộp thư đến\" hoặc \"Thư rác (Spam)\" dựa trên tập hàng ngàn email đã được đánh dấu mẫu thuộc loại học máy nào?",
+          "options": [
+            "Học không giám sát (Unsupervised Learning)",
+            "Học có giám sát (Supervised Learning)",
+            "Học tăng cường (Reinforcement Learning)",
+            "Học tự quản (Self-supervised)"
+          ],
+          "answer": 1,
+          "explanation": "Vì tập dữ liệu đã có nhãn \"Spam\" hoặc \"Không Spam\" nên đây là bài toán Học có giám sát (Supervised Learning)."
+        }
+      },
+      {
+        "id": "cs_f_6",
+        "title": "Bài 2: Thuật toán Phân loại Classification & KNN",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề CS 2 (Trang 104)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trọng tâm Phần II Đúng/Sai",
+        "summary": "Thuật toán K láng giềng gần nhất (K-Nearest Neighbors - KNN), tính khoảng cách Euclidean, nguyên tắc biểu quyết theo đa số (Majority Voting).",
+        "theory": {
+          "objectives": [
+            "Hiểu cách tính khoảng cách giữa điểm dữ liệu mới với các điểm huấn luyện.",
+            "Nắm cơ chế biểu quyết chọn nhãn phổ biến nhất trong k láng giềng gần nhất."
+          ],
+          "contentSections": [],
+          "examTips": "⚠️ Khi k = 1, điểm mới sẽ mang chính xác nhãn của điểm láng giềng gần nhất với nó."
+        },
+        "quiz": {
+          "question": "Trong thuật toán KNN với k = 3, giả sử trong 3 điểm gần nhất có 2 điểm thuộc nhãn \"Đậu\" và 1 điểm thuộc nhãn \"Rớt\". Điểm mới sẽ được dự đoán là nhãn gì?",
+          "options": [
+            "Rớt",
+            "Đậu",
+            "Không xác định được",
+            "Cả Đậu và Rớt"
+          ],
+          "answer": 1,
+          "explanation": "Theo cơ chế biểu quyết đa số, nhãn \"Đậu\" chiếm 2/3 phiếu nên điểm mới sẽ được phân loại là \"Đậu\"."
+        }
+      },
+      {
+        "id": "cs_f_7",
+        "title": "Bài 3: Thuật toán Phân cụm K-Means",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề CS 2 (Trang 115)",
+        "priority": "Cực kỳ cao",
+        "examFormat": "Trọng tâm Phần II Đúng/Sai",
+        "summary": "Thuật toán K-Means Clustering: Chọn ngẫu nhiên k tâm cụm (Centroids), gán điểm vào cụm gần nhất, cập nhật lại tọa độ tâm cụm trung bình, điều kiện dừng.",
+        "theory": {
+          "objectives": [
+            "Nắm chắc 4 bước lặp của thuật toán K-Means.",
+            "Hiểu K-Means là thuật toán học KHÔNG giám sát (Unsupervised)."
+          ],
+          "contentSections": [],
+          "examTips": "K-Means là Học KHÔNG giám sát; còn KNN là Học CÓ giám sát. Rất nhiều học sinh nhầm lẫn 2 thuật toán này!"
+        },
+        "quiz": {
+          "question": "Phát biểu nào sau đây phân biệt chính xác nhất giữa K-Means và KNN?",
+          "options": [
+            "K-Means là học có giám sát; KNN là học không giám sát",
+            "Cả hai đều là học có giám sát",
+            "K-Means là thuật toán phân cụm (Học không giám sát); còn KNN là thuật toán phân loại (Học có giám sát)",
+            "Cả hai đều không cần tính khoảng cách giữa các điểm"
+          ],
+          "answer": 2,
+          "explanation": "K-Means là học không giám sát dùng để phân cụm. KNN là học có giám sát dùng để phân loại/dự đoán nhãn."
+        }
+      }
+    ]
+  },
+  {
+    "id": "cs_station_9",
+    "stepNumber": "09",
+    "code": "Phần II",
+    "title": "Đề ôn tập & Bảng ma trận năng lực",
+    "category": "Luyện đề thi THPTQG",
+    "priority": "Về đích",
+    "priorityBadge": "extreme",
+    "questionType": "Tổng hợp 22 câu (Phần I + II)",
+    "bookRef": "Trang 131 - 180",
+    "description": "Bảng năng lực và cấp độ tư duy đề ôn tập (Nhận biết, Thông hiểu, Vận dụng), chiến thuật phân bổ 50 phút cho 22 câu thi và các bộ đề ôn tập chuẩn cấu trúc đề thi Tốt nghiệp THPT Bộ GD&ĐT.",
+    "skills": [
+      "Ma trận năng lực & Cấp độ tư duy",
+      "Chiến thuật xử lý câu Đúng/Sai lũy tiến",
+      "Phân bổ thời gian 50 phút tối ưu",
+      "Luyện đề thi thử bứt phá 9.5+ CS"
+    ],
+    "xp": 500,
+    "lessons": [
+      {
+        "id": "cs_exam_matrix",
+        "title": "Bài 1: Bảng năng lực và cấp độ tư duy đề ôn tập",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Phần II (Trang 131)",
+        "priority": "Cực kỳ quan trọng",
+        "examFormat": "Cấu trúc ma trận đề thi 2025",
+        "summary": "Phân tích bảng năng lực Tin học, tỷ lệ câu hỏi Nhận biết (40%), Thông hiểu (30%), Vận dụng (30%), cấu trúc 18 câu trắc nghiệm 4 lựa chọn và 4 câu Đúng/Sai.",
+        "theory": {
+          "objectives": [
+            "Nắm vững 3 cấp độ tư duy: Nhận biết, Thông hiểu và Vận dụng trong đề thi Tin học THPTQG.",
+            "Hiểu quy tắc tính điểm lũy tiến Phần II (Đúng/Sai): Đúng 1 ý: 0.1đ; 2 ý: 0.25đ; 3 ý: 0.5đ; 4 ý: 1.0đ.",
+            "Xác định trọng tâm kiến thức: Chủ đề 1 đến 6 (Phần I) và Chủ đề CS 1, CS 2 (Phần II)."
+          ],
+          "contentSections": [],
+          "examTips": "🎯 Mẹo chiến thuật: Phần I chiếm 4.5 điểm (18 câu), cần hoàn thành trong 15-18 phút. Dành 30-32 phút còn lại cho 4 câu Đúng/Sai Phần II (4.0 điểm), đọc kỹ từng mệnh đề a, b, c, d."
+        },
+        "quiz": {
+          "question": "Trong đề thi Tốt nghiệp THPT môn Tin học (định hướng CS), Phần II gồm bao nhiêu câu hỏi và thang điểm tối đa là bao nhiêu?",
+          "options": [
+            " gồm 18 câu hỏi, tối đa 4.5 điểm.",
+            " gồm 4 câu hỏi trắc nghiệm Đúng/Sai, tối đa 4.0 điểm.",
+            " gồm 6 câu hỏi tự luận, tối đa 5.0 điểm.",
+            " gồm 28 câu hỏi trắc nghiệm, tối đa 7.0 điểm."
+          ],
+          "answer": 1,
+          "explanation": "Phần II gồm 4 câu trắc nghiệm Đúng/Sai, mỗi câu có 4 ý (a, b, c, d), điểm tối đa cho mỗi câu là 1.0 điểm (tổng cộng 4.0 điểm)."
+        }
+      },
+      {
         "id": "cs_boss_1",
-        "title": "Chiến thuật phân bổ 50 phút cho 22 câu đề thi CS",
-        "bookRef": "Cẩm nang ôn thi THPTQG 2025-2026",
+        "title": "Bài 2: Các đề ôn tập & Chiến thuật làm bài thi",
+        "bookRef": "Tài liệu ôn tập Tin 12 — Phần II (Trang 132)",
         "priority": "Cực kỳ cao",
         "examFormat": "Tổng hợp",
         "summary": "15 phút đầu giải quyết trọn vẹn 18 câu trắc nghiệm Phần I (4.5 điểm). 30 phút sau dành cho 4 câu Đúng/Sai Phần II (4.0 điểm). 5 phút soát lại.",

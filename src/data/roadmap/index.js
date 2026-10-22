@@ -17,7 +17,7 @@ export const TRACK_INFO = {
     examStructure: ICT_EXAM_STRUCTURE,
     twelveWeekPlan: ICT_12_WEEK_PLAN,
     stations: ictRoadmapStations,
-    highlights: ['Bảng tính Excel Nâng Cao', 'Thiết Kế Web HTML/CSS', 'Đồ Họa & Biên Tập Video', 'Lý Thuyết A, B, D, G']
+    highlights: ['Trí Tuệ Nhân Tạo & Internet', 'Tạo Trang Web HTML/CSS', 'Thực Hành CSDL & Bảng Tính', 'Luyện Đề Thi THPTQG Chuẩn 2025']
   },
   [TRACK_TYPES.CS]: {
     id: TRACK_TYPES.CS,
@@ -29,7 +29,7 @@ export const TRACK_INFO = {
     examStructure: CS_EXAM_STRUCTURE,
     twelveWeekPlan: CS_12_WEEK_PLAN,
     stations: csRoadmapStations,
-    highlights: ['Cơ Sở Dữ Liệu & Ngôn Ngữ SQL', 'Giải Thuật & Lập Trình Python', 'Trí Tuệ Nhân Tạo & Học Máy', 'Cấu Trúc Bảng & Khóa Chính/Ngoại']
+    highlights: ['Trí Tuệ Nhân Tạo & Hệ CSDL', 'Kĩ Thuật Lập Trình Python', 'Học Máy & Khoa Học Dữ Liệu', 'Luyện Đề Thi THPTQG Chuẩn 2025']
   }
 };
 

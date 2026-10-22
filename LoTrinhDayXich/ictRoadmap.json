@@ -45,79 +45,26 @@
     {
       "id": "ict_station_1",
       "stepNumber": "01",
-      "code": "Chủ đề A",
-      "title": "Máy Tính & Xã Hội Tri Thức",
-      "category": "Lý thuyết nền tảng",
-      "priority": "Trung bình",
-      "priorityBadge": "normal",
+      "code": "Chủ đề 1",
+      "title": "Giới thiệu Trí tuệ nhân tạo",
+      "category": "Kiến thức chung",
+      "priority": "Cao",
+      "priorityBadge": "high",
       "questionType": "Trắc nghiệm Phần I (2 - 3 câu)",
-      "description": "Phần cứng thiết bị số, Phần mềm ứng dụng văn phòng, Hệ điều hành di động/PC, Ứng dụng thực tế của AI trong công việc.",
+      "bookRef": "Trang 4 - 9",
+      "description": "Khái niệm Trí tuệ nhân tạo (AI), các ứng dụng thực tế trong công việc văn phòng, truyền thông, kinh tế số và tác động xã hội của AI.",
       "skills": [
-        "Thiết bị số thông minh",
-        "Hệ điều hành di động/PC",
-        "Phần mềm văn phòng",
-        "Ứng dụng AI đời sống"
+        "Khái niệm & Ứng dụng thực tế của AI",
+        "Phân loại AI hẹp trong đời sống",
+        "AI tạo sinh & Trợ lý thông minh",
+        "Tác động của AI đối với nghề nghiệp"
       ],
-      "xp": 250,
+      "xp": 260,
       "lessons": [
-        {
-          "id": "ict_a_1",
-          "title": "Bài 1: Thiết bị số & Môi trường làm việc số",
-          "bookRef": "SGK KNTT Tin 11 - Trang 5",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Các loại thiết bị số cá nhân, thiết bị thông minh (IoT), môi trường làm việc kỹ thuật số và các cổng kết nối ngoại vi thông dụng.",
-          "theory": {
-            "objectives": [
-              "Nhận biết các loại thiết bị số và vai trò then chốt trong môi trường làm việc hiện đại.",
-              "Phân biệt rõ ràng các cổng kết nối ngoại vi phổ biến: USB Type-C, HDMI, DisplayPort, VGA, Bluetooth."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi nhận biết: Cổng HDMI truyền cả ÂM THANH và HÌNH ẢNH kỹ thuật số. Cổng VGA truyền thống chỉ truyền tín hiệu HÌNH ẢNH dạng tương tự (Analog), không có âm thanh."
-          },
-          "quiz": {
-            "question": "Chuẩn giao tiếp nào sau đây có khả năng truyền tải đồng thời cả tín hiệu hình ảnh và âm thanh kỹ thuật số chất lượng cao?",
-            "options": [
-              "VGA",
-              "DVI-A",
-              "HDMI",
-              "PS/2"
-            ],
-            "answer": 2,
-            "explanation": "HDMI (High-Definition Multimedia Interface) hỗ trợ truyền tải đồng thời cả video và audio kỹ thuật số chất lượng cao."
-          }
-        },
-        {
-          "id": "ict_a_2",
-          "title": "Bài 2: Hệ điều hành thông dụng & Phần mềm ứng dụng",
-          "bookRef": "SGK KNTT Tin 11 - Trang 12",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Hệ điều hành di động (Android, iOS), HĐH máy tính (Windows, macOS, Linux), phân loại phần mềm ứng dụng và phần mềm nguồn mở.",
-          "theory": {
-            "objectives": [
-              "Phân biệt hệ điều hành dành cho thiết bị di động và máy tính để bàn.",
-              "Nắm chắc các bộ phần mềm văn phòng thông dụng và khái niệm phần mềm mã nguồn mở."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Lưu ý trắc nghiệm: Android phát triển dựa trên nhân Linux và có tính chất mã nguồn mở. iOS của Apple là hệ điều hành mã nguồn đóng độc quyền."
-          },
-          "quiz": {
-            "question": "Hệ điều hành di động nào sau đây phát triển dựa trên nhân Linux và có tính chất mã nguồn mở?",
-            "options": [
-              "Apple iOS",
-              "Google Android",
-              "Windows Phone",
-              "BlackBerry OS"
-            ],
-            "answer": 1,
-            "explanation": "Android là hệ điều hành di động được xây dựng dựa trên nhân Linux và được Google duy trì theo giấy phép nguồn mở."
-          }
-        },
         {
           "id": "ict_a_3",
           "title": "Bài 1: Khái niệm & Ứng dụng thực tế của AI",
-          "bookRef": "SGK KNTT Tin 12 - Trang 5",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 1 (Trang 4)",
           "priority": "Trung bình",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Khái niệm Trí tuệ nhân tạo (AI), trợ lý ảo cá nhân (Siri, Google Assistant), nhận dạng khuôn mặt (FaceID) và phân loại hình ảnh số.",
@@ -144,7 +91,7 @@
         {
           "id": "ict_a_4",
           "title": "Bài 2: AI trong đời sống xã hội & Công việc số",
-          "bookRef": "SGK KNTT Tin 12 - Trang 10",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 1 (Trang 7)",
           "priority": "Trung bình",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Tác động của AI đối với việc làm số, các công cụ sinh văn bản/hình ảnh tự động, và trách nhiệm đạo đức số khi sử dụng AI.",
@@ -173,25 +120,26 @@
     {
       "id": "ict_station_2",
       "stepNumber": "02",
-      "code": "Chủ đề B",
-      "title": "Mạng Máy Tính & Dịch Vụ Internet",
-      "category": "Mạng nội bộ & Dịch vụ số",
+      "code": "Chủ đề 2",
+      "title": "Mạng máy tính và Internet",
+      "category": "Kiến thức chung",
       "priority": "Trung bình",
       "priorityBadge": "normal",
       "questionType": "Trắc nghiệm Phần I (2 câu)",
-      "description": "Mạng cục bộ LAN, chức năng Router/Switch/AP, cách chia sẻ tài nguyên mạng, các dịch vụ lưu trữ đám mây Google Drive, OneDrive.",
+      "bookRef": "Trang 10 - 19",
+      "description": "Mạng cục bộ LAN, thiết bị mạng Switch/Router/Access Point, dịch vụ Internet, kết nối mạng Wi-Fi và dịch vụ lưu trữ đám mây (Google Drive, OneDrive).",
       "skills": [
-        "Chia sẻ tài nguyên LAN",
-        "Router & Switch & AP",
-        "Lưu trữ Google Drive",
-        "Cộng tác đám mây"
+        "Mạng cục bộ LAN & Thiết bị kết nối",
+        "Dịch vụ Internet & Web",
+        "Mạng Wi-Fi an toàn",
+        "Lưu trữ đám mây (Cloud Storage)"
       ],
       "xp": 280,
       "lessons": [
         {
           "id": "ict_b_1",
-          "title": "Bài 3: Mạng cục bộ LAN & Thiết bị kết nối",
-          "bookRef": "SGK KNTT Tin 11 - Trang 24",
+          "title": "Bài 1: Mạng cục bộ LAN & Thiết bị kết nối",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 10)",
           "priority": "Trung bình",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Mô hình kết nối mạng LAN, chức năng của Switch, Router, Access Point và cách chia sẻ thư mục/máy in trong mạng nội bộ.",
@@ -217,8 +165,8 @@
         },
         {
           "id": "ict_b_2",
-          "title": "Bài 4: Khái niệm & Dịch vụ trên Internet",
-          "bookRef": "SGK KNTT Tin 11 - Trang 30",
+          "title": "Bài 2: Khái niệm & Dịch vụ trên Internet",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 13)",
           "priority": "Trung bình",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Các dịch vụ cốt lõi: Web (WWW), Thư điện tử (Email), Công cụ tìm kiếm (Search Engine), Hội nghị truyền hình trực tuyến.",
@@ -245,7 +193,7 @@
         {
           "id": "ict_b_3",
           "title": "Bài 3: Kết nối thiết bị mạng Switch, Router, AP",
-          "bookRef": "SGK KNTT Tin 12 - Trang 14",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 15)",
           "priority": "Trung bình",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Các bước thiết lập mạng nội bộ cho văn phòng nhỏ: Gắn cáp RJ45, cấu hình DHCP cấp phát IP tự động, đặt mật khẩu Wi-Fi.",
@@ -272,7 +220,7 @@
         {
           "id": "ict_b_4",
           "title": "Bài 4: Mạng Wi-Fi & Dịch vụ Lưu trữ đám mây",
-          "bookRef": "SGK KNTT Tin 12 - Trang 20",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 17)",
           "priority": "Trung bình",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Cơ chế chia sẻ tệp tin, phân quyền (Chỉ xem, Nhận xét, Chỉnh sửa) trên Google Drive và Microsoft OneDrive.",
@@ -301,207 +249,26 @@
     {
       "id": "ict_station_3",
       "stepNumber": "03",
-      "code": "Chủ đề C (ICT)",
-      "title": "Bảng Tính Excel Nâng Cao",
-      "category": "TRỌNG TÂM CÂU HỎI ĐÚNG/SAI PHẦN II",
-      "priority": "Cực kỳ cao",
-      "priorityBadge": "extreme",
-      "questionType": "Trắc nghiệm Đúng/Sai (Kịch bản Bảng tính Excel)",
-      "description": "TRỌNG TÂM LỚN ĐỊNH HƯỚNG ICT! Địa chỉ ô tương đối/tuyệt đối ($A$1), Hàm logic IF, AND, OR lồng nhau, Tìm kiếm VLOOKUP/HLOOKUP, Thống kê có điều kiện SUMIF/COUNTIF, Báo cáo Pivot Table và Lọc nâng cao (Advanced Filter).",
-      "skills": [
-        "Địa chỉ $A$1 vs A1",
-        "Hàm IF lồng AND/OR",
-        "VLOOKUP & HLOOKUP",
-        "SUMIF, COUNTIF & Pivot Table"
-      ],
-      "xp": 600,
-      "lessons": [
-        {
-          "id": "ict_c_1",
-          "title": "Bài 5: Bảng tính Excel & Địa chỉ ô tuyệt đối/tương đối",
-          "bookRef": "SGK KNTT Tin 11 - Trang 49",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trắc nghiệm Phần I & II",
-          "summary": "Phân biệt địa chỉ tương đối (A1), tuyệt đối ($A$1) và hỗn hợp ($A1, A$1); sự biến đổi địa chỉ khi sao chép công thức.",
-          "theory": {
-            "objectives": [
-              "Nắm chắc quy tắc: Dấu $ đứng trước thành phần nào thì thành phần đó CỐ ĐỊNH khi sao chép công thức.",
-              "Tính toán chính xác kết quả ô tính sau khi kéo fill-handle sang dòng/cột khác."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi THPTQG: Đề bài cho công thức ô B2 là =$A1*B$1, hỏi khi sao chép sang C4 công thức trở thành gì? Nhớ: Cột A có $ nên cố định A, dòng 1 có $ nên cố định 1! -> Kết quả tại C4 là =$A3*C$1."
-          },
-          "quiz": {
-            "question": "Tại ô C2 có công thức: = $A$1 + B2. Khi sao chép công thức này sang ô D3, công thức tại ô D3 sẽ trở thành:",
-            "options": [
-              "= $B$2 + C3",
-              "= $A$1 + C3",
-              "= $A$2 + B3",
-              "= $A$1 + B2"
-            ],
-            "answer": 1,
-            "explanation": "Địa chỉ $A$1 giữ nguyên. Địa chỉ tương đối B2 dịch sang phải 1 cột và xuống 1 dòng nên trở thành C3. Vậy công thức là =$A$1 + C3."
-          }
-        },
-        {
-          "id": "ict_c_2",
-          "title": "Bài 6: Các hàm Logic IF, AND, OR trong Excel",
-          "bookRef": "SGK KNTT Tin 11 - Trang 58",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Cú pháp hàm IF lồng nhau kết hợp AND(...), OR(...) để xếp loại học sinh, tính phụ cấp lương, tính tiền thưởng.",
-          "theory": {
-            "objectives": [
-              "Cú pháp chuẩn: =IF(DieuKien, GiaTriNeuDung, GiaTriNeuSai).",
-              "Biết cách lồng ghép các điều kiện logic phức hợp với AND và OR."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề Đúng/Sai: Lệnh =AND(5>3, 2>4) trả về FALSE vì 2>4 là sai. Lệnh =OR(5>3, 2>4) trả về TRUE vì 5>3 đã đúng!"
-          },
-          "quiz": {
-            "question": "Biểu thức Excel sau trả về kết quả gì: =IF(AND(10>5, 3>8), \"Đạt\", \"Hỏng\")?",
-            "options": [
-              "Đạt",
-              "Hỏng",
-              "#VALUE!",
-              "#NAME?"
-            ],
-            "answer": 1,
-            "explanation": "Hàm AND(10>5, 3>8) có điều kiện 3>8 là SAI, do đó hàm AND trả về FALSE. Hàm IF nhận FALSE nên trả về giá trị thứ 3 là \"Hỏng\"."
-          }
-        },
-        {
-          "id": "ict_c_3",
-          "title": "Bài 7: Các hàm tìm kiếm VLOOKUP, HLOOKUP",
-          "bookRef": "SGK KNTT Tin 11 - Trang 66",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Cú pháp tìm kiếm cột VLOOKUP và dòng HLOOKUP; ý nghĩa tham số tìm kiếm chính xác (0 / FALSE) vs tương đối (1 / TRUE).",
-          "theory": {
-            "objectives": [
-              "Cú pháp: =VLOOKUP(Lookup_value, Table_array, Col_index_num, [Range_lookup]).",
-              "Hiểu rõ nguyên lý: Cột đầu tiên trong Table_array phải chứa giá trị cần tìm."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề kinh điển: Quên khóa tuyệt đối bảng tham chiếu! Nếu viết =VLOOKUP(A2, F2:H10, 2, 0) khi sao chép công thức xuống hàng dưới, bảng F2:H10 sẽ trôi thành F3:H11 dẫn đến lỗi #N/A."
-          },
-          "quiz": {
-            "question": "Khi sử dụng hàm VLOOKUP, tham số Range_lookup nhận giá trị bằng 0 (hoặc FALSE) có ý nghĩa gì?",
-            "options": [
-              "Tìm kiếm xấp xỉ theo khoảng giá trị",
-              "Tìm kiếm chính xác tuyệt đối",
-              "Trả về kết quả là số 0",
-              "Không tìm kiếm mà bỏ qua"
-            ],
-            "answer": 1,
-            "explanation": "Tham số Range_lookup = 0 hoặc FALSE quy định chế độ tìm kiếm chính xác tuyệt đối từng ký tự."
-          }
-        },
-        {
-          "id": "ict_c_4",
-          "title": "Bài 8: Hàm thống kê điều kiện SUMIF, COUNTIF",
-          "bookRef": "SGK KNTT Tin 11 - Trang 75",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Cú pháp đếm có điều kiện COUNTIF(vung, dieu_kien) và tính tổng có điều kiện SUMIF(vung_dieu_kien, dieu_kien, vung_tinh_tong).",
-          "theory": {
-            "objectives": [
-              "Cú pháp hàm COUNTIF: Đếm số ô thỏa mãn tiêu chí xác định.",
-              "Cú pháp hàm SUMIF: Tính tổng các số trong vùng tính tổng ứng với các ô thỏa mãn điều kiện."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Lưu ý cú pháp điều kiện: Điều kiện dạng so sánh số học như lớn hơn hoặc bằng 500 PHẢI đặt trong dấu ngoặc kép, ví dụ: \">=500\", nếu viết >=500 không có ngoặc kép sẽ bị lỗi cú pháp."
-          },
-          "quiz": {
-            "question": "Công thức nào sau đây đếm số lượng học sinh có điểm trung bình (ở cột D từ D2 đến D30) lớn hơn hoặc bằng 8.0?",
-            "options": [
-              "=COUNTIF(D2:D30, >=8.0)",
-              "=COUNTIF(D2:D30, \">=8.0\")",
-              "=SUMIF(D2:D30, \">=8.0\")",
-              "=COUNT(D2:D30, \">=8.0\")"
-            ],
-            "answer": 1,
-            "explanation": "Hàm COUNTIF đếm theo điều kiện, và điều kiện so sánh phải được bao bọc trong cặp dấu nháy kép: \">=8.0\"."
-          }
-        },
-        {
-          "id": "ict_c_5",
-          "title": "Bài 9: Kỹ thuật Pivot Table & Báo cáo thống kê",
-          "bookRef": "SGK KNTT Tin 11 - Trang 84",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Tạo bảng tổng hợp dữ liệu động Pivot Table: Vùng Rows, Columns, Values, Filters; cách đổi hàm tính từ SUM sang COUNT/AVERAGE.",
-          "theory": {
-            "objectives": [
-              "Hiểu chức năng của 4 vùng cấu hình Pivot Table: Filters, Columns, Rows và Values.",
-              "Biết cách làm mới dữ liệu (Refresh) khi dữ liệu nguồn thay đổi."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi Đúng/Sai: Khi bảng dữ liệu gốc thay đổi, báo cáo Pivot Table KHÔNG tự động cập nhật ngay lập tức mà người dùng phải bấm chuột phải chọn \"Refresh\" (Làm mới)."
-          },
-          "quiz": {
-            "question": "Khi dữ liệu trong bảng nguồn ban đầu bị chỉnh sửa, muốn báo cáo Pivot Table cập nhật kết quả mới nhất ta cần làm gì?",
-            "options": [
-              "Xóa Pivot Table và tạo lại từ đầu",
-              "Nhấp chuột phải vào Pivot Table và chọn \"Refresh\"",
-              "Lưu tệp Excel và khởi động lại máy tính",
-              "Pivot Table sẽ tự động xóa các dữ liệu cũ"
-            ],
-            "answer": 1,
-            "explanation": "Nhấp chuột phải chọn \"Refresh\" để làm mới dữ liệu Pivot Table theo bảng dữ liệu nguồn mới."
-          }
-        },
-        {
-          "id": "ict_c_6",
-          "title": "Bài 10: Biểu đồ & Lọc dữ liệu Advanced Filter",
-          "bookRef": "SGK KNTT Tin 11 - Trang 92",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Các loại biểu đồ Column, Line, Pie; Kỹ thuật trích lọc dữ liệu nâng cao (Advanced Filter) với bảng tiêu chuẩn điều kiện.",
-          "theory": {
-            "objectives": [
-              "Chọn loại biểu đồ phù hợp với mục đích trực quan hóa dữ liệu.",
-              "Nắm nguyên tắc thiết lập vùng tiêu chuẩn (Criteria Range) trong Advanced Filter."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy Advanced Filter: Điều kiện cùng hàng là AND; điều kiện khác hàng là OR. Đây là câu hỏi kinh điển trong đề thi THPTQG phần II."
-          },
-          "quiz": {
-            "question": "Để biểu diễn trực quan tỉ lệ phần trăm đóng góp của các nguồn năng lượng trong tổng sản lượng điện quốc gia, loại biểu đồ nào thích hợp nhất?",
-            "options": [
-              "Biểu đồ đường (Line Chart)",
-              "Biểu đồ tròn (Pie Chart)",
-              "Biểu đồ phân tán (Scatter)",
-              "Biểu đồ radar"
-            ],
-            "answer": 1,
-            "explanation": "Biểu đồ tròn (Pie Chart) chuyên dùng để mô tả tỉ lệ cơ cấu thành phần so với tổng thể 100%."
-          }
-        }
-      ]
-    },
-    {
-      "id": "ict_station_4",
-      "stepNumber": "04",
-      "code": "Chủ đề D",
-      "title": "Đạo Đức, Pháp Luật & Văn Hóa Số",
-      "category": "Văn hóa & Pháp luật số",
+      "code": "Chủ đề 3",
+      "title": "Đạo đức, pháp luật và văn hoá trong môi trường số",
+      "category": "Kiến thức chung",
       "priority": "Trung bình",
       "priorityBadge": "normal",
       "questionType": "Trắc nghiệm Phần I (1 - 2 câu)",
-      "description": "Bản quyền phần mềm, sở hữu trí tuệ, các loại giấy phép Creative Commons (CC), Luật An ninh mạng và an toàn thông tin cá nhân.",
+      "bookRef": "Trang 20 - 24",
+      "description": "Bản quyền phần mềm, sở hữu trí tuệ, tác quyền số, an toàn thông tin, Luật An ninh mạng và văn hóa ứng xử trên mạng xã hội.",
       "skills": [
-        "Bản quyền phần mềm",
-        "Giấy phép Creative Commons",
-        "Luật An ninh mạng",
-        "Bảo mật mật khẩu 2FA"
+        "Bản quyền phần mềm & Tác quyền số",
+        "Luật An ninh mạng & Bảo vệ dữ liệu",
+        "Văn hóa ứng xử trên không gian mạng",
+        "Phòng tránh lừa đảo & Rủi ro số"
       ],
-      "xp": 260,
+      "xp": 220,
       "lessons": [
         {
           "id": "ict_d_1",
-          "title": "Bài 11: Bản quyền phần mềm & Tác quyền số",
-          "bookRef": "SGK KNTT Tin 11 - Trang 38",
+          "title": "Bài 1: Bản quyền phần mềm & Tác quyền số",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 3 (Trang 20)",
           "priority": "Trung bình",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Các loại giấy phép Creative Commons (CC), quyền tác giả đối với hình ảnh, video số trên Internet.",
@@ -527,8 +294,8 @@
         },
         {
           "id": "ict_d_2",
-          "title": "Bài 5: An toàn thông tin & Văn hóa mạng",
-          "bookRef": "SGK KNTT Tin 12 - Trang 34",
+          "title": "Bài 2: An toàn thông tin & Văn hóa mạng",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 3 (Trang 22)",
           "priority": "Trung bình",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Bảo vệ mật khẩu, phòng chống lừa đảo mạo danh trên mạng xã hội, văn hóa ứng xử văn minh trên không gian số.",
@@ -555,27 +322,157 @@
       ]
     },
     {
+      "id": "ict_station_4",
+      "stepNumber": "04",
+      "code": "Chủ đề 4",
+      "title": "Giới thiệu các hệ Cơ sở dữ liệu",
+      "category": "Kiến thức chung",
+      "priority": "Cao",
+      "priorityBadge": "high",
+      "questionType": "Trắc nghiệm Phần I (2 - 3 câu)",
+      "bookRef": "Trang 25 - 39",
+      "description": "Khái niệm CSDL & Hệ Quản trị CSDL (DBMS), mô hình quan hệ, bảng dữ liệu, khóa chính (Primary Key), khóa ngoại (Foreign Key) và truy vấn dữ liệu SQL căn bản.",
+      "skills": [
+        "Khái niệm CSDL & Hệ QTCSDL",
+        "Bảng dữ liệu & Khóa chính",
+        "Khóa ngoại & Liên kết bảng",
+        "Truy vấn SQL cơ bản"
+      ],
+      "xp": 320,
+      "lessons": [
+        {
+          "id": "ict_db_1",
+          "title": "Bài 1: Giới thiệu CSDL & Hệ QTCSDL",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 25)",
+          "priority": "Rất cao",
+          "examFormat": "Trắc nghiệm Phần I & II",
+          "summary": "Khái niệm CSDL, Hệ quản trị CSDL (DBMS), các đặc trưng an toàn, tính toàn vẹn và độc lập dữ liệu.",
+          "theory": {
+            "objectives": [
+              "Phân biệt được CSDL (Database) và Hệ quản trị CSDL (DBMS).",
+              "Nắm vai trò tránh dư thừa dữ liệu và đảm bảo nhất quán."
+            ],
+            "contentSections": [],
+            "examTips": "CSDL là dữ liệu; DBMS là phần mềm quản lý dữ liệu đó."
+          },
+          "quiz": {
+            "question": "Phần mềm nào sau đây là Hệ quản trị cơ sở dữ liệu (DBMS)?",
+            "options": [
+              "Python",
+              "MySQL",
+              "Visual Studio Code",
+              "Git"
+            ],
+            "answer": 1,
+            "explanation": "MySQL là một Hệ quản trị cơ sở dữ liệu quan hệ (RDBMS) rất phổ biến."
+          }
+        },
+        {
+          "id": "ict_db_2",
+          "title": "Bài 2: Mô hình CSDL Quan hệ & Khóa chính",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 28)",
+          "priority": "Rất cao",
+          "examFormat": "Trắc nghiệm Phần I & II",
+          "summary": "Cấu trúc bảng, bản ghi (dòng), thuộc tính (cột), khái niệm Khóa chính (Primary Key) và tính duy nhất, khác NULL.",
+          "theory": {
+            "objectives": [
+              "Hiểu định nghĩa Khóa chính (Primary Key).",
+              "Nắm hai điều kiện bắt buộc của Khóa chính: DUY NHẤT (Unique) và KHÔNG ĐƯỢC RỖNG (NOT NULL)."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Bẫy đề Đúng/Sai Phần II: \"Một bảng có thể có nhiều khóa chính\" -> SAI (chỉ có duy nhất 1 khóa chính, nhưng có thể gồm nhiều thuộc tính kết hợp)."
+          },
+          "quiz": {
+            "question": "Hai tính chất bắt buộc của một Khóa chính (Primary Key) trong bảng quan hệ là:",
+            "options": [
+              "Giá trị phải là số nguyên và tự động tăng",
+              "Giá trị phải mang tính DUY NHẤT và KHÔNG ĐƯỢC RỖNG (NOT NULL)",
+              "Giá trị có thể trùng nhau nhưng không được rỗng",
+              "Chỉ áp dụng cho trường văn bản"
+            ],
+            "answer": 1,
+            "explanation": "Khóa chính bắt buộc phải duy nhất trên toàn bảng và không được mang giá trị NULL."
+          }
+        },
+        {
+          "id": "ict_db_3",
+          "title": "Bài 3: Khóa ngoại & Liên kết bảng",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 31)",
+          "priority": "Rất cao",
+          "examFormat": "Trắc nghiệm Phần I & II",
+          "summary": "Khái niệm Khóa ngoại (Foreign Key), ràng buộc toàn vẹn tham chiếu, liên kết quan hệ 1 - 1, 1 - N, N - N.",
+          "theory": {
+            "objectives": [
+              "Hiểu Khóa ngoại là cầu nối tham chiếu đến Khóa chính của bảng khác.",
+              "Nắm quy tắc toàn vẹn tham chiếu: Giá trị khóa ngoại phải tồn tại ở bảng cha hoặc mang giá trị NULL."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Bẫy xóa dữ liệu: Không thể xóa một dòng ở bảng cha (chứa khóa chính) nếu đang có dòng ở bảng con (chứa khóa ngoại) tham chiếu tới nó (trừ khi có thiết lập ON DELETE CASCADE)."
+          },
+          "quiz": {
+            "question": "Ràng buộc toàn vẹn tham chiếu của Khóa ngoại (Foreign Key) quy định điều gì?",
+            "options": [
+              "Giá trị khóa ngoại luôn luôn bằng 0",
+              "Giá trị khóa ngoại phải tồn tại trong tập giá trị khóa chính của bảng được tham chiếu (hoặc là NULL)",
+              "Bảng chứa khóa ngoại bắt buộc phải có ít hơn 10 cột",
+              "Khóa ngoại không được phép trùng lặp trong bảng của nó"
+            ],
+            "answer": 1,
+            "explanation": "Toàn vẹn tham chiếu đảm bảo không có bản ghi \"mồ côi\" tham chiếu tới một đối tượng không tồn tại ở bảng cha."
+          }
+        },
+        {
+          "id": "ict_db_4",
+          "title": "Bài 4: Ngôn ngữ SQL & Lệnh truy vấn SELECT",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 34)",
+          "priority": "Rất cao",
+          "examFormat": "Trắc nghiệm Phần I & II",
+          "summary": "Cú pháp câu lệnh SELECT căn bản, lọc dữ liệu với WHERE, toán tử so sánh, LIKE, BETWEEN, ORDER BY sắp xếp.",
+          "theory": {
+            "objectives": [
+              "Viết đúng thứ tự các mệnh đề SQL: SELECT ... FROM ... WHERE ... ORDER BY ...",
+              "Sử dụng thành thạo toán tử LIKE với ký tự đại diện % và _."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Trật tự thực thi trong SQL: FROM -> WHERE -> SELECT -> ORDER BY. Do đó không thể dùng bí danh (Alias) đặt trong SELECT để lọc ở WHERE."
+          },
+          "quiz": {
+            "question": "Để lọc các học sinh có tên bắt đầu bằng chữ cái \"N\" trong bảng HOC_SINH, mệnh đề WHERE nào sau đây là chính xác?",
+            "options": [
+              "WHERE HoTen = 'N*'",
+              "WHERE HoTen LIKE 'N%'",
+              "WHERE HoTen IN ('N')",
+              "WHERE HoTen CONTAINS 'N'"
+            ],
+            "answer": 1,
+            "explanation": "Trong chuẩn SQL, toán tử LIKE kết hợp với ký tự '%' đại diện cho chuỗi ký tự bất kỳ."
+          }
+        }
+      ]
+    },
+    {
       "id": "ict_station_5",
       "stepNumber": "05",
-      "code": "Chủ đề E (ICT)",
-      "title": "Thiết Kế Web (HTML/CSS) & Đồ Họa Đa Phương Tiện",
-      "category": "TRỌNG TÂM LỚN NHẤT PHẦN II ĐỊNH HƯỚNG ICT",
-      "priority": "Cực kỳ cao",
-      "priorityBadge": "extreme",
-      "questionType": "Trắc nghiệm Đúng/Sai (Câu 3 & 4 Phần II)",
-      "description": "TRỌNG TÂM CAO NHẤT ĐỊNH HƯỚNG ICT! Cấu trúc thẻ HTML (table, tr, td, form, input, link a), Ngôn ngữ CSS (color, font, margin, padding), Cây thư mục website & Xuất bản Hosting, Kỹ thuật cắt ảnh lớp Layer & Biên tập Video clip.",
+      "code": "Chủ đề 5",
+      "title": "Tạo trang web với HTML và CSS",
+      "category": "Kiến thức chung",
+      "priority": "Cao",
+      "priorityBadge": "high",
+      "questionType": "Trắc nghiệm Phần I (2 - 3 câu)",
+      "bookRef": "Trang 40 - 74",
+      "description": "Cấu trúc văn bản siêu liên kết HTML, các thẻ định dạng, chèn hình ảnh, tạo bảng (table), biểu mẫu (form), danh sách, siêu liên kết và ngôn ngữ CSS định kiểu trang web.",
       "skills": [
-        "Thẻ HTML & Form nhập liệu",
-        "Bảng Table (rowspan, colspan)",
-        "Thuộc tính CSS & Box Model",
-        "Biên tập Video & Layer ảnh"
+        "Cấu trúc trang web HTML",
+        "Thẻ Bảng (table) & Form nhập liệu",
+        "Thẻ liên kết (a) & Danh sách (ul, ol)",
+        "Định kiểu CSS (Color, Font, Box Model)"
       ],
-      "xp": 650,
+      "xp": 350,
       "lessons": [
         {
           "id": "ict_e_1",
-          "title": "Bài 12: Giới thiệu HTML & Cấu trúc trang Web",
-          "bookRef": "SGK KNTT Tin 12 (ICT) - Trang 39",
+          "title": "Bài 1: Giới thiệu HTML & Cấu trúc trang Web",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 40)",
           "priority": "Cực kỳ cao",
           "examFormat": "Trọng tâm Phần II Đúng/Sai",
           "summary": "Cấu trúc tài liệu chuẩn: <!DOCTYPE html>, <html>, <head>, <title>, <body>; sự khác biệt giữa phần tử khối và nội dòng.",
@@ -601,8 +498,8 @@
         },
         {
           "id": "ict_e_2",
-          "title": "Bài 13: Các thẻ định dạng văn bản & Thẻ ảnh",
-          "bookRef": "SGK KNTT Tin 12 (ICT) - Trang 48",
+          "title": "Bài 2: Các thẻ định dạng văn bản & Thẻ ảnh",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 46)",
           "priority": "Cực kỳ cao",
           "examFormat": "Trọng tâm Phần II Đúng/Sai",
           "summary": "Các thẻ tiêu đề <h1> đến <h6>, thẻ đoạn văn <p>, in đậm <b>, in nghiêng <i>; thẻ chèn ảnh <img src=\"...\" alt=\"...\">.",
@@ -628,8 +525,8 @@
         },
         {
           "id": "ict_e_3",
-          "title": "Bài 14: Thẻ tạo Bảng Table & Form nhập liệu",
-          "bookRef": "SGK KNTT Tin 12 (ICT) - Trang 58",
+          "title": "Bài 3: Thẻ tạo Bảng Table & Form nhập liệu",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 52)",
           "priority": "Cực kỳ cao",
           "examFormat": "Trọng tâm Phần II Đúng/Sai",
           "summary": "Thẻ <table>, <tr> (dòng), <th> (tiêu đề cột), <td> (ô dữ liệu); Thuộc tính gộp ô rowspan, colspan; Thẻ <form>, <input type=\"text|password|radio|checkbox|submit\">.",
@@ -655,8 +552,8 @@
         },
         {
           "id": "ict_e_4",
-          "title": "Bài 15: Thẻ liên kết a & Danh sách ul, ol",
-          "bookRef": "SGK KNTT Tin 12 (ICT) - Trang 68",
+          "title": "Bài 4: Thẻ liên kết a & Danh sách ul, ol",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 58)",
           "priority": "Cực kỳ cao",
           "examFormat": "Trọng tâm Phần II Đúng/Sai",
           "summary": "Thẻ tạo siêu liên kết <a href=\"...\" target=\"_blank\">; Danh sách không có thứ tự <ul><li> và danh sách có thứ tự <ol><li>.",
@@ -682,8 +579,8 @@
         },
         {
           "id": "ict_e_5",
-          "title": "Bài 16: Ngôn ngữ CSS & Nhúng CSS vào HTML",
-          "bookRef": "SGK KNTT Tin 12 (ICT) - Trang 78",
+          "title": "Bài 5: Ngôn ngữ CSS & Nhúng CSS vào HTML",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 64)",
           "priority": "Cực kỳ cao",
           "examFormat": "Trọng tâm Phần II Đúng/Sai",
           "summary": "Ba cách nhúng CSS: Inline (trong thẻ), Internal (thẻ <style> trong <head>), External (tệp .css qua thẻ <link>); Cú pháp bộ chọn selector (tag, .class, #id).",
@@ -709,8 +606,8 @@
         },
         {
           "id": "ict_e_6",
-          "title": "Bài 17: Thuộc tính CSS cơ bản (Color, Font, Margin)",
-          "bookRef": "SGK KNTT Tin 12 (ICT) - Trang 88",
+          "title": "Bài 6: Thuộc tính CSS cơ bản (Color, Font, Margin)",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 70)",
           "priority": "Cực kỳ cao",
           "examFormat": "Trọng tâm Phần II Đúng/Sai",
           "summary": "Mô hình hộp (Box Model): Content -> Padding -> Border -> Margin; Các thuộc tính font-family, font-size, background-color.",
@@ -733,112 +630,32 @@
             "answer": 1,
             "explanation": "Padding là khoảng đệm nằm bên trong bao quanh nội dung cho tới mép đường viền (Border)."
           }
-        },
-        {
-          "id": "ict_e_7",
-          "title": "Bài 18: Cây cấu trúc Website & Xuất bản Web",
-          "bookRef": "SGK KNTT Tin 12 (ICT) - Trang 98",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Cây thư mục trang web (root, css/, images/, js/), đường dẫn tương đối (./, ../) và quy trình đưa website lên Hosting/Server.",
-          "theory": {
-            "objectives": [
-              "Biết cách tham chiếu đường dẫn ../ để quay lại thư mục cha.",
-              "Tệp trang chủ mặc định trên máy chủ luôn đặt tên là index.html."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy tên tệp trang chủ: Tệp trang chủ mặc định luôn là index.html, không phải home.html hay default.html."
-          },
-          "quiz": {
-            "question": "Theo chuẩn thiết kế website, tệp tin nào sau đây thường được các máy chủ web cấu hình làm trang chủ mặc định khi người dùng truy cập vào thư mục gốc?",
-            "options": [
-              "home.html",
-              "main.html",
-              "index.html",
-              "default.html"
-            ],
-            "answer": 2,
-            "explanation": "index.html là tên tệp trang chủ mặc định chuẩn của hầu hết các web server."
-          }
-        },
-        {
-          "id": "ict_e_8",
-          "title": "Bài 12: Chỉnh sửa ảnh lớp (Layer) & Đồ họa",
-          "bookRef": "SGK KNTT Tin 11 (ICT) - Trang 102",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trắc nghiệm Phần I & II",
-          "summary": "Khái niệm Lớp (Layer), vùng chọn (Selection), chỉnh độ sáng tối, xóa phông nền và xuất ảnh định dạng JPG/PNG.",
-          "theory": {
-            "objectives": [
-              "Hiểu nguyên lý xếp chồng các layer trong phần mềm đồ họa (GIMP, Photoshop).",
-              "Phân biệt định dạng PNG (hỗ trợ nền trong suốt) vs JPG (nén mất dữ liệu)."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy định dạng ảnh: Muốn lưu ảnh có nền trong suốt (không có phông nền trắng) thì BẮT BUỘC phải xuất ra định dạng PNG hoặc GIF, định dạng JPG không hỗ trợ nền trong suốt."
-          },
-          "quiz": {
-            "question": "Định dạng hình ảnh nào sau đây hỗ trợ kênh độ trong suốt (Transparency), rất thích hợp để xuất logo chèn lên trang web?",
-            "options": [
-              "BMP",
-              "JPG",
-              "PNG",
-              "TIFF"
-            ],
-            "answer": 2,
-            "explanation": "Định dạng PNG hỗ trợ kênh Alpha (nền trong suốt), rất tối ưu cho các thành phần đồ họa web."
-          }
-        },
-        {
-          "id": "ict_e_9",
-          "title": "Bài 13: Biên tập & Chỉnh sửa Video clip",
-          "bookRef": "SGK KNTT Tin 11 (ICT) - Trang 110",
-          "priority": "Cao",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Dòng thời gian (Timeline), kỹ thuật cắt ghép (Cut/Split), hiệu ứng chuyển cảnh (Transition) và xuất video định dạng MP4.",
-          "theory": {
-            "objectives": [
-              "Nắm các thao tác cơ bản trên thanh dòng thời gian Timeline của phần mềm biên tập video.",
-              "Hiểu vai trò của hiệu ứng chuyển cảnh Transition và chèn phụ đề, âm thanh nền."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Lưu ý trắc nghiệm: MP4 là định dạng video phổ biến nhất, tương thích tốt với mọi trình duyệt web và thiết bị di động."
-          },
-          "quiz": {
-            "question": "Trong phần mềm dựng video, thành phần nào là nơi người biên tập sắp xếp các đoạn phim, âm thanh và hiệu ứng theo trình tự thời gian?",
-            "options": [
-              "Hộp công cụ ToolBox",
-              "Dòng thời gian (Timeline)",
-              "Cửa sổ Preview",
-              "Bảng thuộc tính Properties"
-            ],
-            "answer": 1,
-            "explanation": "Timeline (Dòng thời gian) là không gian làm việc chính để sắp đặt các track hình ảnh và âm thanh nối tiếp nhau."
-          }
         }
       ]
     },
     {
       "id": "ict_station_6",
       "stepNumber": "06",
-      "code": "Chủ đề G",
-      "title": "Nghề Nghiệp & Hướng Nghiệp CNTT Ứng Dụng",
-      "category": "Định hướng tương lai",
+      "code": "Chủ đề 6",
+      "title": "Hướng nghiệp với tin học",
+      "category": "Kiến thức chung",
       "priority": "Thấp",
-      "priorityBadge": "normal",
+      "priorityBadge": "low",
       "questionType": "Trắc nghiệm Phần I (1 câu)",
-      "description": "Các ngành nghề ứng dụng CNTT trong kỷ nguyên số: Quản trị website, Thiết kế đồ họa đa phương tiện, Tiếp thị số (Digital Marketing) và Thương mại điện tử.",
+      "bookRef": "Trang 75 - 80",
+      "description": "Các nhóm ngành nghề ứng dụng CNTT trong doanh nghiệp, quản trị web, truyền thông đa phương tiện, thiết kế đồ họa và định hướng phát triển nghề nghiệp số.",
       "skills": [
-        "Nghề Quản trị Web",
-        "Thiết kế đồ họa",
-        "Tiếp thị số Digital Marketing",
-        "Thương mại điện tử"
+        "Nhóm ngành nghề ứng dụng CNTT",
+        "Nghề quản trị Website & Đồ họa số",
+        "Yêu cầu năng lực & Xu hướng số",
+        "Định hướng nghề nghiệp tương lai"
       ],
-      "xp": 220,
+      "xp": 200,
       "lessons": [
         {
           "id": "ict_g_1",
-          "title": "Bài 14: Các ngành nghề ứng dụng CNTT",
-          "bookRef": "SGK KNTT Tin 11 - Trang 115",
+          "title": "Bài 1: Các ngành nghề ứng dụng CNTT",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 6 (Trang 75)",
           "priority": "Thấp",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Tổng quan các vị trí việc làm trong xã hội hiện đại có ứng dụng công nghệ thông tin và kỹ năng số cần trang bị.",
@@ -864,8 +681,8 @@
         },
         {
           "id": "ict_g_2",
-          "title": "Bài 10: Hướng nghiệp Quản trị Web & Thiết kế đồ họa",
-          "bookRef": "SGK KNTT Tin 12 - Trang 106",
+          "title": "Bài 2: Hướng nghiệp Quản trị Web & Thiết kế đồ họa",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 6 (Trang 78)",
           "priority": "Thấp",
           "examFormat": "Trắc nghiệm Phần I",
           "summary": "Yêu cầu năng lực số, chứng chỉ nghề nghiệp quốc tế (MOS, Adobe Certified) và cơ hội học tập tại các trường đại học/cao đẳng.",
@@ -893,25 +710,339 @@
     {
       "id": "ict_station_7",
       "stepNumber": "07",
-      "code": "Tổng Ôn",
-      "title": "Chiến Thuật Bứt Phá Điểm 10 THPTQG (ICT)",
-      "category": "Bí kíp phòng thi",
-      "priority": "Cực kỳ cao",
+      "code": "Chủ đề ICT 1",
+      "title": "Thực hành tạo và khai thác Cơ sở dữ liệu",
+      "category": "Chuyên sâu Tin học ứng dụng",
+      "priority": "Cực kỳ quan trọng",
       "priorityBadge": "extreme",
-      "questionType": "Toàn bộ bài thi 50 phút",
-      "description": "Quy tắc phân bổ thời gian: 15 phút cho 18 câu Phần I, 30 phút cho 4 câu Đúng/Sai Phần II, 5 phút kiểm tra lại bài.",
+      "questionType": "Trắc nghiệm Đúng/Sai Phần II (Câu 3 - 4)",
+      "bookRef": "Trang 114 - 121",
+      "description": "Thực hành tạo bảng dữ liệu, khóa chính, liên kết bảng, xử lý dữ liệu bảng tính nâng cao, các hàm Logic (IF, AND, OR), hàm tra cứu (VLOOKUP, HLOOKUP), thống kê có điều kiện (SUMIF, COUNTIF), Pivot Table và trích lọc dữ liệu.",
       "skills": [
-        "Chiến thuật 50 phút",
-        "Bẫy Đúng/Sai lũy tiến",
-        "Bí kíp Excel & HTML",
-        "Kiểm soát tâm lý phòng thi"
+        "Tạo bảng CSDL & Khóa chính",
+        "Hàm Logic (IF, AND, OR) & VLOOKUP",
+        "Hàm thống kê (SUMIF, COUNTIF)",
+        "Pivot Table & Lọc dữ liệu nâng cao"
+      ],
+      "xp": 400,
+      "lessons": [
+        {
+          "id": "ict_c_1",
+          "title": "Bài 1: Bảng tính Excel & Địa chỉ ô tuyệt đối/tương đối",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 114)",
+          "priority": "Cực kỳ cao",
+          "examFormat": "Trắc nghiệm Phần I & II",
+          "summary": "Phân biệt địa chỉ tương đối (A1), tuyệt đối ($A$1) và hỗn hợp ($A1, A$1); sự biến đổi địa chỉ khi sao chép công thức.",
+          "theory": {
+            "objectives": [
+              "Nắm chắc quy tắc: Dấu $ đứng trước thành phần nào thì thành phần đó CỐ ĐỊNH khi sao chép công thức.",
+              "Tính toán chính xác kết quả ô tính sau khi kéo fill-handle sang dòng/cột khác."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Bẫy đề thi THPTQG: Đề bài cho công thức ô B2 là =$A1*B$1, hỏi khi sao chép sang C4 công thức trở thành gì? Nhớ: Cột A có $ nên cố định A, dòng 1 có $ nên cố định 1! -> Kết quả tại C4 là =$A3*C$1."
+          },
+          "quiz": {
+            "question": "Tại ô C2 có công thức: = $A$1 + B2. Khi sao chép công thức này sang ô D3, công thức tại ô D3 sẽ trở thành:",
+            "options": [
+              "= $B$2 + C3",
+              "= $A$1 + C3",
+              "= $A$2 + B3",
+              "= $A$1 + B2"
+            ],
+            "answer": 1,
+            "explanation": "Địa chỉ $A$1 giữ nguyên. Địa chỉ tương đối B2 dịch sang phải 1 cột và xuống 1 dòng nên trở thành C3. Vậy công thức là =$A$1 + C3."
+          }
+        },
+        {
+          "id": "ict_c_2",
+          "title": "Bài 2: Các hàm Logic IF, AND, OR trong bảng tính",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 116)",
+          "priority": "Cực kỳ cao",
+          "examFormat": "Trọng tâm Phần II Đúng/Sai",
+          "summary": "Cú pháp hàm IF lồng nhau kết hợp AND(...), OR(...) để xếp loại học sinh, tính phụ cấp lương, tính tiền thưởng.",
+          "theory": {
+            "objectives": [
+              "Cú pháp chuẩn: =IF(DieuKien, GiaTriNeuDung, GiaTriNeuSai).",
+              "Biết cách lồng ghép các điều kiện logic phức hợp với AND và OR."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Bẫy đề Đúng/Sai: Lệnh =AND(5>3, 2>4) trả về FALSE vì 2>4 là sai. Lệnh =OR(5>3, 2>4) trả về TRUE vì 5>3 đã đúng!"
+          },
+          "quiz": {
+            "question": "Biểu thức Excel sau trả về kết quả gì: =IF(AND(10>5, 3>8), \"Đạt\", \"Hỏng\")?",
+            "options": [
+              "Đạt",
+              "Hỏng",
+              "#VALUE!",
+              "#NAME?"
+            ],
+            "answer": 1,
+            "explanation": "Hàm AND(10>5, 3>8) có điều kiện 3>8 là SAI, do đó hàm AND trả về FALSE. Hàm IF nhận FALSE nên trả về giá trị thứ 3 là \"Hỏng\"."
+          }
+        },
+        {
+          "id": "ict_c_3",
+          "title": "Bài 3: Các hàm tìm kiếm VLOOKUP, HLOOKUP",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 118)",
+          "priority": "Cực kỳ cao",
+          "examFormat": "Trọng tâm Phần II Đúng/Sai",
+          "summary": "Cú pháp tìm kiếm cột VLOOKUP và dòng HLOOKUP; ý nghĩa tham số tìm kiếm chính xác (0 / FALSE) vs tương đối (1 / TRUE).",
+          "theory": {
+            "objectives": [
+              "Cú pháp: =VLOOKUP(Lookup_value, Table_array, Col_index_num, [Range_lookup]).",
+              "Hiểu rõ nguyên lý: Cột đầu tiên trong Table_array phải chứa giá trị cần tìm."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Bẫy đề kinh điển: Quên khóa tuyệt đối bảng tham chiếu! Nếu viết =VLOOKUP(A2, F2:H10, 2, 0) khi sao chép công thức xuống hàng dưới, bảng F2:H10 sẽ trôi thành F3:H11 dẫn đến lỗi #N/A."
+          },
+          "quiz": {
+            "question": "Khi sử dụng hàm VLOOKUP, tham số Range_lookup nhận giá trị bằng 0 (hoặc FALSE) có ý nghĩa gì?",
+            "options": [
+              "Tìm kiếm xấp xỉ theo khoảng giá trị",
+              "Tìm kiếm chính xác tuyệt đối",
+              "Trả về kết quả là số 0",
+              "Không tìm kiếm mà bỏ qua"
+            ],
+            "answer": 1,
+            "explanation": "Tham số Range_lookup = 0 hoặc FALSE quy định chế độ tìm kiếm chính xác tuyệt đối từng ký tự."
+          }
+        },
+        {
+          "id": "ict_c_4",
+          "title": "Bài 4: Hàm thống kê điều kiện SUMIF, COUNTIF",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 119)",
+          "priority": "Cực kỳ cao",
+          "examFormat": "Trọng tâm Phần II Đúng/Sai",
+          "summary": "Cú pháp đếm có điều kiện COUNTIF(vung, dieu_kien) và tính tổng có điều kiện SUMIF(vung_dieu_kien, dieu_kien, vung_tinh_tong).",
+          "theory": {
+            "objectives": [
+              "Cú pháp hàm COUNTIF: Đếm số ô thỏa mãn tiêu chí xác định.",
+              "Cú pháp hàm SUMIF: Tính tổng các số trong vùng tính tổng ứng với các ô thỏa mãn điều kiện."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Lưu ý cú pháp điều kiện: Điều kiện dạng so sánh số học như lớn hơn hoặc bằng 500 PHẢI đặt trong dấu ngoặc kép, ví dụ: \">=500\", nếu viết >=500 không có ngoặc kép sẽ bị lỗi cú pháp."
+          },
+          "quiz": {
+            "question": "Công thức nào sau đây đếm số lượng học sinh có điểm trung bình (ở cột D từ D2 đến D30) lớn hơn hoặc bằng 8.0?",
+            "options": [
+              "=COUNTIF(D2:D30, >=8.0)",
+              "=COUNTIF(D2:D30, \">=8.0\")",
+              "=SUMIF(D2:D30, \">=8.0\")",
+              "=COUNT(D2:D30, \">=8.0\")"
+            ],
+            "answer": 1,
+            "explanation": "Hàm COUNTIF đếm theo điều kiện, và điều kiện so sánh phải được bao bọc trong cặp dấu nháy kép: \">=8.0\"."
+          }
+        },
+        {
+          "id": "ict_c_5",
+          "title": "Bài 5: Kỹ thuật Pivot Table & Báo cáo thống kê",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 120)",
+          "priority": "Cực kỳ cao",
+          "examFormat": "Trọng tâm Phần II Đúng/Sai",
+          "summary": "Tạo bảng tổng hợp dữ liệu động Pivot Table: Vùng Rows, Columns, Values, Filters; cách đổi hàm tính từ SUM sang COUNT/AVERAGE.",
+          "theory": {
+            "objectives": [
+              "Hiểu chức năng của 4 vùng cấu hình Pivot Table: Filters, Columns, Rows và Values.",
+              "Biết cách làm mới dữ liệu (Refresh) khi dữ liệu nguồn thay đổi."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Bẫy đề thi Đúng/Sai: Khi bảng dữ liệu gốc thay đổi, báo cáo Pivot Table KHÔNG tự động cập nhật ngay lập tức mà người dùng phải bấm chuột phải chọn \"Refresh\" (Làm mới)."
+          },
+          "quiz": {
+            "question": "Khi dữ liệu trong bảng nguồn ban đầu bị chỉnh sửa, muốn báo cáo Pivot Table cập nhật kết quả mới nhất ta cần làm gì?",
+            "options": [
+              "Xóa Pivot Table và tạo lại từ đầu",
+              "Nhấp chuột phải vào Pivot Table và chọn \"Refresh\"",
+              "Lưu tệp Excel và khởi động lại máy tính",
+              "Pivot Table sẽ tự động xóa các dữ liệu cũ"
+            ],
+            "answer": 1,
+            "explanation": "Nhấp chuột phải chọn \"Refresh\" để làm mới dữ liệu Pivot Table theo bảng dữ liệu nguồn mới."
+          }
+        },
+        {
+          "id": "ict_c_6",
+          "title": "Bài 6: Biểu đồ & Lọc dữ liệu Advanced Filter",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 121)",
+          "priority": "Cực kỳ cao",
+          "examFormat": "Trọng tâm Phần II Đúng/Sai",
+          "summary": "Các loại biểu đồ Column, Line, Pie; Kỹ thuật trích lọc dữ liệu nâng cao (Advanced Filter) với bảng tiêu chuẩn điều kiện.",
+          "theory": {
+            "objectives": [
+              "Chọn loại biểu đồ phù hợp với mục đích trực quan hóa dữ liệu.",
+              "Nắm nguyên tắc thiết lập vùng tiêu chuẩn (Criteria Range) trong Advanced Filter."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Bẫy Advanced Filter: Điều kiện cùng hàng là AND; điều kiện khác hàng là OR. Đây là câu hỏi kinh điển trong đề thi THPTQG phần II."
+          },
+          "quiz": {
+            "question": "Để biểu diễn trực quan tỉ lệ phần trăm đóng góp của các nguồn năng lượng trong tổng sản lượng điện quốc gia, loại biểu đồ nào thích hợp nhất?",
+            "options": [
+              "Biểu đồ đường (Line Chart)",
+              "Biểu đồ tròn (Pie Chart)",
+              "Biểu đồ phân tán (Scatter)",
+              "Biểu đồ radar"
+            ],
+            "answer": 1,
+            "explanation": "Biểu đồ tròn (Pie Chart) chuyên dùng để mô tả tỉ lệ cơ cấu thành phần so với tổng thể 100%."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ict_station_8",
+      "stepNumber": "08",
+      "code": "Chủ đề ICT 2",
+      "title": "Sử dụng phần mềm tạo trang web",
+      "category": "Chuyên sâu Tin học ứng dụng",
+      "priority": "Rất cao",
+      "priorityBadge": "extreme",
+      "questionType": "Trắc nghiệm Đúng/Sai Phần II",
+      "bookRef": "Trang 122 - 130",
+      "description": "Sử dụng phần mềm thiết kế và biên tập trang web trực quan, thiết kế bố cục giao diện đa phương tiện, tích hợp hình ảnh lớp (Layer), video clip, đóng gói và xuất bản website lên Internet.",
+      "skills": [
+        "Phần mềm tạo trang web trực quan",
+        "Thiết kế bố cục & Cây trang web",
+        "Đồ họa đa phương tiện & Video cho Web",
+        "Kiểm thử & Xuất bản Website"
+      ],
+      "xp": 380,
+      "lessons": [
+        {
+          "id": "ict_sw_1",
+          "title": "Bài 1: Cây cấu trúc Website & Phần mềm tạo trang Web",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 2 (Trang 122)",
+          "priority": "Cực kỳ cao",
+          "examFormat": "Trọng tâm Phần II Đúng/Sai",
+          "summary": "Cây thư mục trang web (root, css/, images/, js/), đường dẫn tương đối (./, ../) và quy trình đưa website lên Hosting/Server.",
+          "theory": {
+            "objectives": [
+              "Biết cách tham chiếu đường dẫn ../ để quay lại thư mục cha.",
+              "Tệp trang chủ mặc định trên máy chủ luôn đặt tên là index.html."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Bẫy tên tệp trang chủ: Tệp trang chủ mặc định luôn là index.html, không phải home.html hay default.html."
+          },
+          "quiz": {
+            "question": "Theo chuẩn thiết kế website, tệp tin nào sau đây thường được các máy chủ web cấu hình làm trang chủ mặc định khi người dùng truy cập vào thư mục gốc?",
+            "options": [
+              "home.html",
+              "main.html",
+              "index.html",
+              "default.html"
+            ],
+            "answer": 2,
+            "explanation": "index.html là tên tệp trang chủ mặc định chuẩn của hầu hết các web server."
+          }
+        },
+        {
+          "id": "ict_sw_2",
+          "title": "Bài 2: Chỉnh sửa ảnh lớp (Layer) & Đồ họa cho Web",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 2 (Trang 125)",
+          "priority": "Cực kỳ cao",
+          "examFormat": "Trắc nghiệm Phần I & II",
+          "summary": "Khái niệm Lớp (Layer), vùng chọn (Selection), chỉnh độ sáng tối, xóa phông nền và xuất ảnh định dạng JPG/PNG.",
+          "theory": {
+            "objectives": [
+              "Hiểu nguyên lý xếp chồng các layer trong phần mềm đồ họa (GIMP, Photoshop).",
+              "Phân biệt định dạng PNG (hỗ trợ nền trong suốt) vs JPG (nén mất dữ liệu)."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Bẫy định dạng ảnh: Muốn lưu ảnh có nền trong suốt (không có phông nền trắng) thì BẮT BUỘC phải xuất ra định dạng PNG hoặc GIF, định dạng JPG không hỗ trợ nền trong suốt."
+          },
+          "quiz": {
+            "question": "Định dạng hình ảnh nào sau đây hỗ trợ kênh độ trong suốt (Transparency), rất thích hợp để xuất logo chèn lên trang web?",
+            "options": [
+              "BMP",
+              "JPG",
+              "PNG",
+              "TIFF"
+            ],
+            "answer": 2,
+            "explanation": "Định dạng PNG hỗ trợ kênh Alpha (nền trong suốt), rất tối ưu cho các thành phần đồ họa web."
+          }
+        },
+        {
+          "id": "ict_sw_3",
+          "title": "Bài 3: Biên tập & Chèn Video clip vào trang Web",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 2 (Trang 128)",
+          "priority": "Cao",
+          "examFormat": "Trắc nghiệm Phần I",
+          "summary": "Dòng thời gian (Timeline), kỹ thuật cắt ghép (Cut/Split), hiệu ứng chuyển cảnh (Transition) và xuất video định dạng MP4.",
+          "theory": {
+            "objectives": [
+              "Nắm các thao tác cơ bản trên thanh dòng thời gian Timeline của phần mềm biên tập video.",
+              "Hiểu vai trò của hiệu ứng chuyển cảnh Transition và chèn phụ đề, âm thanh nền."
+            ],
+            "contentSections": [],
+            "examTips": "⚠️ Lưu ý trắc nghiệm: MP4 là định dạng video phổ biến nhất, tương thích tốt với mọi trình duyệt web và thiết bị di động."
+          },
+          "quiz": {
+            "question": "Trong phần mềm dựng video, thành phần nào là nơi người biên tập sắp xếp các đoạn phim, âm thanh và hiệu ứng theo trình tự thời gian?",
+            "options": [
+              "Hộp công cụ ToolBox",
+              "Dòng thời gian (Timeline)",
+              "Cửa sổ Preview",
+              "Bảng thuộc tính Properties"
+            ],
+            "answer": 1,
+            "explanation": "Timeline (Dòng thời gian) là không gian làm việc chính để sắp đặt các track hình ảnh và âm thanh nối tiếp nhau."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ict_station_9",
+      "stepNumber": "09",
+      "code": "Phần II",
+      "title": "Đề ôn tập & Bảng ma trận năng lực",
+      "category": "Luyện đề thi THPTQG",
+      "priority": "Về đích",
+      "priorityBadge": "extreme",
+      "questionType": "Tổng hợp 22 câu (Phần I + II)",
+      "bookRef": "Trang 131 - 180",
+      "description": "Bảng năng lực và cấp độ tư duy đề ôn tập (Nhận biết, Thông hiểu, Vận dụng), chiến thuật phân bổ 50 phút cho 22 câu thi và các bộ đề ôn tập chuẩn cấu trúc đề thi Tốt nghiệp THPT Bộ GD&ĐT.",
+      "skills": [
+        "Ma trận năng lực & Cấp độ tư duy",
+        "Chiến thuật xử lý câu Đúng/Sai lũy tiến",
+        "Phân bổ thời gian 50 phút tối ưu",
+        "Luyện đề thi thử bứt phá 9.5+ ICT"
       ],
       "xp": 500,
       "lessons": [
         {
+          "id": "ict_exam_matrix",
+          "title": "Bài 1: Bảng năng lực và cấp độ tư duy đề ôn tập",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Phần II (Trang 131)",
+          "priority": "Cực kỳ quan trọng",
+          "examFormat": "Cấu trúc ma trận đề thi 2025",
+          "summary": "Phân tích bảng năng lực Tin học định hướng Tin học ứng dụng (ICT), tỷ lệ câu hỏi Nhận biết (40%), Thông hiểu (30%), Vận dụng (30%), chiến thuật 18 câu trắc nghiệm và 4 câu Đúng/Sai.",
+          "theory": {
+            "objectives": [
+              "Nắm vững 3 cấp độ tư duy: Nhận biết, Thông hiểu và Vận dụng trong đề thi Tin học ứng dụng THPTQG.",
+              "Quy tắc chấm điểm lũy tiến Phần II Đúng/Sai: 0.1đ, 0.25đ, 0.5đ và 1.0đ cho mỗi câu 4 ý.",
+              "Xác định trọng tâm kiến thức: Chủ đề 1 đến 6 (Phần I) và Chủ đề ICT 1, ICT 2 (Phần II)."
+            ],
+            "contentSections": [],
+            "examTips": "🎯 Mẹo chiến thuật: Phần I gồm 18 câu trắc nghiệm (4.5 điểm), giải quyết nhanh và chắc chắn. Dành thời gian suy luận kỹ cho câu hỏi bảng tính Excel, CSDL và Web ở Phần II."
+          },
+          "quiz": {
+            "question": "Trong đề thi Tốt nghiệp THPT môn Tin học (định hướng ICT), Phần I có tổng cộng bao nhiêu câu hỏi?",
+            "options": [
+              "12 câu hỏi trắc nghiệm.",
+              "18 câu hỏi trắc nghiệm 4 lựa chọn (chọn 1 đáp án đúng).",
+              "20 câu hỏi trắc nghiệm.",
+              "24 câu hỏi trắc nghiệm."
+            ],
+            "answer": 1,
+            "explanation": "Phần I đề thi Tin học gồm 18 câu hỏi trắc nghiệm 4 lựa chọn (mỗi câu 0.25 điểm, tổng 4.5 điểm)."
+          }
+        },
+        {
           "id": "ict_exam_strategy",
-          "title": "Bài 1: Chiến thuật giải đề THPTQG môn Tin học (THUD)",
-          "bookRef": "Cẩm nang ôn thi THPTQG 2025-2026",
+          "title": "Bài 2: Các đề ôn tập & Chiến thuật làm bài thi",
+          "bookRef": "Tài liệu ôn tập Tin 12 — Phần II (Trang 132)",
           "priority": "Cực kỳ cao",
           "examFormat": "Toàn bộ đề thi",
           "summary": "Mẹo tối ưu điểm số lũy tiến Phần II, cách kiểm tra công thức Excel và cú pháp thẻ HTML/CSS mà không được dùng máy tính trong phòng thi.",

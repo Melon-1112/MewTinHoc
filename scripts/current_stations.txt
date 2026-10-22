@@ -1,0 +1,21 @@
+--- CS STATIONS ---
+1. [Chủ đề 1] Giới thiệu Trí tuệ nhân tạo (2 bài)
+2. [Chủ đề 2] Mạng máy tính và Internet (4 bài)
+3. [Chủ đề 3] Đạo đức, pháp luật và văn hoá trong môi trường số (2 bài)
+4. [Chủ đề 4] Giới thiệu các hệ Cơ sở dữ liệu (6 bài)
+5. [Chủ đề 5] Tạo trang web với HTML và CSS (6 bài)
+6. [Chủ đề 6] Hướng nghiệp với tin học (2 bài)
+7. [Chủ đề CS 1] Kĩ thuật lập trình (5 bài)
+8. [Chủ đề CS 2] Học máy và Khoa học dữ liệu (3 bài)
+9. [Phần II] Đề ôn tập & Bảng ma trận năng lực (2 bài)
+
+--- ICT STATIONS ---
+1. [Chủ đề 1] Giới thiệu Trí tuệ nhân tạo (2 bài)
+2. [Chủ đề 2] Mạng máy tính và Internet (4 bài)
+3. [Chủ đề 3] Đạo đức, pháp luật và văn hoá trong môi trường số (2 bài)
+4. [Chủ đề 4] Giới thiệu các hệ Cơ sở dữ liệu (4 bài)
+5. [Chủ đề 5] Tạo trang web với HTML và CSS (6 bài)
+6. [Chủ đề 6] Hướng nghiệp với tin học (2 bài)
+7. [Chủ đề ICT 1] Thực hành tạo và khai thác Cơ sở dữ liệu (6 bài)
+8. [Chủ đề ICT 2] Sử dụng phần mềm tạo trang web (3 bài)
+9. [Phần II] Đề ôn tập & Bảng ma trận năng lực (2 bài)

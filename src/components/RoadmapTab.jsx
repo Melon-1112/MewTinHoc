@@ -27,7 +27,8 @@ import {
   RefreshCw,
   Cloud,
   Database,
-  Download
+  Download,
+  ExternalLink
 } from 'lucide-react';
 
 import {
@@ -87,6 +88,9 @@ export default function RoadmapTab({
 
   const [selectedStation, setSelectedStation] = useState(null);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
+
+  // Chế độ hiển thị trong modal: 'pdf' (Stream tài liệu PDF) hoặc 'theory' (Học từng bài)
+  const [modalTab, setModalTab] = useState('pdf');
 
   // Chế độ học tập trung (Study Focus Mode)
   const [isStudyMode, setIsStudyMode] = useState(false);
@@ -211,8 +215,8 @@ export default function RoadmapTab({
     return acc + Math.round((st.xp * progress) / 100);
   }, 0);
 
-  // Mở modal học lý thuyết chặng
-  const handleOpenStationModal = (station, lessonIdx = 0, startImmediately = false) => {
+  // Mở modal học lý thuyết chặng hoặc stream PDF trực tiếp
+  const handleOpenStationModal = (station, lessonIdx = 0, startImmediately = false, preferredTab = null) => {
     setSelectedStation(station);
     setActiveLessonIndex(lessonIdx);
     setSelectedOption(null);
@@ -220,6 +224,16 @@ export default function RoadmapTab({
     setCopiedCode(false);
     setIsEditingTheory(false);
     setTheorySaveStatus(null);
+
+    // Nếu chỉ định preferredTab, dùng preferredTab; nếu có pdfUrl thì ưu tiên stream PDF trực tiếp!
+    if (preferredTab) {
+      setModalTab(preferredTab);
+    } else if (station?.pdfUrl) {
+      setModalTab('pdf');
+    } else {
+      setModalTab('theory');
+    }
+
     if (startImmediately) {
       setIsStudyMode(true);
       setIsSidebarCollapsed(true);
@@ -238,6 +252,7 @@ export default function RoadmapTab({
     setIsFullScreen(false);
     setIsEditingTheory(false);
     setTheorySaveStatus(null);
+    setModalTab('pdf');
   };
 
   // Chuyển đổi trạng thái đã học / chưa học của một bài (đồng bộ CSDL Supabase Realtime)
@@ -671,7 +686,12 @@ export default function RoadmapTab({
             <div key={station.id} className="chain-station-wrapper">
               {/* Khớp nối SVG xích liên hoàn kim loại */}
               {index > 0 && (
-                <div className={`chain-link-connector ${isCompleted || isInProgress ? 'unlocked' : 'locked'}`}>
+                <div
+                  className={`chain-link-connector ${isCompleted || isInProgress ? 'unlocked' : 'locked'}`}
+                  onClick={() => handleOpenStationModal(station, 0, false, station.pdfUrl ? 'pdf' : 'theory')}
+                  style={{ cursor: 'pointer' }}
+                  title={station.pdfUrl ? `Bấm vào mắt xích để stream tài liệu PDF: ${station.title}` : `Bấm vào mắt xích để mở chặng: ${station.title}`}
+                >
                   <svg viewBox="0 0 40 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect
                       x="10"
@@ -704,7 +724,7 @@ export default function RoadmapTab({
               {/* Station Node Card */}
               <div
                 className={`station-node-card ${isCompleted ? 'completed' : isInProgress ? 'in-progress' : ''}`}
-                onClick={() => handleOpenStationModal(station, 0)}
+                onClick={() => handleOpenStationModal(station, 0, false, station.pdfUrl ? 'pdf' : 'theory')}
                 style={{
                   borderLeft: `5px solid ${
                     isCompleted
@@ -744,6 +764,27 @@ export default function RoadmapTab({
                         {station.code} • {station.category}
                       </span>
 
+                      {/* Badge báo có PDF stream trực tiếp */}
+                      {station.pdfUrl && (
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.3rem',
+                            fontSize: '0.72rem',
+                            fontWeight: 800,
+                            padding: '0.15rem 0.55rem',
+                            borderRadius: '6px',
+                            background: '#FEF2F2',
+                            color: '#DC2626',
+                            border: '1px solid #FECACA'
+                          }}
+                        >
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#EF4444' }} />
+                          PDF LIVE
+                        </span>
+                      )}
+
                       {/* Badge mức độ ưu tiên ôn luyện */}
                       <span className={priorityClass}>
                         {station.priorityBadge === 'extreme' && <Flame size={12} />}
@@ -771,7 +812,7 @@ export default function RoadmapTab({
                               key={lesson.id}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleOpenStationModal(station, lIdx, true);
+                                handleOpenStationModal(station, lIdx, true, 'theory');
                               }}
                               style={{
                                 fontSize: '0.72rem',
@@ -818,6 +859,42 @@ export default function RoadmapTab({
                     ></div>
                   </div>
 
+                  {/* Nút stream PDF trực tiếp nếu chặng có PDF đính kèm */}
+                  {station.pdfUrl && (
+                    <button
+                      className="btn-stream-pdf"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenStationModal(station, 0, false, 'pdf');
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.45rem',
+                        width: '100%',
+                        padding: '0.55rem 0.85rem',
+                        borderRadius: 'var(--radius-md)',
+                        background: activeTrack === TRACK_TYPES.CS
+                          ? 'linear-gradient(135deg, #EA580C, #C2410C)'
+                          : 'linear-gradient(135deg, #0284C7, #0369A1)',
+                        color: '#FFFFFF',
+                        fontWeight: 800,
+                        fontSize: '0.82rem',
+                        border: 'none',
+                        cursor: 'pointer',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                        transition: 'all 0.15s ease',
+                        marginBottom: '0.45rem'
+                      }}
+                      title={`Stream trực tiếp tài liệu PDF của ${station.title} trên web`}
+                    >
+                      <span style={{ display: 'inline-block', width: '7px', height: '7px', borderRadius: '50%', background: '#4ADE80' }} />
+                      <FileText size={15} />
+                      <span>Stream PDF Trực Tiếp</span>
+                    </button>
+                  )}
+
                   <button
                     className="btn-open-station"
                     style={{
@@ -840,11 +917,11 @@ export default function RoadmapTab({
       {selectedStation && currentLesson && (
         <div className="modal-backdrop" onClick={handleCloseModal}>
           <div
-            className={`exam-taker-window ${isStudyMode ? 'study-focus-mode' : ''} ${isFullScreen ? 'full-screen-mode' : ''}`}
+            className={`exam-taker-window ${isStudyMode || modalTab === 'pdf' ? 'study-focus-mode' : ''} ${isFullScreen ? 'full-screen-mode' : ''}`}
             style={{
-              maxWidth: isFullScreen ? '100vw' : isStudyMode ? '1400px' : '1050px',
-              width: isFullScreen ? '100vw' : isStudyMode ? '96vw' : '92vw',
-              height: isFullScreen ? '100vh' : isStudyMode ? '94vh' : '88vh',
+              maxWidth: isFullScreen ? '100vw' : (isStudyMode || modalTab === 'pdf') ? '1400px' : '1050px',
+              width: isFullScreen ? '100vw' : (isStudyMode || modalTab === 'pdf') ? '96vw' : '92vw',
+              height: isFullScreen ? '100vh' : (isStudyMode || modalTab === 'pdf') ? '94vh' : '88vh',
               padding: 0
             }}
             onClick={(e) => e.stopPropagation()}
@@ -868,7 +945,7 @@ export default function RoadmapTab({
                   </div>
                   {selectedStation.lessons.map((lesson, idx) => {
                     const isDone = !!completedLessonIds[lesson.id];
-                    const isCurrent = idx === activeLessonIndex;
+                    const isCurrent = idx === activeLessonIndex && modalTab === 'theory';
                     return (
                       <button
                         key={lesson.id}
@@ -878,6 +955,7 @@ export default function RoadmapTab({
                           setSelectedOption(null);
                           setIsAnswerSubmitted(false);
                           setCopiedCode(false);
+                          setModalTab('theory');
                         }}
                       >
                         <div
@@ -911,6 +989,46 @@ export default function RoadmapTab({
                   })}
                 </div>
 
+                {/* Nút xem tài liệu PDF đính kèm (nếu có) */}
+                {selectedStation.pdfUrl && (
+                  <div style={{ padding: '0.75rem 1rem', borderTop: '1px solid var(--color-border)' }}>
+                    <button
+                      onClick={() => setModalTab('pdf')}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        padding: '0.65rem 0.85rem',
+                        borderRadius: '8px',
+                        background: modalTab === 'pdf'
+                          ? (activeTrack === TRACK_TYPES.CS ? 'linear-gradient(135deg, #FFF7ED, #FFEDD5)' : 'linear-gradient(135deg, #EFF6FF, #DBEAFE)')
+                          : '#FFFFFF',
+                        border: `1.5px solid ${modalTab === 'pdf' ? currentTrackData.badgeColor : 'var(--color-border)'}`,
+                        color: modalTab === 'pdf' ? currentTrackData.badgeColor : 'var(--color-deep)',
+                        fontWeight: 800,
+                        fontSize: '0.8rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                      title={`Stream trực tiếp tài liệu ôn tập PDF của ${selectedStation.title}`}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <FileText size={16} color={currentTrackData.badgeColor} />
+                        <span>📄 Stream PDF Trực Tiếp</span>
+                      </div>
+                      <span
+                        style={{
+                          width: '7px',
+                          height: '7px',
+                          borderRadius: '50%',
+                          backgroundColor: modalTab === 'pdf' ? '#22C55E' : '#CBD5E1'
+                        }}
+                      />
+                    </button>
+                  </div>
+                )}
+
                 {/* Tiện ích Quản trị viên chỉ hiển thị cho người có quyền Admin */}
                 {!isStudyMode && user?.isAdmin && (
                   <div style={{ padding: '0.75rem 1rem', background: '#F1F5F9', borderTop: '1px solid var(--color-border)', fontSize: '0.72rem', color: '#64748B' }}>
@@ -943,9 +1061,9 @@ export default function RoadmapTab({
                     flexWrap: 'wrap'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
                     {/* Nút bật/tắt Sidebar mục lục trong chế độ học */}
-                    {isStudyMode && (
+                    {isStudyMode && modalTab === 'theory' && (
                       <button
                         className="theory-toolbar-btn"
                         onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
@@ -956,79 +1074,136 @@ export default function RoadmapTab({
                       </button>
                     )}
 
-                    <div
-                      style={{
-                        padding: '0.35rem 0.75rem',
-                        borderRadius: '999px',
-                        background: activeTrack === TRACK_TYPES.CS ? '#FFEDD5' : '#E0F2FE',
-                        color: currentTrackData.badgeColor,
-                        fontSize: '0.75rem',
-                        fontWeight: 800
-                      }}
-                    >
-                      {currentLesson.bookRef}
-                    </div>
-
-                    <span className="badge-exam-format">
-                      {currentLesson.examFormat}
-                    </span>
-
-                    {/* Nút Chỉnh sửa trực tiếp: chỉ hiển thị với tài khoản Admin */}
-                    {user?.isAdmin && (
-                      isEditingTheory ? (
+                    {/* Bộ chuyển đổi Tab: PDF Stream vs Lý thuyết bài học */}
+                    {selectedStation.pdfUrl && (
+                      <div style={{ display: 'inline-flex', padding: '3px', background: '#F1F5F9', borderRadius: '10px', gap: '4px' }}>
                         <button
-                          onClick={handleCancelEditTheory}
-                          className="theory-toolbar-btn"
-                          style={{ borderColor: '#FCA5A5', background: '#FEF2F2', color: '#DC2626', fontWeight: 800 }}
-                          title="Thoát chế độ chỉnh sửa"
+                          onClick={() => setModalTab('pdf')}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.4rem',
+                            padding: '0.35rem 0.85rem',
+                            borderRadius: '7px',
+                            fontSize: '0.78rem',
+                            fontWeight: 800,
+                            border: 'none',
+                            cursor: 'pointer',
+                            background: modalTab === 'pdf' ? (activeTrack === TRACK_TYPES.CS ? '#EA580C' : '#0284C7') : 'transparent',
+                            color: modalTab === 'pdf' ? '#FFFFFF' : '#64748B',
+                            boxShadow: modalTab === 'pdf' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                            transition: 'all 0.15s ease'
+                          }}
                         >
-                          <X size={14} />
-                          <span>Đang chỉnh sửa</span>
-                        </button>
-                      ) : (
-                        <button
-                          onClick={handleStartEditTheory}
-                          className="theory-toolbar-btn"
-                          style={{ borderColor: '#FDBA74', background: '#FFF7ED', color: '#C2410C', fontWeight: 800 }}
-                          title="Bật chế độ chỉnh sửa lý thuyết bài này (Admin)"
-                        >
+                          <span style={{
+                            display: 'inline-block',
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '50%',
+                            backgroundColor: modalTab === 'pdf' ? '#4ADE80' : '#94A3B8'
+                          }} />
                           <FileText size={14} />
-                          <span>Chỉnh sửa nội dung</span>
+                          <span>Stream PDF Trực Tiếp</span>
                         </button>
-                      )
+                        <button
+                          onClick={() => setModalTab('theory')}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.4rem',
+                            padding: '0.35rem 0.85rem',
+                            borderRadius: '7px',
+                            fontSize: '0.78rem',
+                            fontWeight: 800,
+                            border: 'none',
+                            cursor: 'pointer',
+                            background: modalTab === 'theory' ? (activeTrack === TRACK_TYPES.CS ? '#EA580C' : '#0284C7') : 'transparent',
+                            color: modalTab === 'theory' ? '#FFFFFF' : '#64748B',
+                            boxShadow: modalTab === 'theory' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                            transition: 'all 0.15s ease'
+                          }}
+                        >
+                          <BookOpen size={14} />
+                          <span>Lý Thuyết & Câu Hỏi ({selectedStation.lessons?.length || 0} bài)</span>
+                        </button>
+                      </div>
+                    )}
+
+                    {modalTab === 'theory' && (
+                      <>
+                        <div
+                          style={{
+                            padding: '0.35rem 0.75rem',
+                            borderRadius: '999px',
+                            background: activeTrack === TRACK_TYPES.CS ? '#FFEDD5' : '#E0F2FE',
+                            color: currentTrackData.badgeColor,
+                            fontSize: '0.75rem',
+                            fontWeight: 800
+                          }}
+                        >
+                          {currentLesson.bookRef}
+                        </div>
+
+                        <span className="badge-exam-format">
+                          {currentLesson.examFormat}
+                        </span>
+
+                        {/* Nút Chỉnh sửa trực tiếp: chỉ hiển thị với tài khoản Admin */}
+                        {user?.isAdmin && (
+                          isEditingTheory ? (
+                            <button
+                              onClick={handleCancelEditTheory}
+                              className="theory-toolbar-btn"
+                              style={{ borderColor: '#FCA5A5', background: '#FEF2F2', color: '#DC2626', fontWeight: 800 }}
+                              title="Thoát chế độ chỉnh sửa"
+                            >
+                              <X size={14} />
+                              <span>Đang chỉnh sửa</span>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={handleStartEditTheory}
+                              className="theory-toolbar-btn"
+                              style={{ borderColor: '#FDBA74', background: '#FFF7ED', color: '#C2410C', fontWeight: 800 }}
+                              title="Bật chế độ chỉnh sửa lý thuyết bài này (Admin)"
+                            >
+                              <FileText size={14} />
+                              <span>Chỉnh sửa nội dung</span>
+                            </button>
+                          )
+                        )}
+                      </>
                     )}
                   </div>
 
                   {/* Thanh công cụ phụ trợ (Cỡ chữ, Toàn màn hình, Thoát) */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    {isStudyMode && (
-                      <>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-                          <button
-                            className="theory-toolbar-btn"
-                            onClick={() => setFontSizeLevel((prev) => Math.max(0, prev - 1))}
-                            title="Giảm cỡ chữ"
-                          >
-                            A-
-                          </button>
-                          <button
-                            className="theory-toolbar-btn"
-                            onClick={() => setFontSizeLevel((prev) => Math.min(2, prev + 1))}
-                            title="Tăng cỡ chữ"
-                          >
-                            A+
-                          </button>
-                        </div>
-
+                    {modalTab === 'theory' && isStudyMode && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
                         <button
                           className="theory-toolbar-btn"
-                          onClick={() => setIsFullScreen(!isFullScreen)}
-                          title={isFullScreen ? "Thu nhỏ cửa sổ" : "Phóng to toàn màn hình"}
+                          onClick={() => setFontSizeLevel((prev) => Math.max(0, prev - 1))}
+                          title="Giảm cỡ chữ"
                         >
-                          {isFullScreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+                          A-
                         </button>
-                      </>
+                        <button
+                          className="theory-toolbar-btn"
+                          onClick={() => setFontSizeLevel((prev) => Math.min(2, prev + 1))}
+                          title="Tăng cỡ chữ"
+                        >
+                          A+
+                        </button>
+                      </div>
                     )}
+
+                    <button
+                      className="theory-toolbar-btn"
+                      onClick={() => setIsFullScreen(!isFullScreen)}
+                      title={isFullScreen ? "Thu nhỏ cửa sổ" : "Phóng to toàn màn hình"}
+                    >
+                      {isFullScreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+                    </button>
 
                     <button
                       onClick={handleCloseModal}
@@ -1050,8 +1225,153 @@ export default function RoadmapTab({
                   </div>
                 </div>
 
-                {/* Body: Cuộn nội dung kiến thức bài giảng */}
-                <div
+                {/* Body: Stream PDF trực tiếp hoặc Cuộn nội dung kiến thức bài giảng */}
+                {modalTab === 'pdf' && selectedStation.pdfUrl ? (
+                  <div
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      position: 'relative',
+                      height: '100%',
+                      width: '100%',
+                      background: '#0F172A',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    {/* Thanh điều khiển mini của PDF Stream */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0.55rem 1.25rem',
+                        background: '#1E293B',
+                        color: '#E2E8F0',
+                        borderBottom: '1px solid #334155',
+                        fontSize: '0.78rem',
+                        flexWrap: 'wrap',
+                        gap: '0.6rem'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            padding: '0.2rem 0.65rem',
+                            borderRadius: '999px',
+                            background: 'rgba(34, 197, 94, 0.2)',
+                            color: '#4ADE80',
+                            fontWeight: 800,
+                            fontSize: '0.72rem',
+                            border: '1px solid rgba(74, 222, 128, 0.35)'
+                          }}
+                        >
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4ADE80' }} />
+                          LIVE STREAM TỪ SUPABASE
+                        </span>
+                        <span style={{ fontWeight: 700, color: '#F8FAFC', fontSize: '0.82rem' }}>
+                          {selectedStation.code}: {selectedStation.title} — Tài Liệu Ôn Thi PDF Gốc
+                        </span>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <a
+                          href={selectedStation.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            padding: '0.32rem 0.75rem',
+                            borderRadius: '7px',
+                            background: '#334155',
+                            color: '#F8FAFC',
+                            fontSize: '0.74rem',
+                            fontWeight: 700,
+                            textDecoration: 'none',
+                            transition: 'background 0.15s ease'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = '#475569'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = '#334155'}
+                          title="Mở tài liệu PDF trong tab riêng của trình duyệt"
+                        >
+                          <ExternalLink size={13} />
+                          <span>Mở Tab Riêng</span>
+                        </a>
+
+                        <a
+                          href={selectedStation.pdfUrl}
+                          download
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            padding: '0.32rem 0.75rem',
+                            borderRadius: '7px',
+                            background: '#334155',
+                            color: '#F8FAFC',
+                            fontSize: '0.74rem',
+                            fontWeight: 700,
+                            textDecoration: 'none',
+                            transition: 'background 0.15s ease'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = '#475569'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = '#334155'}
+                          title="Tải file PDF về máy"
+                        >
+                          <Download size={13} />
+                          <span>Tải PDF</span>
+                        </a>
+
+                        <button
+                          onClick={() => setIsFullScreen(!isFullScreen)}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            padding: '0.32rem 0.75rem',
+                            borderRadius: '7px',
+                            background: activeTrack === TRACK_TYPES.CS ? '#EA580C' : '#0284C7',
+                            color: '#FFFFFF',
+                            fontSize: '0.74rem',
+                            fontWeight: 700,
+                            border: 'none',
+                            cursor: 'pointer',
+                            transition: 'opacity 0.15s ease'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.85'}
+                          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                          title={isFullScreen ? "Thu nhỏ cửa sổ" : "Phóng to toàn màn hình"}
+                        >
+                          {isFullScreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
+                          <span>{isFullScreen ? 'Thu nhỏ' : 'Toàn màn hình'}</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Iframe trực tiếp stream PDF */}
+                    <div style={{ flex: 1, position: 'relative', width: '100%', height: '100%', minHeight: '500px' }}>
+                      <iframe
+                        src={`${selectedStation.pdfUrl}#toolbar=1&navpanes=1&scrollbar=1`}
+                        title={`${selectedStation.title} - Tài liệu ôn thi`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          border: 'none',
+                          display: 'block',
+                          backgroundColor: '#525659'
+                        }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Body: Cuộn nội dung kiến thức bài giảng */}
+                    <div
                   className="theory-main-content"
                   style={{
                     fontSize: fontSizeLevel === 0 ? '0.94rem' : fontSizeLevel === 2 ? '1.14rem' : '1.03rem'
@@ -1519,11 +1839,13 @@ export default function RoadmapTab({
                   </div>
                 </div>
                 )}
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
-      )}
+      </div>
+    </div>
+  )}
     </div>
   );
 }

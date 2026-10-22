@@ -468,36 +468,48 @@ a {
 
 /* Hero Welcome Banner */
 .hero-welcome-card {
-  background: linear-gradient(135deg, #7C2D12 0%, #B43403 60%, #EA580C 100%);
+  background: linear-gradient(115deg, #C93B03 0%, #D84315 30%, #EA580C 65%, #F05A00 100%);
   border-radius: var(--radius-lg);
   padding: 2.25rem;
   color: #FFFFFF;
   position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
+  overflow: visible;
+  box-shadow: 0 10px 25px -3px rgba(201, 59, 3, 0.28), 0 4px 10px -2px rgba(234, 88, 12, 0.15);
+}
+
+.hero-welcome-cat {
+  position: absolute;
+  top: -14px;
+  left: -20px;
+  width: 50px;
+  height: auto;
+  z-index: 10;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-welcome-card:hover .hero-welcome-cat {
+  transform: scale(1.08) rotate(-3deg);
 }
 
 .hero-welcome-card::before {
   content: '';
   position: absolute;
-  right: -60px;
-  top: -60px;
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+  right: 0;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  max-height: 260px;
+  background: radial-gradient(circle at 88% 28%, rgba(255, 175, 45, 0.45) 0%, transparent 65%);
   pointer-events: none;
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
 }
 
 .hero-welcome-card::after {
-  content: 'THPTQG 2025';
-  position: absolute;
-  bottom: -15px;
-  right: 20px;
-  font-size: 5rem;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.05);
-  pointer-events: none;
-  letter-spacing: -0.04em;
+  display: none;
 }
 
 .hero-tag {
@@ -5041,20 +5053,15 @@ a {
   }
 
   .hero-welcome-card {
-    padding: 1.2rem 0.95rem;
+    padding: 1.3rem 1rem;
     border-radius: var(--radius-md);
-    overflow: hidden;
+    overflow: visible;
   }
 
-  .hero-welcome-card::after {
-    display: none !important; /* Ẩn watermark lớn để chống tràn viền ngang */
-  }
-
-  .hero-welcome-card::before {
-    width: 140px;
-    height: 140px;
-    right: -30px;
-    top: -30px;
+  .hero-welcome-cat {
+    top: -10px;
+    left: -10px;
+    width: 38px;
   }
 
   .hero-title {

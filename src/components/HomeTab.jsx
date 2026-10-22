@@ -35,6 +35,7 @@ import {
   getEvolutionProgress
 } from '../lib/streakEvolutions';
 import StreakEvolutionArt from './StreakEvolutionArt';
+import catHanging from '../assets/cat-hanging-full.png';
 
 export default function HomeTab({
   user,
@@ -145,6 +146,13 @@ export default function HomeTab({
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
           {/* Welcome Banner */}
           <div className="hero-welcome-card">
+            {/* Chú mèo đu lên góc trên bên trái khung */}
+            <img
+              src={catHanging}
+              alt="Mew cat"
+              className="hero-welcome-cat"
+            />
+
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.85rem' }}>
               <div className="hero-tag" style={{ margin: 0 }}>
                 <Sparkles size={14} />

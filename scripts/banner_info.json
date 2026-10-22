@@ -1,0 +1,15 @@
+{
+  "width": 370,
+  "height": 320,
+  "minX": 2,
+  "maxX": 361,
+  "minY": 80,
+  "maxY": 242,
+  "rectTop": 84,
+  "rectBottom": 206,
+  "rectLeft": 30,
+  "rectRight": 338,
+  "colorLeft": "rgb(201,59,3)",
+  "colorRight": "rgb(239,81,2)",
+  "colorGlow": "rgb(241,84,2)"
+}
