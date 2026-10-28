@@ -240,7 +240,8 @@
 .ann-overlay {
   position: fixed;
   inset: 0;
-  z-index: 2100;
+  /* Phải cao hơn chat Botpress (bong bóng 9999, khung chat 10000, mobile 99999) */
+  z-index: 100000;
   display: flex;
   align-items: center;
   justify-content: center;
