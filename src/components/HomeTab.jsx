@@ -35,7 +35,20 @@ import {
   getEvolutionProgress
 } from '../lib/streakEvolutions';
 import StreakEvolutionArt from './StreakEvolutionArt';
-import catHanging from '../assets/cat-hanging-full.png';
+import { motion, useReducedMotion } from 'framer-motion';
+import {
+  bannerContainerVariants,
+  bannerItemVariants,
+  statsRowVariants,
+  statCardVariants,
+  streakCardVariants,
+  iconHoverVariants,
+  reducedMotionVariants
+} from '../variants';
+import CountUpNumber from './motion/CountUpNumber';
+import MascotHeroCat from './motion/MascotHeroCat';
+import HeroBannerBackground from './motion/HeroBannerBackground';
+import StreakFlameStage from './motion/StreakFlameStage';
 
 export default function HomeTab({
   user,
@@ -54,6 +67,9 @@ export default function HomeTab({
   const [showAllEvolutions, setShowAllEvolutions] = React.useState(false);
   const [adminPreviewMode, setAdminPreviewMode] = React.useState(false);
   const [adminPreviewStreak, setAdminPreviewStreak] = React.useState(null);
+  const [isFlaring, setIsFlaring] = React.useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
   const triggerConfetti = () => {
     confetti({
       particleCount: 80,
@@ -65,8 +81,12 @@ export default function HomeTab({
 
   const handleCheckInClick = () => {
     if (!streak.checkedToday) {
+      setIsFlaring(true);
       triggerConfetti();
       onCheckIn();
+      setTimeout(() => {
+        setIsFlaring(false);
+      }, 1000);
     }
   };
 
@@ -145,83 +165,107 @@ export default function HomeTab({
         {/* Left Column: Hero & Key Content */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
           {/* Welcome Banner */}
-          <div className="hero-welcome-card">
-            {/* Chú mèo đu lên góc trên bên trái khung */}
-            <img
-              src={catHanging}
-              alt="Mew cat"
-              className="hero-welcome-cat"
-            />
+          <motion.div
+            variants={prefersReducedMotion ? reducedMotionVariants : bannerContainerVariants}
+            initial="hidden"
+            animate="visible"
+            className="hero-welcome-card"
+          >
+            {/* Lớp nền trôi nhẹ và đốm sáng mờ ambient */}
+            <HeroBannerBackground />
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.85rem' }}>
-              <div className="hero-tag" style={{ margin: 0 }}>
-                <Sparkles size={14} />
-                <span>Chương trình ôn luyện bám sát ma trận 2025</span>
+            {/* Chú mèo đu trên khung banner (trạng thái thở 4s, nghiêng đầu, bong bóng thoại) */}
+            <MascotHeroCat />
+
+            <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', height: '100%' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.85rem' }}>
+                <motion.div variants={bannerItemVariants} className="hero-tag" style={{ margin: 0 }}>
+                  <Sparkles size={14} />
+                  <span>Chương trình ôn luyện bám sát ma trận 2025</span>
+                </motion.div>
               </div>
 
-
+              <motion.h1 variants={bannerItemVariants} className="hero-title">
+                Chào mừng, {user?.name || 'Học viên'}! 🔥
+              </motion.h1>
+              <motion.p variants={bannerItemVariants} className="hero-desc">
+                Bạn đang ở chuỗi phong độ cao! Hãy duy trì điểm danh hàng ngày, hoàn thành từng chặng dây xích trực quan và làm bài thi thử để sẵn sàng 9.5+ kỳ thi Tốt nghiệp THPTQG.
+              </motion.p>
+              <motion.div variants={bannerItemVariants} className="hero-actions">
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="btn-primary-glow"
+                  onClick={() => onNavigateTab(TABS.ROADMAP)}
+                >
+                  <span>Vào lộ trình dây xích</span>
+                  <ArrowRight size={18} />
+                </motion.button>
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="btn-outline-white"
+                  onClick={() => onNavigateTab(TABS.AI_EXAM)}
+                >
+                  <Sparkles size={18} />
+                  <span>Tạo đề AI đánh giá năng lực</span>
+                </motion.button>
+              </motion.div>
             </div>
+          </motion.div>
 
-            <h1 className="hero-title">
-              Chào mừng, {user?.name || 'Học viên'}! 🔥
-            </h1>
-            <p className="hero-desc">
-              Bạn đang ở chuỗi phong độ cao! Hãy duy trì điểm danh hàng ngày, hoàn thành từng chặng dây xích trực quan và làm bài thi thử để sẵn sàng 9.5+ kỳ thi Tốt nghiệp THPTQG.
-            </p>
-            <div className="hero-actions">
-              <button
-                className="btn-primary-glow"
-                onClick={() => onNavigateTab(TABS.ROADMAP)}
-              >
-                <span>Vào lộ trình dây xích</span>
-                <ArrowRight size={18} />
-              </button>
-              <button
-                className="btn-outline-white"
-                onClick={() => onNavigateTab(TABS.AI_EXAM)}
-              >
-                <Sparkles size={18} />
-                <span>Tạo đề AI đánh giá năng lực</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Quick Metrics (Dữ liệu thật từ CSDL Supabase user_progress) */}
-          <div className="metrics-row">
-            <div className="metric-card">
-              <div className="metric-icon-wrap" style={{ background: '#FFF1D6', color: '#EA580C' }}>
+          {/* Quick Metrics: Stagger trái sang phải 90ms + CountUp 900ms + Hover lift 4px */}
+          <motion.div
+            variants={statsRowVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="metrics-row"
+          >
+            <motion.div variants={statCardVariants} whileHover="hover" className="metric-card">
+              <motion.div variants={iconHoverVariants} className="metric-icon-wrap" style={{ background: '#FFF1D6', color: '#EA580C' }}>
                 <Flame size={20} />
-              </div>
-              <div className="metric-val">{streak?.count ?? 0} Ngày</div>
-              <div className="metric-label">Chuỗi Streak liên tục</div>
-            </div>
-
-            <div className="metric-card">
-              <div className="metric-icon-wrap" style={{ background: '#FEF3C7', color: '#D97706' }}>
-                <BookOpen size={20} />
-              </div>
-              <div className="metric-val">{progress?.total_exams ?? user?.totalExamsTaken ?? 14} Đề</div>
-              <div className="metric-label">Đề thi đã hoàn thành</div>
-            </div>
-
-            <div className="metric-card">
-              <div className="metric-icon-wrap" style={{ background: '#DCFCE7', color: '#16A34A' }}>
-                <Award size={20} />
-              </div>
-              <div className="metric-val">{(progress?.avg_score ?? user?.avgScore ?? 8.9)}/10</div>
-              <div className="metric-label">Điểm trung bình</div>
-            </div>
-
-            <div className="metric-card">
-              <div className="metric-icon-wrap" style={{ background: '#FEE2E2', color: '#DC2626' }}>
-                <TrendingUp size={20} />
-              </div>
+              </motion.div>
               <div className="metric-val">
-                {progress?.accuracy != null ? `${progress.accuracy}%` : (user?.accuracy || '91.4%')}
+                <CountUpNumber end={streak?.count ?? 0} suffix=" Ngày" />
+              </div>
+              <div className="metric-label">Chuỗi Streak liên tục</div>
+            </motion.div>
+
+            <motion.div variants={statCardVariants} whileHover="hover" className="metric-card">
+              <motion.div variants={iconHoverVariants} className="metric-icon-wrap" style={{ background: '#FEF3C7', color: '#D97706' }}>
+                <BookOpen size={20} />
+              </motion.div>
+              <div className="metric-val">
+                <CountUpNumber end={progress?.total_exams ?? user?.totalExamsTaken ?? 14} suffix=" Đề" />
+              </div>
+              <div className="metric-label">Đề thi đã hoàn thành</div>
+            </motion.div>
+
+            <motion.div variants={statCardVariants} whileHover="hover" className="metric-card">
+              <motion.div variants={iconHoverVariants} className="metric-icon-wrap" style={{ background: '#DCFCE7', color: '#16A34A' }}>
+                <Award size={20} />
+              </motion.div>
+              <div className="metric-val">
+                <CountUpNumber end={progress?.avg_score ?? user?.avgScore ?? 8.9} decimals={1} suffix="/10" />
+              </div>
+              <div className="metric-label">Điểm trung bình</div>
+            </motion.div>
+
+            <motion.div variants={statCardVariants} whileHover="hover" className="metric-card">
+              <motion.div variants={iconHoverVariants} className="metric-icon-wrap" style={{ background: '#FEE2E2', color: '#DC2626' }}>
+                <TrendingUp size={20} />
+              </motion.div>
+              <div className="metric-val">
+                <CountUpNumber
+                  end={progress?.accuracy != null ? progress.accuracy : (user?.accuracy ? parseFloat(user.accuracy) : 91.4)}
+                  decimals={1}
+                  suffix="%"
+                />
               </div>
               <div className="metric-label">Độ chính xác câu hỏi</div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Ma trận kiến thức THPTQG & Độ thành thục (Dữ liệu thật từ bảng mastery_progress) */}
           <div style={{ background: 'var(--color-surface)', borderRadius: 'var(--radius-lg)', border: '1.5px solid var(--color-border)', padding: '1.5rem', boxShadow: 'var(--shadow-sm)' }}>
@@ -361,8 +405,14 @@ export default function HomeTab({
 
         {/* Right Column: Chức năng Streak Học Tập (Feature Highlights) */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {/* Main Streak Card */}
-          <div className="streak-card" id="streak-card-section">
+          {/* Main Streak Card: Trượt vào từ phải 24px + fade */}
+          <motion.div
+            variants={prefersReducedMotion ? reducedMotionVariants : streakCardVariants}
+            initial="hidden"
+            animate="visible"
+            className="streak-card"
+            id="streak-card-section"
+          >
             <div className="streak-card-header">
               <div className="streak-card-title">
                 <Flame size={22} color="var(--color-primary)" />
@@ -373,7 +423,7 @@ export default function HomeTab({
               </span>
             </div>
 
-            {/* Streak Giant Display + hình dạng tiến hoá hiện tại */}
+            {/* Streak Giant Display + sân khấu ngọn lửa tiến hoá */}
             <div className="streak-display-center">
               {adminPreviewStreak !== null && isCompanyAdmin(user) && (
                 <div style={{
@@ -401,42 +451,22 @@ export default function HomeTab({
                   </button>
                 </div>
               )}
-              <div
-                className={`streak-evo-stage ${displayIsMaxEvo ? 'is-max' : ''}`}
-                style={evoVars}
-              >
-                <span
-                  className="streak-evo-glyph"
-                  title={displayHasStarted ? displayEvo.name : 'Chưa mở khoá'}
-                >
-                  <StreakEvolutionArt
-                    id={displayHasStarted ? displayEvo.id : STREAK_EVOLUTIONS[0].id}
-                    mono={!displayHasStarted}
-                    size={118}
-                  />
-                </span>
-                <span className="streak-evo-name">
-                  {displayStreak > 0 ? displayEvo.name : 'Chưa Bắt Đầu'}
-                </span>
-                {displayNextEvo ? (
-                  <span className="streak-evo-next">
-                    Học thêm <strong>{displayEvoProg.daysToNext} ngày</strong> nữa để mở khoá một hình dạng mới 🔒
-                  </span>
-                ) : displayStreak >= STREAK_EVOLUTION_MAX_DAYS ? (
-                  <span className="streak-evo-next">
-                    🎉 Cấp tối đa! Đã học <strong>{displayStreak} ngày</strong> liên tục
-                  </span>
-                ) : (
-                  <span className="streak-evo-next">
-                    🎉 Đã đạt cấp tối đa ({STREAK_EVOLUTION_MAX_DAYS} ngày)
-                  </span>
-                )}
-                <div className="streak-evo-progress">
-                  <div className="streak-evo-progress-fill" style={{ width: `${displayEvoProg.percent}%` }} />
-                </div>
-              </div>
 
-              <div className="streak-big-number">{displayStreak}</div>
+              {/* Sân khấu ngọn lửa chuyển động cảm xúc (lung linh 2.5s, 3 tia sáng, flare-up khi điểm danh) */}
+              <StreakFlameStage
+                currentEvolution={displayEvo}
+                hasStarted={displayHasStarted}
+                isMaxEvo={displayIsMaxEvo}
+                displayStreak={displayStreak}
+                daysToNext={displayNextEvo ? displayEvoProg.daysToNext : null}
+                progressPercent={displayEvoProg.percent}
+                isFlaring={isFlaring}
+                evoVars={evoVars}
+              />
+
+              <div className="streak-big-number">
+                <CountUpNumber end={displayStreak} />
+              </div>
               <div className="streak-big-label">Ngày Học Liên Tục</div>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.4rem' }}>
                 {adminPreviewStreak !== null && isCompanyAdmin(user) ? (
@@ -451,7 +481,7 @@ export default function HomeTab({
               </p>
             </div>
 
-            {/* 7-Day Calendar Streak */}
+            {/* 7-Day Calendar Streak: Ngày hôm nay có vòng sáng nhấp nhịp nhẹ (pulse 2s) */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '0.5rem' }}>
                 <span>Chu kỳ tuần này</span>
@@ -469,9 +499,10 @@ export default function HomeTab({
               </div>
             </div>
 
-
-            {/* Main Check-In Button */}
-            <button
+            {/* Main Check-In Button: Nâng lên 2px khi hover, active scale 0.97, bùng nổ confetti & lửa */}
+            <motion.button
+              whileHover={!streak.checkedToday ? { y: -2 } : {}}
+              whileTap={!streak.checkedToday ? { scale: 0.97 } : {}}
               className="btn-checkin-streak"
               onClick={handleCheckInClick}
               disabled={streak.checkedToday}
@@ -488,7 +519,7 @@ export default function HomeTab({
                   <span>Điểm Danh Ngay (+1 Streak)</span>
                 </>
               )}
-            </button>
+            </motion.button>
 
             {/* Important Rule Warning — quy tắc ân hạn 3 ngày */}
             <div style={{ display: 'flex', gap: '0.5rem', background: '#FFF7ED', padding: '0.65rem 0.85rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
@@ -753,7 +784,7 @@ export default function HomeTab({
                 </div>
               </div>
             )}
-          </div>
+          </motion.div>
 
 
         </div>

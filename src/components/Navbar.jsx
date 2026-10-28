@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
   Flame,
   Home,
@@ -14,6 +15,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import logoMeoCam from '../../img/logomeocam.png';
+import { headerMotionVariants, reducedMotionVariants, SPRINGS } from '../variants';
 
 export const TABS = {
   HOME: 'home',
@@ -33,6 +35,7 @@ export default function Navbar({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const prefersReducedMotion = useReducedMotion();
 
   const isHomeActive = location.pathname === '/' || location.pathname === '/home' || activeTab === TABS.HOME;
   const isRoadmapActive = location.pathname.startsWith('/roadmap') || activeTab === TABS.ROADMAP;
@@ -43,8 +46,16 @@ export default function Navbar({
     if (setActiveTab) setActiveTab(tabKey);
     navigate(path);
   };
+
+  const navHeaderVariants = prefersReducedMotion ? reducedMotionVariants : headerMotionVariants;
+
   return (
-    <header className="horizontal-sidebar">
+    <motion.header
+      variants={navHeaderVariants}
+      initial="hidden"
+      animate="visible"
+      className="horizontal-sidebar"
+    >
       {/* Top row: Brand & Student Info (Thông tin học viên ở trên cùng thanh sidebar) */}
       <div className="top-nav-row">
         {/* Left: Brand Logo */}
@@ -180,6 +191,7 @@ export default function Navbar({
 
           {/* Horizontal Function Tabs */}
           <nav className="category-tabs" role="tablist">
+            {/* Tab: Trang chủ */}
             <button
               role="tab"
               aria-selected={isHomeActive}
@@ -187,10 +199,20 @@ export default function Navbar({
               onClick={() => handleNav('/', TABS.HOME)}
               id="tab-home"
             >
-              <Home size={17} />
-              <span>Trang chủ</span>
+              {isHomeActive && (
+                <motion.div
+                  layoutId="active-tab-highlight"
+                  className="nav-tab-active-pill"
+                  transition={SPRINGS.snappy}
+                />
+              )}
+              <span className="nav-tab-inner">
+                <Home size={17} />
+                <span>Trang chủ</span>
+              </span>
             </button>
 
+            {/* Tab: Lộ trình */}
             <button
               role="tab"
               aria-selected={isRoadmapActive}
@@ -198,12 +220,22 @@ export default function Navbar({
               onClick={() => handleNav('/roadmap', TABS.ROADMAP)}
               id="tab-roadmap"
             >
-              <GitCommit size={17} />
-              <span className="tab-label-full">Lộ trình học (Dạng dây xích trực quan)</span>
-              <span className="tab-label-short">Lộ trình</span>
-              <span className="tab-badge-hot">Mới</span>
+              {isRoadmapActive && (
+                <motion.div
+                  layoutId="active-tab-highlight"
+                  className="nav-tab-active-pill"
+                  transition={SPRINGS.snappy}
+                />
+              )}
+              <span className="nav-tab-inner">
+                <GitCommit size={17} />
+                <span className="tab-label-full">Lộ trình học (Dạng dây xích trực quan)</span>
+                <span className="tab-label-short">Lộ trình</span>
+                <span className="tab-badge-hot">Mới</span>
+              </span>
             </button>
 
+            {/* Tab: Kho đề thi */}
             <button
               role="tab"
               aria-selected={isExamsActive}
@@ -211,10 +243,20 @@ export default function Navbar({
               onClick={() => handleNav('/exams', TABS.EXAMS)}
               id="tab-exams"
             >
-              <BookOpen size={17} />
-              <span>Kho đề thi</span>
+              {isExamsActive && (
+                <motion.div
+                  layoutId="active-tab-highlight"
+                  className="nav-tab-active-pill"
+                  transition={SPRINGS.snappy}
+                />
+              )}
+              <span className="nav-tab-inner">
+                <BookOpen size={17} />
+                <span>Kho đề thi</span>
+              </span>
             </button>
 
+            {/* Tab: Đề thi AI */}
             <button
               role="tab"
               aria-selected={isAiExamActive}
@@ -222,14 +264,23 @@ export default function Navbar({
               onClick={() => handleNav('/ai-exam', TABS.AI_EXAM)}
               id="tab-ai-exam"
             >
-              <Sparkles size={17} />
-              <span className="tab-label-full">Tạo bài thi thử & Đánh giá bằng AI</span>
-              <span className="tab-label-short">Đề thi AI</span>
-              <span className="tab-badge-hot">AI</span>
+              {isAiExamActive && (
+                <motion.div
+                  layoutId="active-tab-highlight"
+                  className="nav-tab-active-pill"
+                  transition={SPRINGS.snappy}
+                />
+              )}
+              <span className="nav-tab-inner">
+                <Sparkles size={17} />
+                <span className="tab-label-full">Tạo bài thi thử & Đánh giá bằng AI</span>
+                <span className="tab-label-short">Đề thi AI</span>
+                <span className="tab-badge-hot">AI</span>
+              </span>
             </button>
           </nav>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

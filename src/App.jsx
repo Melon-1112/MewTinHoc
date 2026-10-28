@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Navbar, { TABS } from './components/Navbar';
 import HomeTab from './components/HomeTab';
 import RoadmapTab from './components/RoadmapTab';
@@ -7,6 +8,7 @@ import ExamRepoTab from './components/ExamRepoTab';
 import AiExamTab from './components/AiExamTab';
 import LoginPage from './components/LoginPage';
 import LoadingScreen from './components/LoadingScreen';
+import PageTransition from './components/motion/PageTransition';
 import { DEFAULT_USER } from './mockData';
 import { Flame, CheckCircle, AlertTriangle, ShieldCheck } from 'lucide-react';
 import AdminPage from './components/AdminPage';
@@ -241,61 +243,90 @@ export default function App() {
         }}
       />
 
-      {/* Main Content View with URL Routes */}
+      {/* Main Content View with URL Routes & Smooth Tab/Page Transition */}
       <main className="main-content">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <HomeTab
-                user={user}
-                streak={streak}
-                progress={progress}
-                mastery={mastery}
-                onUpdateMastery={updateMastery}
-                dbStatus={dbStatus}
-                isRealtimeActive={isRealtimeActive}
-                onCheckIn={handleCheckIn}
-                onSimulateNextDay={handleSimulateNextDay}
-                onSimulateMissedDays={handleSimulateMissedDays}
-                onResetSimulation={handleResetSimulation}
-                onNavigateTab={(tabKey) => {
-                  if (tabKey === TABS.ROADMAP) navigate('/roadmap');
-                  else if (tabKey === TABS.EXAMS) navigate('/exams');
-                  else if (tabKey === TABS.AI_EXAM) navigate('/ai-exam');
-                  else navigate('/');
-                }}
-              />
-            }
-          />
-          <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route
-            path="/roadmap"
-            element={
-              <RoadmapTab
-                user={user}
-                completedLessonIds={completedLessons}
-                onToggleLesson={toggleLesson}
-                onUpdateMastery={updateMastery}
-              />
-            }
-          />
-          <Route
-            path="/roadmap/:track"
-            element={
-              <RoadmapTab
-                user={user}
-                completedLessonIds={completedLessons}
-                onToggleLesson={toggleLesson}
-                onUpdateMastery={updateMastery}
-              />
-            }
-          />
-          <Route path="/exams" element={<ExamRepoTab user={user} onRecordExamResult={recordExamResult} />} />
-          <Route path="/ai-exam" element={<AiExamTab user={user} onRecordExamResult={recordExamResult} />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname.startsWith('/roadmap') ? '/roadmap' : location.pathname}>
+            <Route
+              path="/"
+              element={
+                <PageTransition>
+                  <HomeTab
+                    user={user}
+                    streak={streak}
+                    progress={progress}
+                    mastery={mastery}
+                    onUpdateMastery={updateMastery}
+                    dbStatus={dbStatus}
+                    isRealtimeActive={isRealtimeActive}
+                    onCheckIn={handleCheckIn}
+                    onSimulateNextDay={handleSimulateNextDay}
+                    onSimulateMissedDays={handleSimulateMissedDays}
+                    onResetSimulation={handleResetSimulation}
+                    onNavigateTab={(tabKey) => {
+                      if (tabKey === TABS.ROADMAP) navigate('/roadmap');
+                      else if (tabKey === TABS.EXAMS) navigate('/exams');
+                      else if (tabKey === TABS.AI_EXAM) navigate('/ai-exam');
+                      else navigate('/');
+                    }}
+                  />
+                </PageTransition>
+              }
+            />
+            <Route path="/home" element={<Navigate to="/" replace />} />
+            <Route
+              path="/roadmap"
+              element={
+                <PageTransition>
+                  <RoadmapTab
+                    user={user}
+                    completedLessonIds={completedLessons}
+                    onToggleLesson={toggleLesson}
+                    onUpdateMastery={updateMastery}
+                  />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/roadmap/:track"
+              element={
+                <PageTransition>
+                  <RoadmapTab
+                    user={user}
+                    completedLessonIds={completedLessons}
+                    onToggleLesson={toggleLesson}
+                    onUpdateMastery={updateMastery}
+                  />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/exams"
+              element={
+                <PageTransition>
+                  <ExamRepoTab user={user} onRecordExamResult={recordExamResult} />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/ai-exam"
+              element={
+                <PageTransition>
+                  <AiExamTab user={user} onRecordExamResult={recordExamResult} />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <PageTransition>
+                  <AdminPage />
+                </PageTransition>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </AnimatePresence>
       </main>
 
 
