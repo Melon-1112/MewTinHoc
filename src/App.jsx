@@ -14,6 +14,7 @@ import { supabase } from './supabase';
 import { useUserProgress } from './lib/userProgress';
 import { resolveUserRole, syncUserRoleToSupabase } from './lib/roleService';
 import BotpressChatBubble from './components/BotpressChatBubble';
+import AnnouncementBanner from './components/AnnouncementBanner';
 import logoMeoCam from '../img/logomeocam.png';
 
 export default function App() {
@@ -209,6 +210,7 @@ export default function App() {
     return (
       <>
         <LoginPage onLogin={handleLogin} />
+        <AnnouncementBanner />
         {toastMessage && (
           <div className="toast-notice">
             <Flame size={18} color="var(--color-amber)" />
@@ -347,6 +349,9 @@ export default function App() {
 
       {/* Botpress Cloud Floating AI Chat Bubble */}
       <BotpressChatBubble user={user} />
+
+      {/* Thông báo từ Admin gửi tới mọi người truy cập */}
+      <AnnouncementBanner />
 
       {/* Toast Notification */}
       {toastMessage && (
