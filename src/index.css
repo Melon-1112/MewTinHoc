@@ -389,6 +389,8 @@ a {
   white-space: nowrap;
   transition: all var(--transition-fast);
   position: relative;
+  z-index: 1;
+  outline: none;
 }
 
 .nav-tab-btn:hover {
@@ -398,8 +400,25 @@ a {
 
 .nav-tab-btn.active {
   color: #FFFFFF;
+  background: transparent;
+}
+
+.nav-tab-inner {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.nav-tab-active-pill {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
   background: linear-gradient(135deg, var(--color-primary), var(--color-deep));
-  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.28);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .nav-tab-btn .tab-badge-hot {
@@ -477,6 +496,28 @@ a {
   box-shadow: 0 10px 25px -3px rgba(201, 59, 3, 0.28), 0 4px 10px -2px rgba(234, 88, 12, 0.15);
 }
 
+/* Lớp gradient cam trôi chậm chu kỳ 12s */
+.hero-gradient-layer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, #C93B03 0%, #D84315 28%, #EA580C 60%, #F05A00 85%, #C93B03 100%);
+  background-size: 240% 240%;
+  animation: heroGradientShift 12s ease-in-out infinite;
+  will-change: background-position;
+  border-radius: inherit;
+}
+
+@keyframes heroGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-animated-bg.is-paused .hero-gradient-layer,
+.hero-animated-bg.is-paused .hero-ambient-orb {
+  animation-play-state: paused !important;
+}
+
 .hero-welcome-cat {
   position: absolute;
   top: -14px;
@@ -550,6 +591,8 @@ a {
 }
 
 .btn-primary-glow {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -560,13 +603,56 @@ a {
   font-size: 0.92rem;
   font-weight: 700;
   box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
-  transition: all var(--transition-fast);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), background 0.15s ease;
+  cursor: pointer;
+  border: none;
+}
+
+/* Hiệu ứng ánh sáng quét ngang (shine) MỖI 5s một lần, rất mờ */
+.btn-primary-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.24) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  animation: btnShineSweep 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes btnShineSweep {
+  0%, 72% {
+    left: -130%;
+  }
+  86%, 100% {
+    left: 210%;
+  }
+}
+
+.btn-primary-glow svg {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .btn-primary-glow:hover {
   background: #F59E0B;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(251, 191, 36, 0.55);
+}
+
+/* Hover: mũi tên "→" trượt sang phải 4px */
+.btn-primary-glow:hover svg {
+  transform: translateX(4px);
+}
+
+.btn-primary-glow:active {
+  transform: scale(0.97);
 }
 
 .btn-outline-white {
@@ -581,12 +667,18 @@ a {
   font-size: 0.92rem;
   font-weight: 600;
   backdrop-filter: blur(4px);
-  transition: all var(--transition-fast);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
 }
 
 .btn-outline-white:hover {
   background: rgba(255, 255, 255, 0.22);
   border-color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.btn-outline-white:active {
+  transform: scale(0.97);
 }
 
 /* Quick Metrics Row */
@@ -609,16 +701,21 @@ a {
   border-radius: var(--radius-md);
   padding: 1.25rem 1rem;
   box-shadow: var(--shadow-sm);
-  transition: all var(--transition-fast);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  will-change: transform;
 }
 
 .metric-card:hover {
-  border-color: var(--color-primary);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+  border-color: rgba(234, 88, 12, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px -4px rgba(234, 88, 12, 0.12), 0 4px 8px -2px rgba(0, 0, 0, 0.04);
+}
+
+.metric-card:hover .metric-icon-wrap {
+  transform: scale(1.08) rotate(4deg);
 }
 
 .metric-icon-wrap {
@@ -629,6 +726,8 @@ a {
   align-items: center;
   justify-content: center;
   margin-bottom: 0.3rem;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .metric-val {
@@ -762,7 +861,20 @@ a {
 
 .day-bubble.today .day-bubble-circle {
   border: 2px solid var(--color-amber);
-  outline: 2px solid rgba(251, 191, 36, 0.4);
+  animation: todayPulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Vòng sáng nhấp nhịp nhẹ (pulse 2s) cho ngày hiện tại */
+@keyframes todayPulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.45);
+  }
+  65% {
+    box-shadow: 0 0 0 7px rgba(234, 88, 12, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(234, 88, 12, 0);
+  }
 }
 
 .day-name {
@@ -4044,7 +4156,7 @@ a {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
   }
 }
 
@@ -5365,6 +5477,43 @@ a {
   .nav-tab-btn {
     padding: 0.4rem 0.5rem;
     font-size: 0.74rem;
+  }
+}
+
+/* ============================================================
+   MOTION SYSTEM: FOCUS-VISIBLE & ACCESSIBILITY
+   ============================================================ */
+.btn-primary-glow:focus-visible,
+.btn-outline-white:focus-visible,
+.btn-checkin-streak:focus-visible,
+.nav-tab-btn:focus-visible,
+.day-bubble:focus-visible,
+.btn-sim:focus-visible,
+.streak-pill:focus-visible,
+.brand-section:focus-visible {
+  outline: 2px solid var(--color-primary) !important;
+  outline-offset: 3px !important;
+}
+
+/* Tôn trọng người dùng bật tính năng giảm chuyển động trong hệ điều hành */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.15s !important;
+    scroll-behavior: auto !important;
+  }
+
+  .hero-gradient-layer,
+  .btn-primary-glow::after,
+  .day-bubble.today .day-bubble-circle,
+  .botpress-mascot-img,
+  .botpress-mascot-btn,
+  .streak-flame-giant,
+  .streak-sim-box {
+    animation: none !important;
   }
 }
 
