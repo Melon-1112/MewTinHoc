@@ -9,6 +9,63 @@ export const EXAM_DOCS_CONFIG = {
   folder: 'DeThiThu'
 };
 
+/**
+ * Hai "loại tài liệu" (tag) của kho đề thi.
+ *
+ * Lưu ý: trên Supabase tên thư mục không đổi được theo yêu cầu nghiệp vụ,
+ * nên tên hiển thị trên web do mình quyết định ở đây:
+ *   - thư mục "Chung"  -> hiển thị "Chung"
+ *   - thư mục "DeSo"   -> hiển thị "Đề sở"
+ *
+ * `aliases` dùng để khớp tên thư mục thật trên Storage (bỏ dấu, bỏ khoảng
+ * trắng, không phân biệt hoa thường) -> tránh hardcode chết nếu Admin
+ * đặt tên khác trên dashboard.
+ */
+export const DOC_TYPES = [
+  {
+    id: 'chung',
+    label: 'Chung',
+    storageName: 'Chung',
+    aliases: ['chung', 'tai lieu chung'],
+    description: 'Tài liệu dùng chung cho mọi môn và mọi khối thi.',
+    accent: 'amber'
+  },
+  {
+    id: 'deso',
+    label: 'Đề sở',
+    storageName: 'DeSo',
+    aliases: ['deso', 'de so', 'đề sở', 'de thi so'],
+    description: 'Đề thi của trường (đề sở) theo từng năm học.',
+    accent: 'deep'
+  }
+];
+
+/** Chuẩn hóa tên thư mục để so khớp: bỏ dấu, khoảng trắng, ký tự lạ */
+export const normalizeFolderKey = (name) =>
+  String(name || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/gi, 'd')
+    .replace(/Đ/g, 'D')
+    .replace(/[^a-zA-Z0-9]+/g, ' ')
+    .trim()
+    .toLowerCase();
+
+/**
+ * Gắn mỗi thư mục con tìm được trên Storage về đúng "loại tài liệu".
+ * Thư mục nào không khớp alias nào sẽ trả về null (không hiện ra web).
+ */
+export const resolveDocTypes = (folders) => {
+  const list = Array.isArray(folders) ? folders : [];
+  return DOC_TYPES.map((type) => {
+    const hit = list.find((f) => type.aliases.includes(normalizeFolderKey(f.name)));
+    return hit ? { ...type, folderName: hit.name, path: hit.path } : null;
+  }).filter(Boolean);
+};
+
+/** Tìm 1 loại tài liệu theo id */
+export const findDocType = (id) => DOC_TYPES.find((t) => t.id === id) || null;
+
 /** Giới hạn dung lượng 1 file: 20MB (Storage mặc định của Supabase) */
 export const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
 
@@ -303,13 +360,13 @@ export async function deleteExamDocument(doc) {
 }
 
 /** Tạo thư mục rỗng trong kho đề thi (dùng placeholder chuẩn của Supabase) */
-export async function createExamFolder(folderName) {
+export async function createExamFolder(folderName, parentPath = EXAM_DOCS_CONFIG.folder) {
   if (!supabase) return { success: false, error: 'Chưa khởi tạo Supabase Client.' };
 
   const clean = sanitizeFileName(folderName);
   if (!clean) return { success: false, error: 'Tên thư mục không hợp lệ.' };
 
-  const path = `${EXAM_DOCS_CONFIG.folder}/${clean}/${FOLDER_PLACEHOLDER}`;
+  const path = joinPath(parentPath, `${clean}/${FOLDER_PLACEHOLDER}`);
 
   try {
     const { data: auth } = await supabase.auth.getUser();
@@ -321,6 +378,31 @@ export async function createExamFolder(folderName) {
 
     if (error) throw error;
     return { success: true, folder: clean };
+  } catch (err) {
+    return { success: false, error: describeError(err, 'tạo thư mục') };
+  }
+}
+
+/**
+ * Bảo đảm thư mục của 1 "loại tài liệu" tồn tại trên Storage.
+ * Nếu thư mục đã có sẵn thì không làm gì (không lỗi).
+ */
+export async function ensureDocTypeFolder(folderPath) {
+  if (!supabase) return { success: false, error: 'Chưa khởi tạo Supabase Client.' };
+  if (!folderPath) return { success: false, error: 'Thiếu đường dẫn thư mục.' };
+
+  try {
+    const { data: auth } = await supabase.auth.getUser();
+    if (!auth?.user) return { success: false, error: 'Bạn cần đăng nhập trước khi tạo thư mục.' };
+
+    const { error } = await supabase.storage
+      .from(EXAM_DOCS_CONFIG.bucket)
+      .upload(joinPath(folderPath, FOLDER_PLACEHOLDER), new Blob([''], { type: 'text/plain' }), {
+        upsert: true
+      });
+
+    if (error) throw error;
+    return { success: true };
   } catch (err) {
     return { success: false, error: describeError(err, 'tạo thư mục') };
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   Search,
   FileText,
@@ -9,7 +9,6 @@ import {
   FileSpreadsheet,
   FileImage,
   FolderOpen,
-  FolderPlus,
   HardDrive,
   Clock,
   AlertCircle,
@@ -22,18 +21,22 @@ import {
   X,
   ShieldCheck,
   CloudUpload,
-  ChevronRight
+  Layers,
+  Landmark
 } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { isCompanyAdmin } from '../lib/roleService';
 import {
   EXAM_DOCS_CONFIG,
+  DOC_TYPES,
   MAX_UPLOAD_BYTES,
   ALLOWED_EXTENSIONS,
   listExamDocs,
   uploadExamDocument,
   renameExamDocument,
   deleteExamDocument,
-  createExamFolder
+  ensureDocTypeFolder,
+  normalizeFolderKey
 } from '../lib/examDocsStorage';
 
 const BUCKET = EXAM_DOCS_CONFIG.bucket;
@@ -42,6 +45,24 @@ const MAX_MB = Math.round(MAX_UPLOAD_BYTES / 1024 / 1024);
 
 // Loại file có thể xem trực tiếp trên trình duyệt
 const PREVIEWABLE = ['pdf', 'png', 'jpg', 'jpeg', 'webp', 'gif'];
+
+// Icon + màu nhận diện cho từng "loại tài liệu"
+const TYPE_VISUALS = {
+  chung: {
+    icon: Layers,
+    color: '#B45309',
+    bg: '#FEF3C7',
+    tint: 'rgba(251, 191, 36, 0.16)',
+    ring: 'rgba(217, 119, 6, 0.35)'
+  },
+  deso: {
+    icon: Landmark,
+    color: '#7C2D12',
+    bg: '#FFEDD5',
+    tint: 'rgba(234, 88, 12, 0.14)',
+    ring: 'rgba(124, 45, 18, 0.35)'
+  }
+};
 
 // Icon and color based on file extension
 const getFileIcon = (type) => {
@@ -70,8 +91,8 @@ const formatBytes = (bytes) => {
 
 export default function ExamRepoTab({ user }) {
   const [docs, setDocs] = useState([]);
-  const [subFolders, setSubFolders] = useState([]);
-  const [activeFolder, setActiveFolder] = useState(FOLDER);
+  const [types, setTypes] = useState([]);
+  const [activeTypeId, setActiveTypeId] = useState(DOC_TYPES[0].id);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -86,12 +107,11 @@ export default function ExamRepoTab({ user }) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [notice, setNotice] = useState(null); // { type: 'success' | 'error', msg }
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
-  const [isCreatingFolder, setIsCreatingFolder] = useState(false);
-  const [folderDraft, setFolderDraft] = useState('');
 
   const fileInputRef = useRef(null);
   const renameInputRef = useRef(null);
   const noticeTimerRef = useRef(null);
+  const reduceMotion = useReducedMotion();
 
   const showNotice = useCallback((type, msg) => {
     setNotice({ type, msg });
@@ -103,55 +123,101 @@ export default function ExamRepoTab({ user }) {
     if (noticeTimerRef.current) clearTimeout(noticeTimerRef.current);
   }, []);
 
+  const activeType = useMemo(
+    () => types.find((t) => t.id === activeTypeId) || types[0] || DOC_TYPES[0],
+    [types, activeTypeId]
+  );
+
   /* ---------------------------------------------------------------- */
   /* Tải danh sách tài liệu                                            */
   /* ---------------------------------------------------------------- */
-  const fetchDocs = useCallback(async (folderPath = FOLDER) => {
+  const fetchDocs = useCallback(async (type) => {
+    if (!type) return;
     setIsLoading(true);
     setError(null);
     try {
-      let res = await listExamDocs(folderPath);
+      const res = await listExamDocs(type.path);
 
       if (!res.success) throw new Error(res.error || 'Không thể kết nối Supabase Storage');
 
-      // Nếu thư mục mặc định trống hoàn toàn, kiểm tra thư mục gốc của bucket
-      // (giữ nguyên hành vi cũ để vẫn thấy tài liệu khi chưa tạo thư mục con).
-      if (folderPath === FOLDER && res.docs.length === 0 && res.folders.length === 0) {
-        const rootRes = await listExamDocs('');
-        if (rootRes.success && (rootRes.docs.length > 0 || rootRes.folders.length > 0)) {
-          res = rootRes;
-        }
-      }
-
-      setActiveFolder(res.path);
-      setSubFolders(res.folders || []);
       setDocs(res.docs || []);
-
-      // Dọn sạch trạng thái soạn thảo dở dang sau mỗi lần tải lại danh sách
-      // (đổi thư mục, hoặc vừa upload/đổi tên/xoá xong).
-      setEditingId(null);
-      setDraftName('');
-      setConfirmDeleteId(null);
-      setIsCreatingFolder(false);
-      setFolderDraft('');
     } catch (err) {
       console.warn('Supabase Storage error:', err);
       setError(err.message || 'Không thể kết nối Supabase Storage');
       setDocs([]);
-      setSubFolders([]);
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  useEffect(() => { fetchDocs(FOLDER); }, [fetchDocs]);
+  /* ---------------------------------------------------------------- */
+  /* Nạp 2 "loại tài liệu" — khớp thư mục trên Storage theo alias       */
+  /* ---------------------------------------------------------------- */
+  const loadTypes = useCallback(async () => {
+    // Thư mục gốc của kho đề thi (thường là "DeThiThu"). Nếu thư mục này
+    // rỗng thì thử lấy ở gốc bucket cho trường hợp Admin đặt thư mục khác.
+    let rootRes = await listExamDocs(FOLDER);
+    let rootFolders = rootRes.success ? rootRes.folders || [] : [];
+
+    if (rootFolders.length === 0) {
+      const bucketRes = await listExamDocs('');
+      if (bucketRes.success && (bucketRes.folders || []).length > 0) {
+        rootRes = bucketRes;
+        rootFolders = bucketRes.folders || [];
+      }
+    }
+
+    // Mỗi loại dùng đúng 1 thư mục trên Storage. Nếu Storage chưa có
+    // thư mục tương ứng thì vẫn hiển thị (dùng đường dẫn mặc định) và sẽ
+    // được tạo lúc Admin upload.
+    const resolved = DOC_TYPES.map((type) => {
+      const match = rootFolders.find((f) => type.aliases.includes(normalizeFolderKey(f.name)));
+      return {
+        ...type,
+        folderName: match ? match.name : type.storageName,
+        path: match ? match.path : `${FOLDER}/${type.storageName}`,
+        exists: Boolean(match)
+      };
+    });
+
+    setTypes(resolved);
+    return resolved;
+  }, []);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const resolved = await loadTypes();
+      if (!alive) return;
+      const first = resolved[0];
+      if (first) await fetchDocs(first);
+    })();
+    return () => { alive = false; };
+  }, [loadTypes, fetchDocs]);
+
+  const handleSelectType = async (type) => {
+    if (type.id === activeType?.id) return;
+    setActiveTypeId(type.id);
+    setSearchQuery('');
+    setEditingId(null);
+    setConfirmDeleteId(null);
+    await fetchDocs(type);
+  };
 
   /* ---------------------------------------------------------------- */
-  /* Upload (Admin)                                                    */
+  /* Upload (Admin) — chỉ được chọn 1 trong 2 loại                     */
   /* ---------------------------------------------------------------- */
   const handleFilesChosen = async (fileList) => {
     const files = Array.from(fileList || []);
     if (files.length === 0) return;
+    if (!activeType) return;
+
+    // Bảo đảm thư mục của loại đang chọn tồn tại trên Storage
+    const ensured = await ensureDocTypeFolder(activeType.path);
+    if (!ensured.success) {
+      showNotice('error', `Không tạo được thư mục "${activeType.folderName}": ${ensured.error}`);
+      return;
+    }
 
     setIsUploading(true);
     let okCount = 0;
@@ -161,7 +227,7 @@ export default function ExamRepoTab({ user }) {
       const f = files[i];
       setUploadProgress(`Đang tải lên ${i + 1}/${files.length}: ${f.name}`);
       // eslint-disable-next-line no-await-in-loop
-      const res = await uploadExamDocument(f, activeFolder);
+      const res = await uploadExamDocument(f, activeType.path);
       if (res.success) okCount += 1;
       else failures.push(`${f.name}: ${res.error}`);
     }
@@ -172,14 +238,15 @@ export default function ExamRepoTab({ user }) {
     // Gộp cả 2 kết quả vào MỘT thông báo: nếu gọi showNotice 2 lần thì cái sau
     // sẽ ghi đè cái trước, làm Admin không biết file nào đã lên được.
     const parts = [];
-    if (okCount > 0) parts.push(`Đã tải lên ${okCount} tài liệu.`);
+    if (okCount > 0) parts.push(`Đã tải lên ${okCount} tài liệu vào "${activeType.label}".`);
     if (failures.length > 0) parts.push(`Lỗi ${failures.length} file → ${failures.join(' | ')}`);
 
     if (parts.length > 0) {
       showNotice(failures.length > 0 ? 'error' : 'success', parts.join(' '));
     }
     if (okCount > 0) {
-      await fetchDocs(activeFolder);
+      await loadTypes();
+      await fetchDocs(activeType);
     }
   };
 
@@ -231,7 +298,7 @@ export default function ExamRepoTab({ user }) {
       'success',
       `Đã đổi tên thành "${next}${doc.loai_file ? `.${doc.loai_file}` : ''}" và đồng bộ lên Supabase.`
     );
-    await fetchDocs(activeFolder);
+    await fetchDocs(activeType);
   };
 
   const onRenameKeyDown = (e, doc) => {
@@ -264,26 +331,7 @@ export default function ExamRepoTab({ user }) {
       return;
     }
     showNotice('success', `Đã xoá tài liệu "${doc.ten_file}" khỏi Supabase.`);
-    await fetchDocs(activeFolder);
-  };
-
-  /* ---------------------------------------------------------------- */
-  /* Tạo thư mục con (Admin)                                           */
-  /* ---------------------------------------------------------------- */
-  const commitNewFolder = async () => {
-    const name = (folderDraft || '').trim();
-    if (!name) { setIsCreatingFolder(false); setFolderDraft(''); return; }
-
-    const res = await createExamFolder(name);
-    setIsCreatingFolder(false);
-    setFolderDraft('');
-
-    if (!res.success) {
-      showNotice('error', `Tạo thư mục thất bại: ${res.error}`);
-      return;
-    }
-    showNotice('success', `Đã tạo thư mục "${name}" trên Supabase.`);
-    await fetchDocs(activeFolder);
+    await fetchDocs(activeType);
   };
 
   /* ---------------------------------------------------------------- */
@@ -328,12 +376,6 @@ export default function ExamRepoTab({ user }) {
           </h2>
           <p className="doc-page-subtitle">
             Tải về các đề thi thử, tài liệu ôn tập chuẩn THPTQG mới nhất
-            {!isLoading && docs.length > 0 && (
-              <span className="doc-count-badge">{docs.length} tài liệu</span>
-            )}
-            {!isLoading && totalBytes > 0 && (
-              <span className="doc-count-badge">{formatBytes(totalBytes)}</span>
-            )}
             {isAdmin && (
               <span className="doc-admin-badge">
                 <ShieldCheck size={12} />
@@ -354,44 +396,10 @@ export default function ExamRepoTab({ user }) {
             />
           </div>
 
-          {isAdmin && (
-            <>
-              <button
-                type="button"
-                className="doc-btn-add"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploading}
-                title="Thêm tài liệu mới vào kho (tự tải lên Supabase)"
-              >
-                {isUploading ? <Loader2 size={16} className="spin-icon" /> : <Plus size={16} />}
-                <span>{isUploading ? 'Đang tải lên...' : 'Thêm tài liệu'}</span>
-              </button>
-
-              <button
-                type="button"
-                className="doc-btn-refresh"
-                onClick={() => setIsCreatingFolder(true)}
-                disabled={isUploading}
-                title="Tạo thư mục con trong kho"
-              >
-                <FolderPlus size={16} />
-              </button>
-
-              <input
-                ref={fileInputRef}
-                type="file"
-                multiple
-                hidden
-                accept={ALLOWED_EXTENSIONS.map((e) => `.${e}`).join(',')}
-                onChange={onPickFiles}
-              />
-            </>
-          )}
-
           <button
             type="button"
             className="doc-btn-refresh"
-            onClick={() => fetchDocs(activeFolder)}
+            onClick={async () => { await loadTypes(); await fetchDocs(activeType); }}
             disabled={isLoading}
             title="Làm mới danh sách"
           >
@@ -400,53 +408,51 @@ export default function ExamRepoTab({ user }) {
         </div>
       </div>
 
-      {/* ── Ô nhập tên thư mục mới (Admin) ── */}
-      {isAdmin && isCreatingFolder && (
-        <div className="doc-inline-form">
-          <FolderPlus size={16} />
-          <input
-            type="text"
-            autoFocus
-            placeholder="Tên thư mục mới, ví dụ: DeThiGiuaKy"
-            value={folderDraft}
-            onChange={(e) => setFolderDraft(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') commitNewFolder();
-              if (e.key === 'Escape') { setIsCreatingFolder(false); setFolderDraft(''); }
-            }}
-          />
-          <button type="button" className="doc-btn-save" onClick={commitNewFolder}>
-            <Check size={15} /> Tạo thư mục
-          </button>
-          <button
-            type="button"
-            className="doc-btn-cancel"
-            onClick={() => { setIsCreatingFolder(false); setFolderDraft(''); }}
-          >
-            <X size={15} />
-          </button>
-        </div>
-      )}
+      {/* ── 2 LOẠI TÀI LIỆU ── */}
+      <div className="doc-type-grid" role="tablist" aria-label="Loại tài liệu">
+        {types.map((type) => {
+          const visual = TYPE_VISUALS[type.id] || TYPE_VISUALS.chung;
+          const Icon = visual.icon;
+          const isActive = activeType?.id === type.id;
+          const count = isActive ? docs.length : null;
 
-      {/* ── Khu vực kéo thả (Admin) ── */}
-      {isAdmin && (
-        <div
-          className="doc-dropzone"
-          onClick={() => !isUploading && fileInputRef.current?.click()}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === 'Enter') fileInputRef.current?.click(); }}
-        >
-          <CloudUpload size={22} />
-          <div className="doc-dropzone-text">
-            {uploadProgress || 'Kéo & thả file vào đây, hoặc bấm để chọn tài liệu'}
-          </div>
-          <div className="doc-dropzone-hint">
-            Hỗ trợ {ALLOWED_EXTENSIONS.join(', ')} — tối đa {MAX_MB}MB/file. Tài liệu được lưu tại{' '}
-            <strong>{BUCKET}/{activeFolder || '(gốc)'}</strong>
-          </div>
-        </div>
-      )}
+          return (
+            <button
+              key={type.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              className={`doc-type-card${isActive ? ' active' : ''}`}
+              style={isActive ? { '--type-ring': visual.ring, '--type-tint': visual.tint } : undefined}
+              onClick={() => handleSelectType(type)}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="doc-type-active"
+                  className="doc-type-card-bg"
+                  transition={reduceMotion
+                    ? { duration: 0 }
+                    : { type: 'spring', bounce: 0.18, duration: 0.45 }}
+                />
+              )}
+              <span className="doc-type-card-inner">
+                <span className="doc-type-icon" style={{ background: visual.bg, color: visual.color }}>
+                  <Icon size={22} strokeWidth={2} />
+                </span>
+                <span className="doc-type-text">
+                  <span className="doc-type-label">{type.label}</span>
+                  <span className="doc-type-desc">{type.description}</span>
+                </span>
+                {isActive && !isLoading && (
+                  <span className="doc-type-count">
+                    {count} tài liệu
+                  </span>
+                )}
+              </span>
+            </button>
+          );
+        })}
+      </div>
 
       {/* ── Thông báo kết quả ── */}
       {notice && (
@@ -467,43 +473,70 @@ export default function ExamRepoTab({ user }) {
         </div>
       )}
 
+      {/* ── Thanh tiêu đề của loại đang chọn ── */}
+      {!isLoading && activeType && (
+        <div className="doc-active-bar">
+          <div className="doc-active-heading">
+            <h3 className="doc-active-title">{activeType.label}</h3>
+            {!isLoading && docs.length > 0 && (
+              <>
+                <span className="doc-count-badge">{docs.length} tài liệu</span>
+                <span className="doc-count-badge">{formatBytes(totalBytes)}</span>
+              </>
+            )}
+          </div>
+
+          {isAdmin && (
+            <>
+              <button
+                type="button"
+                className="doc-btn-add"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploading}
+                title={`Thêm tài liệu vào loại "${activeType.label}"`}
+              >
+                {isUploading ? <Loader2 size={16} className="spin-icon" /> : <Plus size={16} />}
+                <span>{isUploading ? 'Đang tải lên...' : 'Thêm tài liệu'}</span>
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* ── Khu vực kéo thả (Admin) ── */}
+      {isAdmin && activeType && (
+        <div
+          className="doc-dropzone"
+          onClick={() => !isUploading && fileInputRef.current?.click()}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter') fileInputRef.current?.click(); }}
+        >
+          <CloudUpload size={22} />
+          <div className="doc-dropzone-text">
+            {uploadProgress || `Kéo & thả file vào "${activeType.label}", hoặc bấm để chọn`}
+          </div>
+          <div className="doc-dropzone-hint">
+            Hỗ trợ {ALLOWED_EXTENSIONS.join(', ')} — tối đa {MAX_MB}MB/file. Tài liệu được lưu tại{' '}
+            <strong>{BUCKET}/{activeType.path}</strong>
+          </div>
+        </div>
+      )}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        hidden
+        accept={ALLOWED_EXTENSIONS.map((e) => `.${e}`).join(',')}
+        onChange={onPickFiles}
+      />
+
       {/* ── Loading indicator ── */}
       {isLoading && (
         <div className="doc-loading">
           <Loader2 size={28} className="spin-icon" />
           <span>Đang tải danh sách tài liệu...</span>
-        </div>
-      )}
-
-      {/* ── Đường dẫn thư mục (bấm để quay về thư mục gốc) ── */}
-      {!isLoading && activeFolder !== FOLDER && (
-        <div className="doc-breadcrumb">
-          <button type="button" onClick={() => fetchDocs(FOLDER)}>
-            {FOLDER}
-          </button>
-          <ChevronRight size={14} />
-          <span className="doc-breadcrumb-current">
-            {activeFolder.startsWith(`${FOLDER}/`)
-              ? activeFolder.slice(FOLDER.length + 1)
-              : activeFolder || '(gốc)'}
-          </span>
-        </div>
-      )}
-
-      {/* ── Thư mục con ── */}
-      {!isLoading && subFolders.length > 0 && (
-        <div className="doc-folder-row">
-          {subFolders.map((f) => (
-            <button
-              key={f.path}
-              type="button"
-              className="doc-folder-chip"
-              onClick={() => fetchDocs(f.path)}
-            >
-              <FolderOpen size={15} />
-              {f.name}
-            </button>
-          ))}
         </div>
       )}
 
@@ -536,7 +569,7 @@ export default function ExamRepoTab({ user }) {
                         value={draftName}
                         onChange={(e) => setDraftName(e.target.value)}
                         onKeyDown={(e) => onRenameKeyDown(e, doc)}
-                        placeholder="Nhập tên tài liệu mới..."
+                        placeholder="Nhận tên tài liệu mới..."
                       />
                       <span className="doc-rename-ext">.{doc.loai_file}</span>
                       <span className="doc-rename-hint">Nhấn Enter để lưu</span>
@@ -679,32 +712,11 @@ export default function ExamRepoTab({ user }) {
         <div className="doc-empty">
           <FolderOpen size={40} strokeWidth={1.5} />
           {docs.length === 0 && !error ? (
-            <>
-              <p>Chưa có tài liệu nào trong thư mục <strong>"{activeFolder || BUCKET}"</strong>.</p>
-              {isAdmin ? (
-                <>
-                  <p style={{ fontSize: '0.85rem', maxWidth: '520px', lineHeight: 1.5 }}>
-                    Bạn là Admin — bấm nút <strong>Thêm tài liệu</strong> ở trên (hoặc kéo thả file vào khung)
-                    để tải tài liệu đầu tiên lên Supabase.
-                  </p>
-                  <button
-                    type="button"
-                    className="doc-btn-primary"
-                    onClick={() => fileInputRef.current?.click()}
-                    style={{ marginTop: '0.5rem' }}
-                    disabled={isUploading}
-                  >
-                    <Plus size={15} />
-                    <span>Thêm tài liệu</span>
-                  </button>
-                </>
-              ) : (
-                <p style={{ fontSize: '0.85rem', maxWidth: '520px', lineHeight: 1.5 }}>
-                  Nếu bạn đã tải file lên Supabase, hãy kiểm tra <strong>RLS Policy</strong> cho phép đọc file
-                  công khai, hoặc nhấn <strong>Làm mới</strong> để thử lại.
-                </p>
-              )}
-            </>
+            <p>
+              {searchQuery
+                ? 'Không tìm thấy tài liệu nào phù hợp với từ khoá đang tìm.'
+                : `Loại "${activeType?.label || ''}" hiện chưa có tài liệu nào.`}
+            </p>
           ) : (
             <p>Không tìm thấy tài liệu nào phù hợp.</p>
           )}

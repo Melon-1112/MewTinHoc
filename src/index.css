@@ -2466,6 +2466,140 @@ a {
 }
 
 /* ============================================================
+   KHO ĐỀ THI — 2 LOẠI TÀI LIỆU (Chung / Đề sở)
+   ============================================================ */
+
+/* Lưới chứa 2 thẻ loại tài liệu */
+.doc-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 0.35rem;
+}
+
+/* Thẻ loại tài liệu — trông như 2 loại tài liệu riêng biệt */
+.doc-type-card {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+/* Phần nền chạy theo thẻ đang active (layoutId) */
+.doc-type-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(135deg, var(--type-tint, rgba(234, 88, 12, 0.14)) 0%, transparent 62%),
+    var(--color-surface);
+}
+
+.doc-type-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.doc-type-card.active {
+  border-color: var(--type-ring, rgba(234, 88, 12, 0.45));
+  box-shadow:
+    0 0 0 3px var(--type-ring, rgba(234, 88, 12, 0.22)),
+    var(--shadow-lg);
+}
+
+.doc-type-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.15rem;
+}
+
+.doc-type-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px rgba(124, 45, 18, 0.08);
+}
+
+.doc-type-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.doc-type-label {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--color-text-deep);
+  letter-spacing: -0.01em;
+}
+
+.doc-type-desc {
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.doc-type-count {
+  flex-shrink: 0;
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary);
+}
+
+/* Thanh tiêu đề của loại tài liệu đang chọn */
+.doc-active-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.doc-active-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.doc-active-title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--color-text-deep);
+  letter-spacing: -0.015em;
+}
+
+/* ============================================================
    KHO ĐỀ THI — CÔNG CỤ QUẢN TRỊ (chỉ hiển thị với Admin)
    ============================================================ */
 
@@ -5387,6 +5521,26 @@ a {
     flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
+  }
+
+  /* 2 loại tài liệu xếp dọc trên màn hình hẹp */
+  .doc-type-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .doc-type-card-inner {
+    padding: 0.85rem 0.95rem;
+    gap: 0.7rem;
+  }
+
+  .doc-active-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .doc-active-bar .doc-btn-add {
+    justify-content: center;
   }
 
   .doc-header-actions {
