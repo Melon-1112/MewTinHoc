@@ -859,6 +859,43 @@ export default function RoadmapTab({
                     ></div>
                   </div>
 
+                  {/* Nút Luyện tập câu hỏi trắc nghiệm & Đúng/Sai */}
+                  {(() => {
+                    const stQuiz = station?.quiz || getStationQuiz(station.id);
+                    if (!stQuiz) return null;
+                    return (
+                      <button
+                        className="btn-quiz-station"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenStationModal(station, 0, false, 'quiz');
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.45rem',
+                          width: '100%',
+                          padding: '0.55rem 0.85rem',
+                          borderRadius: 'var(--radius-md)',
+                          background: '#1E293B',
+                          color: '#FDBA74',
+                          border: '1.5px solid #EA580C',
+                          fontWeight: 800,
+                          fontSize: '0.82rem',
+                          cursor: 'pointer',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                          transition: 'all 0.15s ease',
+                          marginBottom: '0.45rem'
+                        }}
+                        title={`Luyện tập câu hỏi ôn tập: ${station.title}`}
+                      >
+                        <Sparkles size={15} color="#EA580C" />
+                        <span>Luyện tập câu hỏi (${stQuiz.totalItems || 24} câu)</span>
+                      </button>
+                    );
+                  })()}
+
                   {/* Nút stream PDF trực tiếp nếu chặng có PDF đính kèm */}
                   {station.pdfUrl && (
                     <button
@@ -914,14 +951,14 @@ export default function RoadmapTab({
       </div>
 
       {/* 5. MODAL HỌC LÝ THUYẾT CHI TIẾT TỪNG BÀI (THEORY VIEWER DRAWER/MODAL) */}
-      {selectedStation && currentLesson && (
+      {selectedStation && (currentLesson || selectedStation.pdfUrl || selectedStation.quiz || getStationQuiz(selectedStation.id)) && (
         <div className="modal-backdrop" onClick={handleCloseModal}>
           <div
-            className={`exam-taker-window ${isStudyMode || modalTab === 'pdf' ? 'study-focus-mode' : ''} ${isFullScreen ? 'full-screen-mode' : ''}`}
+            className={`exam-taker-window ${isStudyMode || modalTab === 'pdf' || modalTab === 'quiz' ? 'study-focus-mode' : ''} ${isFullScreen ? 'full-screen-mode' : ''}`}
             style={{
-              maxWidth: isFullScreen ? '100vw' : (isStudyMode || modalTab === 'pdf') ? '1400px' : '1050px',
-              width: isFullScreen ? '100vw' : (isStudyMode || modalTab === 'pdf') ? '96vw' : '92vw',
-              height: isFullScreen ? '100vh' : (isStudyMode || modalTab === 'pdf') ? '94vh' : '88vh',
+              maxWidth: isFullScreen ? '100vw' : (isStudyMode || modalTab === 'pdf' || modalTab === 'quiz') ? '1400px' : '1050px',
+              width: isFullScreen ? '100vw' : (isStudyMode || modalTab === 'pdf' || modalTab === 'quiz') ? '96vw' : '92vw',
+              height: isFullScreen ? '100vh' : (isStudyMode || modalTab === 'pdf' || modalTab === 'quiz') ? '94vh' : '88vh',
               padding: 0
             }}
             onClick={(e) => e.stopPropagation()}
@@ -1074,60 +1111,92 @@ export default function RoadmapTab({
                       </button>
                     )}
 
-                    {/* Bộ chuyển đổi Tab: PDF Stream vs Lý thuyết bài học */}
-                    {selectedStation.pdfUrl && (
-                      <div style={{ display: 'inline-flex', padding: '3px', background: '#F1F5F9', borderRadius: '10px', gap: '4px' }}>
-                        <button
-                          onClick={() => setModalTab('pdf')}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.4rem',
-                            padding: '0.35rem 0.85rem',
-                            borderRadius: '7px',
-                            fontSize: '0.78rem',
-                            fontWeight: 800,
-                            border: 'none',
-                            cursor: 'pointer',
-                            background: modalTab === 'pdf' ? (activeTrack === TRACK_TYPES.CS ? '#EA580C' : '#0284C7') : 'transparent',
-                            color: modalTab === 'pdf' ? '#FFFFFF' : '#64748B',
-                            boxShadow: modalTab === 'pdf' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
-                            transition: 'all 0.15s ease'
-                          }}
-                        >
-                          <span style={{
-                            display: 'inline-block',
-                            width: '7px',
-                            height: '7px',
-                            borderRadius: '50%',
-                            backgroundColor: modalTab === 'pdf' ? '#4ADE80' : '#94A3B8'
-                          }} />
-                          <FileText size={14} />
-                          <span>Stream PDF Trực Tiếp</span>
-                        </button>
-                        <button
-                          onClick={() => setModalTab('theory')}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.4rem',
-                            padding: '0.35rem 0.85rem',
-                            borderRadius: '7px',
-                            fontSize: '0.78rem',
-                            fontWeight: 800,
-                            border: 'none',
-                            cursor: 'pointer',
-                            background: modalTab === 'theory' ? (activeTrack === TRACK_TYPES.CS ? '#EA580C' : '#0284C7') : 'transparent',
-                            color: modalTab === 'theory' ? '#FFFFFF' : '#64748B',
-                            boxShadow: modalTab === 'theory' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
-                            transition: 'all 0.15s ease'
-                          }}
-                        >
-                          <BookOpen size={14} />
-                          <span>Lý Thuyết & Câu Hỏi ({selectedStation.lessons?.length || 0} bài)</span>
-                        </button>
-                      </div>
-                    )}
+                    {/* Bộ chuyển đổi Tab: PDF Stream vs Lý thuyết bài học vs Luyện tập */}
+                    {(() => {
+                      const currentStationQuiz = selectedStation?.quiz || getStationQuiz(selectedStation?.id);
+                      return (
+                        <div style={{ display: 'inline-flex', padding: '3px', background: '#F1F5F9', borderRadius: '10px', gap: '4px' }}>
+                          {selectedStation.pdfUrl && (
+                            <button
+                              onClick={() => setModalTab('pdf')}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.4rem',
+                                padding: '0.35rem 0.85rem',
+                                borderRadius: '7px',
+                                fontSize: '0.78rem',
+                                fontWeight: 800,
+                                border: 'none',
+                                cursor: 'pointer',
+                                background: modalTab === 'pdf' ? (activeTrack === TRACK_TYPES.CS ? '#EA580C' : '#0284C7') : 'transparent',
+                                color: modalTab === 'pdf' ? '#FFFFFF' : '#64748B',
+                                boxShadow: modalTab === 'pdf' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                                transition: 'all 0.15s ease'
+                              }}
+                            >
+                              <span style={{
+                                display: 'inline-block',
+                                width: '7px',
+                                height: '7px',
+                                borderRadius: '50%',
+                                backgroundColor: modalTab === 'pdf' ? '#4ADE80' : '#94A3B8'
+                              }} />
+                              <FileText size={14} />
+                              <span>Stream PDF</span>
+                            </button>
+                          )}
+
+                          {currentStationQuiz && (
+                            <button
+                              onClick={() => setModalTab('quiz')}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.4rem',
+                                padding: '0.35rem 0.85rem',
+                                borderRadius: '7px',
+                                fontSize: '0.78rem',
+                                fontWeight: 800,
+                                border: 'none',
+                                cursor: 'pointer',
+                                background: modalTab === 'quiz' ? '#EA580C' : 'transparent',
+                                color: modalTab === 'quiz' ? '#FFFFFF' : '#64748B',
+                                boxShadow: modalTab === 'quiz' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                                transition: 'all 0.15s ease'
+                              }}
+                            >
+                              <Sparkles size={14} color={modalTab === 'quiz' ? '#FFFFFF' : '#EA580C'} />
+                              <span>Luyện Tập Câu Hỏi (${currentStationQuiz.totalItems || 24} câu)</span>
+                            </button>
+                          )}
+
+                          {selectedStation.lessons && selectedStation.lessons.length > 0 && (
+                            <button
+                              onClick={() => setModalTab('theory')}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.4rem',
+                                padding: '0.35rem 0.85rem',
+                                borderRadius: '7px',
+                                fontSize: '0.78rem',
+                                fontWeight: 800,
+                                border: 'none',
+                                cursor: 'pointer',
+                                background: modalTab === 'theory' ? (activeTrack === TRACK_TYPES.CS ? '#EA580C' : '#0284C7') : 'transparent',
+                                color: modalTab === 'theory' ? '#FFFFFF' : '#64748B',
+                                boxShadow: modalTab === 'theory' ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                                transition: 'all 0.15s ease'
+                              }}
+                            >
+                              <BookOpen size={14} />
+                              <span>Lý thuyết (${selectedStation.lessons.length} bài)</span>
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })()}
 
                     {modalTab === 'theory' && (
                       <>
@@ -1225,8 +1294,16 @@ export default function RoadmapTab({
                   </div>
                 </div>
 
-                {/* Body: Stream PDF trực tiếp hoặc Cuộn nội dung kiến thức bài giảng */}
-                {modalTab === 'pdf' && selectedStation.pdfUrl ? (
+                {/* Body: Luyện tập câu hỏi OR Stream PDF OR Cuộn nội dung kiến thức bài giảng */}
+                {modalTab === 'quiz' && (selectedStation?.quiz || getStationQuiz(selectedStation?.id)) ? (
+                  <StationQuizView
+                    quizData={selectedStation?.quiz || getStationQuiz(selectedStation?.id)}
+                    stationTitle={selectedStation.title}
+                    stationCode={selectedStation.code}
+                    onComplete={() => handleToggleLessonComplete(selectedStation.id)}
+                    isAlreadyCompleted={!!completedLessonIds[selectedStation.id]}
+                  />
+                ) : modalTab === 'pdf' && selectedStation.pdfUrl ? (
                   <div
                     style={{
                       flex: 1,

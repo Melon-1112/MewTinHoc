@@ -243,6 +243,7 @@ DROP POLICY IF EXISTS "storage_insert_admin" ON storage.objects;
 DROP POLICY IF EXISTS "storage_update_admin" ON storage.objects;
 DROP POLICY IF EXISTS "storage_read_admin" ON storage.objects;
 DROP POLICY IF EXISTS "storage_delete_admin" ON storage.objects;
+DROP POLICY IF EXISTS "storage_read_all" ON storage.objects;
 
 CREATE POLICY "storage_insert_admin" ON storage.objects
   FOR INSERT TO authenticated
@@ -259,9 +260,10 @@ CREATE POLICY "storage_delete_admin" ON storage.objects
   FOR DELETE TO authenticated
   USING (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user());
 
-CREATE POLICY "storage_read_admin" ON storage.objects
-  FOR SELECT TO authenticated
-  USING (bucket_id = 'KhoTaiLieuTinHocThiThu' AND public.is_admin_user());`;
+-- Cho phép đọc tài liệu & tạo Signed URL cho bucket KhoTaiLieuTinHocThiThu (cần thiết khi để Private Bucket)
+CREATE POLICY "storage_read_all" ON storage.objects
+  FOR SELECT
+  USING (bucket_id = 'KhoTaiLieuTinHocThiThu');`;
 
   const handleCopySql = () => {
     navigator.clipboard.writeText(sqlSchemaSnippet);

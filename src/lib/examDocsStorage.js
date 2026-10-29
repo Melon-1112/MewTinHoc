@@ -183,11 +183,29 @@ export async function listExamDocs(folderPath = EXAM_DOCS_CONFIG.folder) {
 
     const storage = supabase.storage.from(EXAM_DOCS_CONFIG.bucket);
 
+    // Hỗ trợ Private Bucket: tạo Signed URLs hàng loạt
+    const paths = files.map((f) => joinPath(folderPath, f.name));
+    let signedUrlsMap = {};
+    try {
+      if (paths.length > 0 && typeof storage.createSignedUrls === 'function') {
+        const { data: signedData } = await storage.createSignedUrls(paths, 86400);
+        if (Array.isArray(signedData)) {
+          signedData.forEach((item) => {
+            if (item?.path && item?.signedUrl) {
+              signedUrlsMap[item.path] = item.signedUrl;
+            }
+          });
+        }
+      }
+    } catch (e) {
+      // Bỏ qua lỗi batch signed urls để fallback
+    }
+
     const docs = files.map((f) => {
       const path = joinPath(folderPath, f.name);
       const ext = extractExt(f.name);
-      const viewUrl = storage.getPublicUrl(path).data?.publicUrl || null;
-      const downloadUrl = storage.getPublicUrl(path, { download: f.name }).data?.publicUrl || null;
+      const viewUrl = signedUrlsMap[path] || storage.getPublicUrl(path).data?.publicUrl || null;
+      const downloadUrl = viewUrl || storage.getPublicUrl(path, { download: f.name }).data?.publicUrl || null;
 
       return {
         id: f.id,

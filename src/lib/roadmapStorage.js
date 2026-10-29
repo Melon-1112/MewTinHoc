@@ -31,42 +31,73 @@ export async function fetchRemoteRoadmap(trackType) {
       };
     }
 
-    // 1. Lấy public URL từ Supabase Storage
-    const { data: urlData } = supabase.storage
-      .from(ROADMAP_STORAGE_CONFIG.bucket)
-      .getPublicUrl(filePath);
+    let json = null;
 
-    if (!urlData || !urlData.publicUrl) {
-      return {
-        success: false,
-        source: 'local',
-        data: defaultTrackData,
-        message: 'Không tìm thấy Public URL'
-      };
-    }
+    // 1. Thử tạo Signed URL trước (chuẩn cho Private Bucket để tránh lỗi NoSuchBucket)
+    try {
+      const { data: signData, error: signErr } = await supabase.storage
+        .from(ROADMAP_STORAGE_CONFIG.bucket)
+        .createSignedUrl(filePath, 3600);
 
-    // Cache-busting query param để không bị trình duyệt cache file cũ
-    const fetchUrl = `${urlData.publicUrl}?t=${Date.now()}`;
-
-    const res = await fetch(fetchUrl, {
-      cache: 'no-cache',
-      headers: {
-        'Pragma': 'no-cache',
-        'Cache-Control': 'no-cache'
+      if (!signErr && signData?.signedUrl) {
+        const res = await fetch(`${signData.signedUrl}&t=${Date.now()}`, {
+          cache: 'no-cache',
+          headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' }
+        });
+        if (res.ok) {
+          json = await res.json();
+        }
       }
-    });
+    } catch (e) {
+      // Bỏ qua lỗi sign để fallback
+    }
 
-    if (!res.ok) {
-      // 404 hoặc file chưa được upload lên bucket
+    // 2. Nếu chưa lấy được, thử tải trực tiếp qua Supabase SDK download()
+    if (!json) {
+      try {
+        const { data: blobData, error: dlErr } = await supabase.storage
+          .from(ROADMAP_STORAGE_CONFIG.bucket)
+          .download(filePath);
+
+        if (!dlErr && blobData) {
+          const text = await blobData.text();
+          json = JSON.parse(text);
+        }
+      } catch (e) {
+        // Bỏ qua lỗi download để fallback
+      }
+    }
+
+    // 3. Nếu vẫn chưa được, thử getPublicUrl nếu bucket còn để Public
+    if (!json) {
+      try {
+        const { data: urlData } = supabase.storage
+          .from(ROADMAP_STORAGE_CONFIG.bucket)
+          .getPublicUrl(filePath);
+
+        if (urlData?.publicUrl) {
+          const res = await fetch(`${urlData.publicUrl}?t=${Date.now()}`, {
+            cache: 'no-cache',
+            headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' }
+          });
+          if (res.ok) {
+            json = await res.json();
+          }
+        }
+      } catch (e) {
+        // Fallback
+      }
+    }
+
+    // Nếu không lấy được JSON từ Supabase (file chưa tạo hoặc quyền private), fallback về dữ liệu mặc định
+    if (!json) {
       return {
         success: false,
         source: 'local',
         data: defaultTrackData,
-        message: `File ${fileName} chưa được tạo trên Supabase (HTTP ${res.status})`
+        message: `Đang dùng dữ liệu cục bộ (Chưa tìm thấy ${fileName} trên Supabase)`
       };
     }
-
-    const json = await res.json();
 
     // 2. Chuẩn hóa dữ liệu trả về (hỗ trợ cả dạng object full lẫn dạng array stations)
     let stations = null;
@@ -108,7 +139,6 @@ export async function fetchRemoteRoadmap(trackType) {
       updatedAt: new Date().toLocaleTimeString('vi-VN')
     };
   } catch (err) {
-    console.warn(`[RoadmapStorage] Lỗi tải ${fileName} từ Supabase Storage:`, err);
     return {
       success: false,
       source: 'local',
@@ -121,8 +151,7 @@ export async function fetchRemoteRoadmap(trackType) {
 /**
  * Lấy dữ liệu roadmap dạng RAW (đúng cấu trúc file JSON: examStructure, twelveWeekPlan, stations)
  * dùng cho màn hình Quản trị của Admin.
- * - Nếu file đã có trên Supabase Storage: lấy đúng nội dung đang lưu (kèm cache-busting).
- * - Nếu chưa có file: trả về dữ liệu mặc định trong code làm bản nháp ban đầu.
+ * - Hỗ trợ cả Private Bucket qua createSignedUrl và download()
  */
 export async function fetchRemoteRoadmapRaw(trackType) {
   const track = trackType?.toLowerCase() || TRACK_TYPES.ICT;
@@ -144,22 +173,66 @@ export async function fetchRemoteRoadmapRaw(trackType) {
   if (!supabase) return buildDefault('Chưa khởi tạo Supabase Client');
 
   try {
-    const { data: urlData } = supabase.storage
-      .from(ROADMAP_STORAGE_CONFIG.bucket)
-      .getPublicUrl(filePath);
+    let json = null;
 
-    if (!urlData || !urlData.publicUrl) return buildDefault('Không tìm thấy Public URL');
+    // 1. Thử Signed URL (cho Private Bucket)
+    try {
+      const { data: signData, error: signErr } = await supabase.storage
+        .from(ROADMAP_STORAGE_CONFIG.bucket)
+        .createSignedUrl(filePath, 3600);
 
-    const res = await fetch(`${urlData.publicUrl}?t=${Date.now()}`, {
-      cache: 'no-cache',
-      headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' }
-    });
-
-    if (!res.ok) {
-      return buildDefault(`File ${fileName} chưa có trên Supabase (HTTP ${res.status})`);
+      if (!signErr && signData?.signedUrl) {
+        const res = await fetch(`${signData.signedUrl}&t=${Date.now()}`, {
+          cache: 'no-cache',
+          headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' }
+        });
+        if (res.ok) {
+          json = await res.json();
+        }
+      }
+    } catch (e) {
+      // Fallback
     }
 
-    const json = await res.json();
+    // 2. Thử download()
+    if (!json) {
+      try {
+        const { data: blobData, error: dlErr } = await supabase.storage
+          .from(ROADMAP_STORAGE_CONFIG.bucket)
+          .download(filePath);
+        if (!dlErr && blobData) {
+          const text = await blobData.text();
+          json = JSON.parse(text);
+        }
+      } catch (e) {
+        // Fallback
+      }
+    }
+
+    // 3. Thử getPublicUrl()
+    if (!json) {
+      try {
+        const { data: urlData } = supabase.storage
+          .from(ROADMAP_STORAGE_CONFIG.bucket)
+          .getPublicUrl(filePath);
+
+        if (urlData?.publicUrl) {
+          const res = await fetch(`${urlData.publicUrl}?t=${Date.now()}`, {
+            cache: 'no-cache',
+            headers: { Pragma: 'no-cache', 'Cache-Control': 'no-cache' }
+          });
+          if (res.ok) {
+            json = await res.json();
+          }
+        }
+      } catch (e) {
+        // Fallback
+      }
+    }
+
+    if (!json) {
+      return buildDefault(`File ${fileName} chưa có trên Supabase`);
+    }
 
     // Hỗ trợ cả 2 dạng: file chuẩn { examStructure, twelveWeekPlan, stations } hoặc mảng stations
     const raw = Array.isArray(json)
@@ -178,9 +251,57 @@ export async function fetchRemoteRoadmapRaw(trackType) {
       raw
     };
   } catch (err) {
-    console.warn(`[RoadmapStorage] Lỗi tải RAW ${fileName}:`, err);
     return buildDefault(err.message || 'Lỗi mạng khi tải từ Supabase');
   }
+}
+
+/**
+ * Chuyển đổi một URL tĩnh (dạng /object/public/...) hoặc relative path
+ * sang Signed URL hợp lệ của Supabase Private Bucket.
+ * Tránh lỗi 404 NoSuchBucket khi truy cập file trong Private Bucket.
+ */
+export async function resolveStorageUrl(rawUrlOrPath, expiresInSeconds = 86400) {
+  if (!rawUrlOrPath || typeof rawUrlOrPath !== 'string') return null;
+
+  // Nếu đã là Signed URL (có token) hoặc blob/data URL thì giữ nguyên
+  if (rawUrlOrPath.includes('token=') || rawUrlOrPath.startsWith('blob:') || rawUrlOrPath.startsWith('data:')) {
+    return rawUrlOrPath;
+  }
+
+  try {
+    if (!supabase) return rawUrlOrPath;
+
+    const bucketName = ROADMAP_STORAGE_CONFIG.bucket;
+    let relativePath = rawUrlOrPath.trim();
+
+    // Nếu là URL Supabase Storage (/object/public/KhoTaiLieuTinHocThiThu/... hoặc /object/sign/...)
+    if (relativePath.includes(`/${bucketName}/`)) {
+      const parts = relativePath.split(`/${bucketName}/`);
+      relativePath = decodeURIComponent(parts[1].split('?')[0]);
+    } else if (relativePath.startsWith('http://') || relativePath.startsWith('https://')) {
+      // URL bên ngoài Supabase (nếu có)
+      return rawUrlOrPath;
+    }
+
+    // Tạo Signed URL từ Supabase Storage
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .createSignedUrl(relativePath, expiresInSeconds);
+
+    if (!error && data?.signedUrl) {
+      return data.signedUrl;
+    }
+  } catch (err) {
+    // Không làm gián đoạn UI nếu tạo signed URL thất bại
+  }
+
+  // Nếu là link Supabase Storage mà không thể tạo Signed URL (file chưa có hoặc chưa cấp quyền),
+  // trả về null để tránh việc iframe gọi link /object/public/ bị lỗi NoSuchBucket
+  if (rawUrlOrPath.includes(`/${ROADMAP_STORAGE_CONFIG.bucket}/`)) {
+    return null;
+  }
+
+  return rawUrlOrPath;
 }
 
 /**

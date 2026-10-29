@@ -22,16 +22,16 @@
     {
       "phase": "Giai đoạn 1",
       "weeks": "Tuần 1 - 4",
-      "title": "Nắm chắc Lý thuyết Nền tảng & Trắc nghiệm Phần I",
+      "title": "Ôn chắc 6 Chủ đề chung & Trắc nghiệm Phần I",
       "targetScore": "4.5 - 5.0 điểm nền tảng",
-      "content": "Ôn tập toàn bộ kiến thức Chủ đề A (Thiết bị số, AI), B (Mạng máy tính, Internet, Đám mây), D (Đạo đức số, Bản quyền, An toàn mạng) và G (Hướng nghiệp) theo SGK Kết nối tri thức."
+      "content": "Ôn tập toàn bộ 6 chủ đề chung của cả CS và ICT: Chủ đề 1 (Trí tuệ nhân tạo), Chủ đề 2 (Mạng máy tính & Internet), Chủ đề 3 (Đạo đức, pháp luật & văn hóa số), Chủ đề 4 (Giới thiệu CSDL), Chủ đề 5 (Tạo trang web HTML & CSS), Chủ đề 6 (Hướng nghiệp với Tin học). Đảm bảo làm nhanh và chính xác 100% các câu hỏi nhận biết - thông hiểu (Phần I) để nắm chắc 4.5 - 5.0 điểm nền tảng."
     },
     {
       "phase": "Giai đoạn 2",
       "weeks": "Tuần 5 - 9",
-      "title": "Luyện sâu Kỹ năng Bảng tính Excel & Thiết kế Web HTML/CSS",
+      "title": "Luyện sâu Kỹ năng Bảng tính Excel & Thiết kế Web HTML/CSS (Chuyên sâu ICT)",
       "targetScore": "7.5 - 8.5 điểm",
-      "content": "Thực hành giải các kịch bản Đúng/Sai Phần II: Địa chỉ ô tuyệt đối ($A$1), các hàm thống kê và tìm kiếm, cấu trúc thẻ HTML (table, form, input) và định dạng thuộc tính CSS."
+      "content": "Thực hành giải các kịch bản Đúng/Sai Phần II dành riêng cho ICT: Địa chỉ ô tuyệt đối ($A$1), các hàm thống kê và tìm kiếm (IF/AND/OR, VLOOKUP, SUMIF, Pivot Table), cấu trúc thẻ HTML (table, form, input) và định dạng thuộc tính CSS; Biên tập đồ họa & video số."
     },
     {
       "phase": "Giai đoạn 3",
@@ -52,6 +52,7 @@
       "priorityBadge": "high",
       "questionType": "Trắc nghiệm Phần I (2 - 3 câu)",
       "bookRef": "Trang 4 - 9",
+      "pdfUrl": "https://vxqvjffssebnuxtslghp.supabase.co/storage/v1/object/sign/KhoTaiLieuTinHocThiThu/Chuong%201/Tai_Lieu_On_Thi_Chu_De_1_Gioi_Thieu_AI%20(1).pdf?token=eyJraWQiOiIzMmIzYzRjYi0yYTZjLTRmYjUtOTJkNS0yNzIwNDk0NzJjOTUiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJLaG9UYWlMaWV1VGluSG9jVGhpVGh1L0NodW9uZyAxL1RhaV9MaWV1X09uX1RoaV9DaHVfRGVfMV9HaW9pX1RoaWV1X0FJICgxKS5wZGYiLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzkzMjUyMTM5LCJleHAiOjQ5MTUzMTYxMzl9.YZNQe7ENpJlcU_CrttppDjNoAeKybC9utIlw4kbTdUXzHmKjFOZcM03k7MVJTs_EFKdWaqwrGfach-TdL0yZlg",
       "description": "Khái niệm Trí tuệ nhân tạo (AI), các ứng dụng thực tế trong công việc văn phòng, truyền thông, kinh tế số và tác động xã hội của AI.",
       "skills": [
         "Khái niệm & Ứng dụng thực tế của AI",
@@ -60,62 +61,362 @@
         "Tác động của AI đối với nghề nghiệp"
       ],
       "xp": 260,
-      "lessons": [
-        {
-          "id": "ict_a_3",
-          "title": "Bài 1: Khái niệm & Ứng dụng thực tế của AI",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 1 (Trang 4)",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Khái niệm Trí tuệ nhân tạo (AI), trợ lý ảo cá nhân (Siri, Google Assistant), nhận dạng khuôn mặt (FaceID) và phân loại hình ảnh số.",
-          "theory": {
-            "objectives": [
-              "Hiểu định nghĩa Trí tuệ nhân tạo (AI) và cách thức AI hỗ trợ tự động hóa trong đời sống.",
-              "Nhận biết công nghệ thị giác máy tính (Computer Vision) và xử lý ngôn ngữ tự nhiên (NLP)."
+      "quiz": {
+        "stationId": "cs_station_1",
+        "code": "Chủ đề 1",
+        "title": "Giới thiệu Trí tuệ nhân tạo (AI)",
+        "totalMcq": 20,
+        "totalTf": 4,
+        "totalItems": 36,
+        "mcq": [
+          {
+            "id": "c1_mcq_1",
+            "q": "Phương án nào sau đây nêu đúng nhất khái niệm về Trí tuệ nhân tạo (AI)?",
+            "opts": [
+              "Một lĩnh vực khoa học nhằm chế tạo ra các máy móc thông minh hoạt động hoàn toàn độc lập với con người.",
+              "Hệ thống được xây dựng và lập trình bởi con người để máy tính có khả năng thực hiện các hành vi thông minh tương tự như con người.",
+              "Một loại phần mềm giúp máy tính tự động hóa các công việc cơ học đơn giản.",
+              "Thuật toán tính toán siêu tốc giúp máy tính lưu trữ lượng dữ liệu khổng lồ."
             ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy thi THPTQG: Mở khóa bằng khuôn mặt (FaceID) hay camera đọc biển số xe là ứng dụng của công nghệ \"Thị giác máy tính\" (Computer Vision), không phải là công nghệ xử lý âm thanh."
+            "ans": 1,
+            "exp": "Theo tài liệu hướng dẫn ôn thi THPTQG và SGK Tin học 12, AI là hệ thống được xây dựng và lập trình bởi con người để máy tính thực hiện các hành vi thông minh như đọc văn bản, hiểu tiếng nói, nhận biết môi trường và ra quyết định."
           },
-          "quiz": {
-            "question": "Tính năng mở khóa điện thoại bằng khuôn mặt (FaceID) ứng dụng công nghệ then chốt nào của Trí tuệ nhân tạo?",
-            "options": [
-              "Thị giác máy tính (Computer Vision)",
-              "Xử lý âm thanh tương tự",
-              "Biên dịch mã nguồn",
-              "Nén dữ liệu mất thông tin"
+          {
+            "id": "c1_mcq_2",
+            "q": "Khả năng nào sau đây KHÔNG phải là một trong 5 đặc trưng cơ bản của AI?",
+            "opts": [
+              "Khả năng suy luận.",
+              "Khả năng học.",
+              "Khả năng cảm nhận mùi vị.",
+              "Khả năng nhận thức."
             ],
-            "answer": 0,
-            "explanation": "Nhận dạng khuôn mặt là ứng dụng điển hình của Thị giác máy tính (Computer Vision)."
-          }
-        },
-        {
-          "id": "ict_a_4",
-          "title": "Bài 2: AI trong đời sống xã hội & Công việc số",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 1 (Trang 7)",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Tác động của AI đối với việc làm số, các công cụ sinh văn bản/hình ảnh tự động, và trách nhiệm đạo đức số khi sử dụng AI.",
-          "theory": {
-            "objectives": [
-              "Nhận thức về đạo đức sử dụng AI: Tránh đạo văn số, không tạo và phát tán tin giả mạo (Deepfake).",
-              "Biết khai thác các công cụ AI tạo sinh (Generative AI) để phục vụ học tập một cách minh bạch và an toàn."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Chú ý câu hỏi Đạo đức & Pháp luật số: Hành vi tạo video Deepfake giả mạo danh tính để lừa đảo là vi phạm pháp luật nghiêm trọng, không thể coi là \"trò đùa công nghệ\"."
+            "ans": 2,
+            "exp": "5 đặc trưng cơ bản của AI gồm: Khả năng Học, Suy luận, Nhận thức, Hiểu ngôn ngữ tự nhiên và Giải quyết vấn đề. AI không có khả năng cảm nhận vị giác/mùi vị tự nhiên như con người."
           },
-          "quiz": {
-            "question": "Hành vi nào sau đây vi phạm chuẩn mực đạo đức khi sử dụng công cụ AI tạo sinh?",
-            "options": [
-              "Dùng AI để dịch một đoạn văn bản tiếng Anh sang tiếng Việt để tham khảo",
-              "Sử dụng công cụ AI tạo video Deepfake giả mạo khuôn mặt người khác nhằm lừa đảo chiếm đoạt tài sản",
-              "Nhờ AI gợi ý ý tưởng đề cương ôn tập môn học",
-              "Dùng AI tạo ảnh minh họa cho bài thuyết trình cá nhân"
+          {
+            "id": "c1_mcq_3",
+            "q": "Phương án nào dưới đây liệt kê hai phân loại chính của Trí tuệ nhân tạo (AI)?",
+            "opts": [
+              "AI Hẹp (ANI) và AI Siêu thông minh (ASI).",
+              "AI Hẹp (ANI) và AI Tổng quát (AGI).",
+              "AI Tổng quát (AGI) và AI Tự học (ALI).",
+              "AI Tổng quát (AGI) và AI Siêu thông minh (ASI)."
             ],
-            "answer": 1,
-            "explanation": "Tạo video Deepfake giả mạo danh tính để lừa đảo là hành vi vi phạm pháp luật và đạo đức nghiêm trọng."
+            "ans": 1,
+            "exp": "Theo chuẩn kiến thức GDPT 2018, AI được phân thành 2 loại chính theo phạm vi năng lực: AI Hẹp (ANI - Artificial Narrow Intelligence) và AI Tổng quát (AGI - Artificial General Intelligence)."
+          },
+          {
+            "id": "c1_mcq_4",
+            "q": "Phát biểu nào dưới đây mô tả chính xác nhất về Trí tuệ nhân tạo hẹp (ANI)?",
+            "opts": [
+              "Có khả năng tự chuyển đổi linh hoạt để giải quyết mọi nhiệm vụ khác nhau như con người.",
+              "Có khả năng cảm nhận cảm xúc và bày tỏ sự thấu hiểu tâm lý con người.",
+              "Được thiết kế để giải quyết nhiệm vụ cụ thể theo những gì đã được huấn luyện.",
+              "Hoạt động hoàn toàn không cần dữ liệu đầu vào từ con người."
+            ],
+            "ans": 2,
+            "exp": "AI hẹp (yếu) được xây dựng để thực hiện một hoặc một số nhiệm vụ cụ thể giới hạn trong lĩnh vực được huấn luyện (như chơi cờ, nhận diện khuôn mặt, lọc thư rác)."
+          },
+          {
+            "id": "c1_mcq_5",
+            "q": "Đặc trưng 'Khả năng suy luận' của AI được thể hiện rõ nhất qua hành vi nào dưới đây?",
+            "opts": [
+              "Trích xuất thông tin từ dữ liệu để tích lũy tri thức mới.",
+              "Sử dụng cảm biến để đo nhiệt độ và khoảng cách vật thể xung quanh.",
+              "Vận dụng logic và tri thức sẵn có để đưa ra quyết định hoặc kết luận.",
+              "Đọc và dịch chính xác một đoạn văn bản tiếng Anh sang tiếng Việt."
+            ],
+            "ans": 2,
+            "exp": "Khả năng suy luận là việc hệ thống vận dụng tri thức và logic để phân tích dữ liệu, từ đó đưa ra quyết định hoặc chẩn đoán (ví dụ: hệ thống chẩn đoán y tế chẩn đoán bệnh dựa trên triệu chứng)."
+          },
+          {
+            "id": "c1_mcq_6",
+            "q": "Hệ thống khuyến nghị video trên YouTube sử dụng đặc trưng nào của AI để đề xuất các video phù hợp với người dùng?",
+            "opts": [
+              "Khả năng vận động cơ học.",
+              "Khả năng học từ lịch sử xem và tương tác của người dùng.",
+              "Khả năng tự sửa lỗi phần cứng máy tính.",
+              "Khả năng nhận biết mùi vị thực phẩm."
+            ],
+            "ans": 1,
+            "exp": "Hệ thống khuyến nghị áp dụng khả năng học từ dữ liệu hành vi quá khứ của người dùng để điều chỉnh và gợi ý danh sách nội dung phù hợp nhất."
+          },
+          {
+            "id": "c1_mcq_7",
+            "q": "Thiết bị nào sau đây thường xuyên được tích hợp trợ lý ảo (Virtual Assistant)?",
+            "opts": [
+              "Máy rút tiền tự động ATM.",
+              "Điện thoại thông minh (Smartphone).",
+              "Chuông báo cháy tự động.",
+              "Máy quét mã vạch siêu thị."
+            ],
+            "ans": 1,
+            "exp": "Trợ lý ảo (như Siri, Google Assistant, Bixby) là phần mềm AI được tích hợp phổ biến trên điện thoại thông minh, máy tính bảng và loa thông minh."
+          },
+          {
+            "id": "c1_mcq_8",
+            "q": "Ứng dụng nào sau đây KHÔNG phải là một ví dụ về AI hẹp (ANI)?",
+            "opts": [
+              "Chương trình chơi cờ AlphaGo của DeepMind.",
+              "Phần mềm quản lý điểm học sinh bằng sổ điểm điện tử Excel.",
+              "Hệ thống chấm công bằng công nghệ nhận diện khuôn mặt.",
+              "Hệ chuyên gia y tế MYCIN tư vấn kê đơn thuốc."
+            ],
+            "ans": 1,
+            "exp": "Sổ điểm điện tử thông thường chỉ là phần mềm quản lý dữ liệu lập trình theo quy tắc cố định, không có các đặc trưng tự học hay suy luận của AI."
+          },
+          {
+            "id": "c1_mcq_9",
+            "q": "Sự kiện lịch sử nào đánh dấu cột mốc chính thức ra đời của thuật ngữ 'Trí tuệ nhân tạo' (Artificial Intelligence)?",
+            "opts": [
+              "Phép thử Turing được công bố năm 1950.",
+              "Hội thảo khoa học tại Đại học Dartmouth năm 1956.",
+              "Sự ra đời của hệ chuyên gia MYCIN năm 1972.",
+              "Trận đấu cờ vua giữa Deep Blue và Kasparov năm 1997."
+            ],
+            "ans": 1,
+            "exp": "Hội thảo Dartmouth năm 1956 do John McCarthy và các nhà khoa học tổ chức là sự kiện chính thức khai sinh thuật ngữ Trí tuệ nhân tạo (AI)."
+          },
+          {
+            "id": "c1_mcq_10",
+            "q": "Robot Asimo của tập đoàn Honda là ví dụ điển hình về ứng dụng AI trong lĩnh vực nào?",
+            "opts": [
+              "Quản trị cơ sở dữ liệu quan hệ.",
+              "Robot thông minh và kỹ thuật điều khiển tự động.",
+              "Thiết kế đồ họa trang web HTML/CSS.",
+              "Chế tạo linh kiện vi xử lý."
+            ],
+            "ans": 1,
+            "exp": "Robot Asimo (ra mắt năm 1986/2000) kết hợp AI trong thị giác máy tính và nhận dạng giọng nói để điều khiển chuyển động và tương tác với con người."
+          },
+          {
+            "id": "c1_mcq_11",
+            "q": "Khái niệm 'Hộp đen' (Black Box) khi nói về nguy cơ của AI phản ánh thách thức nào?",
+            "opts": [
+              "Máy tính có màu đen gây mất thẩm mỹ.",
+              "Sự thiếu minh bạch trong quy trình ra quyết định của các mô hình AI phức tạp, gây khó khăn cho việc giải trình.",
+              "Dữ liệu bị rò rỉ ra ngoài qua cổng mạng USB.",
+              "AI bị mất nguồn điện đột ngột khi đang vận hành."
+            ],
+            "ans": 1,
+            "exp": "Tính chất 'hộp đen' của AI nghĩa là các thuật toán học sâu xử lý hàng triệu tham số bên trong khiến con người khó giải thích được lý do cụ thể vì sao AI đưa ra kết luận đó."
+          },
+          {
+            "id": "c1_mcq_12",
+            "q": "Công nghệ AI tạo sinh (Generative AI - như ChatGPT) tập trung chính vào khả năng nào?",
+            "opts": [
+              "Tự động sửa chữa phần cứng đĩa cứng HDD.",
+              "Tạo ra các nội dung mới như văn bản, hình ảnh, âm thanh hoặc đoạn mã lập trình dựa trên dữ liệu huấn luyện.",
+              "Tăng tốc độ đường truyền mạng cáp quang.",
+              "Cài đặt hệ điều hành cho máy tính cá nhân."
+            ],
+            "ans": 1,
+            "exp": "AI tạo sinh (Generative AI) sử dụng các mô hình học sâu để sáng tạo ra dữ liệu mới (văn bản, tranh vẽ, nhạc, code) dựa trên các mẫu đã học."
+          },
+          {
+            "id": "c1_mcq_13",
+            "q": "Sự phát triển nhanh chóng của AI kéo theo nguy cơ nào đối với thị trường lao động?",
+            "opts": [
+              "Làm tăng tỷ lệ thiếu hụt nhân lực trong các công việc thủ công đơn giản.",
+              "Gây áp lực thất nghiệp do AI và robot tự động hóa có thể thay thế con người trong các công việc lặp đi lặp lại.",
+              "Tăng chi phí lương cho tất cả các ngành nghề truyền thống.",
+              "Bắt buộc tất cả công nhân phải nghỉ hưu sớm."
+            ],
+            "ans": 1,
+            "exp": "AI có khả năng tự động hóa cao nên dễ dàng thay thế con người ở các vị trí công việc có tính chất lặp lại, định hình theo quy tắc cố định."
+          },
+          {
+            "id": "c1_mcq_14",
+            "q": "Loại hình lừa đảo công nghệ cao nào dưới đây sử dụng AI để giả mạo khuôn mặt và giọng nói của người thân nhằm mục đích chiếm đoạt tài sản?",
+            "opts": [
+              "Virus Ransomware mã hóa tệp.",
+              "Công nghệ Deepfake.",
+              "Dịch vụ lưu trữ đám mây Cloud.",
+              "Thẻ nhớ SD dung lượng cao."
+            ],
+            "ans": 1,
+            "exp": "Deepfake sử dụng kỹ thuật học sâu AI để tạo ra hình ảnh, video hoặc âm thanh giả mạo giống hệt người thật để lừa đảo."
+          },
+          {
+            "id": "c1_mcq_15",
+            "q": "Phát biểu nào sau đây đúng khi so sánh giữa AI và Hệ thống tự động hóa truyền thống?",
+            "opts": [
+              "Hệ thống tự động hóa truyền thống có khả năng tự học từ dữ liệu mới.",
+              "AI chỉ hoạt động dựa trên rơ-le cơ học ngắt mở.",
+              "Tự động hóa truyền thống hoạt động theo quy tắc cố định được lập trình sẵn, trong khi AI kết hợp các đặc trưng trí tuệ (như tự học, suy luận) để xử lý tình huống phức tạp.",
+              "Cả hai đều có khả năng hiểu ngôn ngữ tự nhiên như nhau."
+            ],
+            "ans": 2,
+            "exp": "Hệ thống tự động hóa (như ấm đun nước tự ngắt) chỉ vận hành theo kịch bản cứng, còn AI có khả năng học hỏi và ứng biến linh hoạt dựa trên dữ liệu."
+          },
+          {
+            "id": "c1_mcq_16",
+            "q": "Trợ lý ảo Siri là sản phẩm do công ty công nghệ nào phát triển?",
+            "opts": [
+              "Microsoft.",
+              "Google.",
+              "Apple.",
+              "Samsung."
+            ],
+            "ans": 2,
+            "exp": "Siri là trợ lý ảo tích hợp trên các thiết bị hệ điều hành iOS/macOS thuộc Apple."
+          },
+          {
+            "id": "c1_mcq_17",
+            "q": "Yếu tố nào sau đây là nguyên nhân chính có thể dẫn đến hiện tượng 'Thành kiến/Thiên lệch' (Bias) trong kết quả chẩn đoán của một hệ thống AI y tế?",
+            "opts": [
+              "Mạng Internet bị ngắt kết nối trong lúc vận hành.",
+              "Dữ liệu huấn luyện ban đầu thiếu tính đa dạng, chỉ tập trung vào một nhóm sắc tộc hoặc độ tuổi nhất định.",
+              "Máy tính bị thiếu dung lượng bộ nhớ RAM.",
+              "Bác sĩ không bật camera khi làm việc."
+            ],
+            "ans": 1,
+            "exp": "AI học hoàn toàn từ dữ liệu. Nếu dữ liệu huấn luyện thiên lệch hoặc không bao quát, mô hình sẽ đưa ra các dự đoán mang tính thiên lệch đối với các nhóm đối tượng thiếu dữ liệu."
+          },
+          {
+            "id": "c1_mcq_18",
+            "q": "Hệ chuyên gia MYCIN ra đời năm 1972 tại Đại học Stanford được ứng dụng trong lĩnh vực nào?",
+            "opts": [
+              "Dự báo thời tiết và thiên tai.",
+              "Tư vấn chẩn đoán các bệnh nhiễm trùng máu và đề xuất liều lượng kháng sinh trong y tế.",
+              "Lập kịch bản chơi trò chơi điện tử.",
+              "Định tuyến luồng xe giao thông."
+            ],
+            "ans": 1,
+            "exp": "MYCIN là hệ chuyên gia điển hình sử dụng khoảng 600 luật suy diễn để hỗ trợ bác sĩ chẩn đoán vi khuẩn gây nhiễm trùng máu."
+          },
+          {
+            "id": "c1_mcq_19",
+            "q": "Thẻ nhận dạng vân tay hoặc khuôn mặt dùng để mở khóa điện thoại thông minh là ứng dụng của AI trong lĩnh vực nào?",
+            "opts": [
+              "Xử lý ngôn ngữ tự nhiên.",
+              "Thị giác máy tính và nhận dạng sinh trắc học.",
+              "Quản lý kho hàng siêu thị.",
+              "Lập lịch sản xuất công nghiệp."
+            ],
+            "ans": 1,
+            "exp": "Nhận dạng khuôn mặt/vân tay áp dụng kỹ thuật Thị giác máy tính (Computer Vision) để phân tích đặc trưng hình ảnh sinh trắc học."
+          },
+          {
+            "id": "c1_mcq_20",
+            "q": "Phát biểu nào sau đây nêu đúng về tương lai phát triển của AI đối với công việc con người?",
+            "opts": [
+              "AI sẽ thay thế hoàn toàn con người trong tất cả mọi ngành nghề sản xuất.",
+              "AI sẽ lấy đi một số công việc lặp đi lặp lại nhưng đồng thời mở ra các cơ hội việc làm mới đòi hỏi kỹ năng cao hơn.",
+              "AI không có bất kỳ ảnh hưởng nào đến cấu trúc lao động xã hội.",
+              "AI làm giảm nhu cầu học tập kiến thức CNTT của học sinh."
+            ],
+            "ans": 1,
+            "exp": "AI giúp tự động hóa công việc đơn giản, đồng thời thúc đẩy sự xuất hiện của các ngành nghề mới liên quan đến phát triển, quản lý và kiểm soát AI."
           }
-        }
-      ]
+        ],
+        "tf": [
+          {
+            "id": "c1_tf_1",
+            "ctx": "Một bệnh viện đa khoa triển khai ứng dụng hệ thống Trí tuệ nhân tạo (AI) nhằm hỗ trợ công tác chẩn đoán và điều trị bệnh cho bệnh nhân. Hệ thống được tích hợp thuật toán phân tích ảnh y khoa (X-quang, MRI) và mô hình chatbot tư vấn sức khỏe ban đầu.",
+            "items": [
+              {
+                "s": "Hệ thống AI có thể hỗ trợ phân tích tổn thương trên ảnh X-quang giúp bác sĩ chẩn đoán bệnh chính xác và nhanh chóng hơn.",
+                "ans": true,
+                "exp": "AI hỗ trợ xử lý hình ảnh y khoa xuất sắc giúp nâng cao hiệu quả chẩn đoán."
+              },
+              {
+                "s": "Hệ thống AI có thể hoàn toàn tự động kê đơn thuốc đặc trị và tiến hành phẫu thuật mà không cần bất kỳ sự giám sát nào của bác sĩ chuyên khoa.",
+                "ans": false,
+                "exp": "AI hiện nay chỉ đóng vai trò hỗ trợ, quyết định y tế sinh mạng bắt buộc phải do bác sĩ con người chịu trách nhiệm."
+              },
+              {
+                "s": "Chatbot tư vấn y tế có thể trả lời các thắc mắc ban đầu của bệnh nhân nhờ áp dụng khả năng hiểu ngôn ngữ tự nhiên (NLP).",
+                "ans": true,
+                "exp": "Chatbot ứng dụng NLP để hiểu văn bản/tiếng nói và đưa ra phản hồi phù hợp."
+              },
+              {
+                "s": "Nếu dữ liệu huấn luyện AI chỉ thu thập từ bệnh nhân nam giới, mô hình có thể đưa ra kết quả thiếu chính xác đối với bệnh nhân nữ giới do thách thức thiên lệch dữ liệu (Bias).",
+                "ans": true,
+                "exp": "Dữ liệu huấn luyện không đa dạng sẽ gây ra hiện tượng thiên lệch kết quả đối với các nhóm đối tượng bị thiếu dữ liệu."
+              }
+            ]
+          },
+          {
+            "id": "c1_tf_2",
+            "ctx": "Trong buổi thảo luận chuyên đề 'Sự phát triển của AI và tác động xã hội', các bạn học sinh lớp 12 đưa ra một số nhận định về đặc trưng, phân loại và nguy cơ tiềm ẩn của Trí tuệ nhân tạo.",
+            "items": [
+              {
+                "s": "Trợ lý ảo trên điện thoại thông minh là một ví dụ điển hình về AI hẹp (ANI) vì nó chỉ hoạt động trong phạm vi các tác vụ được thiết lập sẵn.",
+                "ans": true,
+                "exp": "Trợ lý ảo hiện nay thuộc nhóm AI hẹp."
+              },
+              {
+                "s": "Sự phát triển của AI không gây ra bất kỳ rò rỉ hay rủi ro nào đối với quyền riêng tư cá nhân của người dùng trên Internet.",
+                "ans": false,
+                "exp": "AI hoạt động dựa trên thu thập lượng lớn dữ liệu cá nhân nên tiềm ẩn rủi ro xâm phạm quyền riêng tư nghiêm trọng."
+              },
+              {
+                "s": "Công nghệ Deepfake tạo hình ảnh và giọng nói giả mạo là một ví dụ về mặt trái của ứng dụng AI trong an toàn thông tin.",
+                "ans": true,
+                "exp": "Deepfake bị lạm dụng để giả mạo lừa đảo gây mất an ninh mạng."
+              },
+              {
+                "s": "Trong tương lai gần, AI hẹp có khả năng tự động bộc lộ cảm xúc vui buồn và biết yêu thương như con người.",
+                "ans": false,
+                "exp": "AI không có cảm xúc tự nhiên; biểu hiện cảm xúc nghệ thuật là đặc trưng trí tuệ con người mà AI chưa thể thực hiện."
+              }
+            ]
+          },
+          {
+            "id": "c1_tf_3",
+            "ctx": "Năm 1997, siêu máy tính Deep Blue của IBM đánh bại đại kiện tướng cờ vua thế giới Garry Kasparov. Năm 2016, chương trình AlphaGo của Google tiếp tục đánh bại nhà vô địch cờ đao Lee Sedol.",
+            "items": [
+              {
+                "s": "AlphaGo và Deep Blue là minh chứng cho thấy máy tính có khả năng suy luận và học hỏi để xử lý các bài toán đòi hỏi trí tuệ cao.",
+                "ans": true,
+                "exp": "Các chương trình chơi cờ ứng dụng thuật toán tìm kiếm, suy luận và học máy."
+              },
+              {
+                "s": "AlphaGo có thể tự động chuyển sang chẩn đoán bệnh ung thư hoặc lái xe ô tô mà không cần huấn luyện lại từ đầu.",
+                "ans": false,
+                "exp": "AlphaGo là AI hẹp, chỉ giải quyết bài toán chơi cờ thố, không tự chuyển sang lĩnh vực khác."
+              },
+              {
+                "s": "Chiến thắng của AlphaGo dựa trên việc phân tích hàng triệu nước đi lịch sử và tự đấu với chính nó để tích lũy tri thức.",
+                "ans": true,
+                "exp": "AlphaGo áp dụng học máy và học tăng cường từ dữ liệu trận đấu."
+              },
+              {
+                "s": "Việc máy tính thắng con người trong chơi cờ khẳng định máy tính đã đạt tới trình độ AI siêu thông minh (ASI) hoàn chỉnh.",
+                "ans": false,
+                "exp": "Thắng cờ chỉ là thành tựu của AI hẹp trong một lĩnh vực hẹp cụ thể."
+              }
+            ]
+          },
+          {
+            "id": "c1_tf_4",
+            "ctx": "Một trường THPT tổ chức khảo sát việc ứng dụng phần mềm AI trong học tập. Học sinh sử dụng các công cụ như ChatGPT để tìm kiếm tài liệu, tóm tắt bài giảng và hỗ trợ viết đoạn mã lập trình Python.",
+            "items": [
+              {
+                "s": "ChatGPT sử dụng mô hình ngôn ngữ lớn có khả năng hiểu ngữ cảnh và hội thoại tương tác tự nhiên với học sinh.",
+                "ans": true,
+                "exp": "ChatGPT là ứng dụng NLP tiên tiến có tương tác hội thoại cao."
+              },
+              {
+                "s": "Học sinh có thể hoàn toàn tin tưởng 100% vào mọi câu trả lời của ChatGPT mà không cần kiểm chứng lại thông tin.",
+                "ans": false,
+                "exp": "AI có thể đưa ra thông tin sai lệch hoặc bị hiện tượng 'ảo giác' (hallucination) nên cần kiểm chứng."
+              },
+              {
+                "s": "Sử dụng ChatGPT để tạo văn bản giả mạo hoặc gian lận trong thi cử là hành vi vi phạm đạo đức học thuật.",
+                "ans": true,
+                "exp": "Lạm dụng AI gian lận vi phạm đạo đức và quy chế học đường."
+              },
+              {
+                "s": "ChatGPT có khả năng đọc hiểu mã nguồn Python và phát hiện lỗi cú pháp để gợi ý sửa lỗi cho học sinh.",
+                "ans": true,
+                "exp": "ChatGPT hỗ trợ lập trình, giải thích và sửa lỗi mã nguồn hiệu quả."
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "ict_station_2",
@@ -127,6 +428,7 @@
       "priorityBadge": "normal",
       "questionType": "Trắc nghiệm Phần I (2 câu)",
       "bookRef": "Trang 10 - 19",
+      "pdfUrl": "https://vxqvjffssebnuxtslghp.supabase.co/storage/v1/object/sign/KhoTaiLieuTinHocThiThu/Chuong%202/Tai_Lieu_On_Thi_Chu_De_2_Mang_May_Tinh_Va_Internet.pdf?token=eyJraWQiOiIzMmIzYzRjYi0yYTZjLTRmYjUtOTJkNS0yNzIwNDk0NzJjOTUiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJLaG9UYWlMaWV1VGluSG9jVGhpVGh1L0NodW9uZyAyL1RhaV9MaWV1X09uX1RoaV9DaHVfRGVfMl9NYW5nX01heV9UaW5oX1ZhX0ludGVybmV0LnBkZiIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3OTMyNTIyMDMsImV4cCI6NDkxNTMxNjIwM30.pGq-Pc8FnoCSvNBh8yaNMS5Wk83d5AIr65dszz_vgXnYWJlWbsNVI02tJ62ORF7HucKTCanlq_zbc5BhPyKQTA",
       "description": "Mạng cục bộ LAN, thiết bị mạng Switch/Router/Access Point, dịch vụ Internet, kết nối mạng Wi-Fi và dịch vụ lưu trữ đám mây (Google Drive, OneDrive).",
       "skills": [
         "Mạng cục bộ LAN & Thiết bị kết nối",
@@ -134,117 +436,7 @@
         "Mạng Wi-Fi an toàn",
         "Lưu trữ đám mây (Cloud Storage)"
       ],
-      "xp": 280,
-      "lessons": [
-        {
-          "id": "ict_b_1",
-          "title": "Bài 1: Mạng cục bộ LAN & Thiết bị kết nối",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 10)",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Mô hình kết nối mạng LAN, chức năng của Switch, Router, Access Point và cách chia sẻ thư mục/máy in trong mạng nội bộ.",
-          "theory": {
-            "objectives": [
-              "Biết các bước chia sẻ thư mục và máy in dùng chung trong mạng cục bộ LAN.",
-              "Nắm chắc vai trò của Switch trong việc chuyển tiếp khung dữ liệu nội bộ."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề: Để in tài liệu từ nhiều máy tính qua mạng LAN, người quản trị dùng tính năng \"Printer Sharing\" (Chia sẻ máy in) chứ không cần phải cắm dây thủ công vào từng máy."
-          },
-          "quiz": {
-            "question": "Trong mạng văn phòng, để nhiều máy tính có thể in ấn trên cùng một máy in vật lý qua mạng LAN, người quản trị cần làm gì?",
-            "options": [
-              "Cắm dây máy in luân phiên vào từng máy tính",
-              "Chia sẻ máy in (Printer Sharing) trên mạng nội bộ hoặc dùng máy in có gắn card mạng LAN/Wi-Fi",
-              "Cài đặt lại toàn bộ hệ điều hành",
-              "Thay thế toàn bộ cáp mạng"
-            ],
-            "answer": 1,
-            "explanation": "Chia sẻ máy in trên mạng nội bộ cho phép mọi máy tính được cấp quyền trong LAN gửi lệnh in trực tiếp."
-          }
-        },
-        {
-          "id": "ict_b_2",
-          "title": "Bài 2: Khái niệm & Dịch vụ trên Internet",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 13)",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Các dịch vụ cốt lõi: Web (WWW), Thư điện tử (Email), Công cụ tìm kiếm (Search Engine), Hội nghị truyền hình trực tuyến.",
-          "theory": {
-            "objectives": [
-              "Nắm các giao thức ứng dụng phổ biến: HTTP, HTTPS, FTP, SMTP, POP3/IMAP.",
-              "Hiểu cơ chế hoạt động của World Wide Web và thư điện tử số."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Phân biệt HTTP và HTTPS: Chữ \"S\" trong HTTPS là viết tắt của \"Secure\". Dữ liệu truyền qua HTTPS được mã hóa bảo mật, chống nghe lén thông tin."
-          },
-          "quiz": {
-            "question": "Giao thức nào đảm bảo truyền tải dữ liệu trang web được mã hóa an toàn giữa trình duyệt người dùng và máy chủ?",
-            "options": [
-              "HTTP",
-              "HTTPS",
-              "FTP",
-              "Telnet"
-            ],
-            "answer": 1,
-            "explanation": "HTTPS (Hypertext Transfer Protocol Secure) sử dụng chứng chỉ SSL/TLS để mã hóa dữ liệu truyền tải."
-          }
-        },
-        {
-          "id": "ict_b_3",
-          "title": "Bài 3: Kết nối thiết bị mạng Switch, Router, AP",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 15)",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Các bước thiết lập mạng nội bộ cho văn phòng nhỏ: Gắn cáp RJ45, cấu hình DHCP cấp phát IP tự động, đặt mật khẩu Wi-Fi.",
-          "theory": {
-            "objectives": [
-              "Hiểu vai trò của giao thức DHCP trong việc tự động cấp phát địa chỉ IP cho thiết bị kết nối.",
-              "Nắm các bước cơ bản cấu hình mạng Wi-Fi an toàn."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Ghi nhớ thuật ngữ viết tắt: DHCP = Tự động cấp địa chỉ IP. DNS = Phân giải tên miền (google.com) thành địa chỉ IP."
-          },
-          "quiz": {
-            "question": "Dịch vụ mạng nào có nhiệm vụ tự động gán địa chỉ IP cho các máy tính khi kết nối vào mạng LAN?",
-            "options": [
-              "DNS",
-              "DHCP",
-              "HTTP",
-              "SNMP"
-            ],
-            "answer": 1,
-            "explanation": "DHCP (Dynamic Host Configuration Protocol) tự động cấu hình và cấp phát địa chỉ IP cho các thiết bị trong mạng."
-          }
-        },
-        {
-          "id": "ict_b_4",
-          "title": "Bài 4: Mạng Wi-Fi & Dịch vụ Lưu trữ đám mây",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 2 (Trang 17)",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Cơ chế chia sẻ tệp tin, phân quyền (Chỉ xem, Nhận xét, Chỉnh sửa) trên Google Drive và Microsoft OneDrive.",
-          "theory": {
-            "objectives": [
-              "Hiểu các mức độ phân quyền tài liệu khi chia sẻ qua đường liên kết (Link sharing).",
-              "Nắm nguyên tắc đồng bộ hóa dữ liệu thời gian thực trên đám mây."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi phân quyền: Quyền \"Viewer\" tuyệt đối không được phép chỉnh sửa nội dung tài liệu gốc của chủ sở hữu."
-          },
-          "quiz": {
-            "question": "Khi chia sẻ tệp trên Google Drive cho người khác với quyền \"Viewer\" (Người xem), người được chia sẻ có thể làm gì?",
-            "options": [
-              "Chỉnh sửa nội dung và xóa tệp vĩnh viễn",
-              "Chỉ có thể xem hoặc tải tệp về, không thể sửa đổi nội dung tệp gốc",
-              "Đổi quyền sở hữu tệp sang tài khoản của mình",
-              "Thay đổi phân quyền của những người dùng khác"
-            ],
-            "answer": 1,
-            "explanation": "Quyền Viewer chỉ cho phép đọc dữ liệu, không có quyền chỉnh sửa tài liệu gốc của chủ sở hữu."
-          }
-        }
-      ]
+      "xp": 280
     },
     {
       "id": "ict_station_3",
@@ -256,6 +448,7 @@
       "priorityBadge": "normal",
       "questionType": "Trắc nghiệm Phần I (1 - 2 câu)",
       "bookRef": "Trang 20 - 24",
+      "pdfUrl": "https://vxqvjffssebnuxtslghp.supabase.co/storage/v1/object/sign/KhoTaiLieuTinHocThiThu/Chuong%203/Tai_Lieu_On_Thi_THPTQG_Tin_Hoc_Chu_De_3_Dao_Duc_Phap_Luat_V%20(1).pdf?token=eyJraWQiOiIzMmIzYzRjYi0yYTZjLTRmYjUtOTJkNS0yNzIwNDk0NzJjOTUiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJLaG9UYWlMaWV1VGluSG9jVGhpVGh1L0NodW9uZyAzL1RhaV9MaWV1X09uX1RoaV9USFBUUUdfVGluX0hvY19DaHVfRGVfM19EYW9fRHVjX1BoYXBfTHVhdF9WICgxKS5wZGYiLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzkzMjUyMjMwLCJleHAiOjQ5MTUzMTYyMzB9.zjfZuqln89O7LoqOpuUrWsAPZnMAZgA3mlq4km4iZcuO8cqIZgSofeCTuL27kKmNwIP3x3q6wkW0LzuDM9Ewmw",
       "description": "Bản quyền phần mềm, sở hữu trí tuệ, tác quyền số, an toàn thông tin, Luật An ninh mạng và văn hóa ứng xử trên mạng xã hội.",
       "skills": [
         "Bản quyền phần mềm & Tác quyền số",
@@ -263,63 +456,7 @@
         "Văn hóa ứng xử trên không gian mạng",
         "Phòng tránh lừa đảo & Rủi ro số"
       ],
-      "xp": 220,
-      "lessons": [
-        {
-          "id": "ict_d_1",
-          "title": "Bài 1: Bản quyền phần mềm & Tác quyền số",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 3 (Trang 20)",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Các loại giấy phép Creative Commons (CC), quyền tác giả đối với hình ảnh, video số trên Internet.",
-          "theory": {
-            "objectives": [
-              "Nhận biết các hành vi vi phạm tác quyền khi sử dụng tài nguyên số tải từ Internet.",
-              "Hiểu các ký hiệu giấy phép bản quyền mở Creative Commons (CC BY, CC SA, CC NC, CC ND)."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi: \"CC BY-SA\" đòi hỏi: Ghi danh tác giả gốc (BY) và chia sẻ tác phẩm phát sinh cùng giấy phép (SA)."
-          },
-          "quiz": {
-            "question": "Khi sử dụng một hình ảnh tải trên mạng có giấy phép \"CC BY-SA\", người sử dụng bắt buộc phải tuân thủ điều kiện gì?",
-            "options": [
-              "Không được phép sử dụng trong bất kỳ trường hợp nào",
-              "Ghi nhận công lao tác giả gốc (BY) và chia sẻ tác phẩm phái sinh theo giấy phép tương tự (SA)",
-              "Phải trả phí bản quyền bằng tiền mặt cho tác giả",
-              "Chỉ được dùng cho các tổ chức phi chính phủ"
-            ],
-            "answer": 1,
-            "explanation": "CC BY-SA yêu cầu ghi nhận tác giả (BY) và phát hành tác phẩm sửa đổi cùng giấy phép tương tự (Share-Alike)."
-          }
-        },
-        {
-          "id": "ict_d_2",
-          "title": "Bài 2: An toàn thông tin & Văn hóa mạng",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 3 (Trang 22)",
-          "priority": "Trung bình",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Bảo vệ mật khẩu, phòng chống lừa đảo mạo danh trên mạng xã hội, văn hóa ứng xử văn minh trên không gian số.",
-          "theory": {
-            "objectives": [
-              "Nắm chắc quy tắc bảo mật thông tin tài khoản cá nhân và phòng tránh bẫy mã độc, lừa đảo trực tuyến (Phishing).",
-              "Tuân thủ Luật An ninh mạng và các chuẩn mực ứng xử trên mạng xã hội."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Biện pháp an toàn nhất: Bật xác thực 2 yếu tố (2FA) ngăn chặn kẻ xấu chiếm quyền điều khiển tài khoản ngay cả khi mật khẩu đã bị lộ."
-          },
-          "quiz": {
-            "question": "Để bảo vệ tài khoản mạng xã hội cá nhân khỏi nguy cơ bị chiếm đoạt, biện pháp nào sau đây là hiệu quả nhất?",
-            "options": [
-              "Đặt mật khẩu ngắn dễ nhớ như 123456",
-              "Bật tính năng xác thực hai yếu tố (2FA) và không nhấp vào liên kết lạ nghi ngờ giả mạo",
-              "Dùng chung một mật khẩu cho mọi trang web và tài khoản ngân hàng",
-              "Chia sẻ thông tin đăng nhập cho bạn bè cùng quản lý"
-            ],
-            "answer": 1,
-            "explanation": "Bật xác thực 2 yếu tố (2FA) ngăn chặn kẻ xấu đăng nhập ngay cả khi bị lộ mật khẩu."
-          }
-        }
-      ]
+      "xp": 220
     },
     {
       "id": "ict_station_4",
@@ -331,6 +468,7 @@
       "priorityBadge": "high",
       "questionType": "Trắc nghiệm Phần I (2 - 3 câu)",
       "bookRef": "Trang 25 - 39",
+      "pdfUrl": "https://vxqvjffssebnuxtslghp.supabase.co/storage/v1/object/sign/KhoTaiLieuTinHocThiThu/Chuong%204/Tai_Lieu_On_Thi_THPTQG_Tin_Hoc_Chu_De_4_Gioi_Thieu_Cac_He_C.pdf?token=eyJraWQiOiIzMmIzYzRjYi0yYTZjLTRmYjUtOTJkNS0yNzIwNDk0NzJjOTUiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJLaG9UYWlMaWV1VGluSG9jVGhpVGh1L0NodW9uZyA0L1RhaV9MaWV1X09uX1RoaV9USFBUUUdfVGluX0hvY19DaHVfRGVfNF9HaW9pX1RoaWV1X0NhY19IZV9DLnBkZiIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3OTMyNTIyODQsImV4cCI6NDkxNTMxNjI4NH0.enU92Pcle1wbbBLluhyrumI_eDHR_ISiDaZLW6l2lS_EdC7l4GaEGzWU-9PXE-ajrXnKKONB5u26qQGDkhFn-A",
       "description": "Khái niệm CSDL & Hệ Quản trị CSDL (DBMS), mô hình quan hệ, bảng dữ liệu, khóa chính (Primary Key), khóa ngoại (Foreign Key) và truy vấn dữ liệu SQL căn bản.",
       "skills": [
         "Khái niệm CSDL & Hệ QTCSDL",
@@ -338,117 +476,7 @@
         "Khóa ngoại & Liên kết bảng",
         "Truy vấn SQL cơ bản"
       ],
-      "xp": 320,
-      "lessons": [
-        {
-          "id": "ict_db_1",
-          "title": "Bài 1: Giới thiệu CSDL & Hệ QTCSDL",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 25)",
-          "priority": "Rất cao",
-          "examFormat": "Trắc nghiệm Phần I & II",
-          "summary": "Khái niệm CSDL, Hệ quản trị CSDL (DBMS), các đặc trưng an toàn, tính toàn vẹn và độc lập dữ liệu.",
-          "theory": {
-            "objectives": [
-              "Phân biệt được CSDL (Database) và Hệ quản trị CSDL (DBMS).",
-              "Nắm vai trò tránh dư thừa dữ liệu và đảm bảo nhất quán."
-            ],
-            "contentSections": [],
-            "examTips": "CSDL là dữ liệu; DBMS là phần mềm quản lý dữ liệu đó."
-          },
-          "quiz": {
-            "question": "Phần mềm nào sau đây là Hệ quản trị cơ sở dữ liệu (DBMS)?",
-            "options": [
-              "Python",
-              "MySQL",
-              "Visual Studio Code",
-              "Git"
-            ],
-            "answer": 1,
-            "explanation": "MySQL là một Hệ quản trị cơ sở dữ liệu quan hệ (RDBMS) rất phổ biến."
-          }
-        },
-        {
-          "id": "ict_db_2",
-          "title": "Bài 2: Mô hình CSDL Quan hệ & Khóa chính",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 28)",
-          "priority": "Rất cao",
-          "examFormat": "Trắc nghiệm Phần I & II",
-          "summary": "Cấu trúc bảng, bản ghi (dòng), thuộc tính (cột), khái niệm Khóa chính (Primary Key) và tính duy nhất, khác NULL.",
-          "theory": {
-            "objectives": [
-              "Hiểu định nghĩa Khóa chính (Primary Key).",
-              "Nắm hai điều kiện bắt buộc của Khóa chính: DUY NHẤT (Unique) và KHÔNG ĐƯỢC RỖNG (NOT NULL)."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề Đúng/Sai Phần II: \"Một bảng có thể có nhiều khóa chính\" -> SAI (chỉ có duy nhất 1 khóa chính, nhưng có thể gồm nhiều thuộc tính kết hợp)."
-          },
-          "quiz": {
-            "question": "Hai tính chất bắt buộc của một Khóa chính (Primary Key) trong bảng quan hệ là:",
-            "options": [
-              "Giá trị phải là số nguyên và tự động tăng",
-              "Giá trị phải mang tính DUY NHẤT và KHÔNG ĐƯỢC RỖNG (NOT NULL)",
-              "Giá trị có thể trùng nhau nhưng không được rỗng",
-              "Chỉ áp dụng cho trường văn bản"
-            ],
-            "answer": 1,
-            "explanation": "Khóa chính bắt buộc phải duy nhất trên toàn bảng và không được mang giá trị NULL."
-          }
-        },
-        {
-          "id": "ict_db_3",
-          "title": "Bài 3: Khóa ngoại & Liên kết bảng",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 31)",
-          "priority": "Rất cao",
-          "examFormat": "Trắc nghiệm Phần I & II",
-          "summary": "Khái niệm Khóa ngoại (Foreign Key), ràng buộc toàn vẹn tham chiếu, liên kết quan hệ 1 - 1, 1 - N, N - N.",
-          "theory": {
-            "objectives": [
-              "Hiểu Khóa ngoại là cầu nối tham chiếu đến Khóa chính của bảng khác.",
-              "Nắm quy tắc toàn vẹn tham chiếu: Giá trị khóa ngoại phải tồn tại ở bảng cha hoặc mang giá trị NULL."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy xóa dữ liệu: Không thể xóa một dòng ở bảng cha (chứa khóa chính) nếu đang có dòng ở bảng con (chứa khóa ngoại) tham chiếu tới nó (trừ khi có thiết lập ON DELETE CASCADE)."
-          },
-          "quiz": {
-            "question": "Ràng buộc toàn vẹn tham chiếu của Khóa ngoại (Foreign Key) quy định điều gì?",
-            "options": [
-              "Giá trị khóa ngoại luôn luôn bằng 0",
-              "Giá trị khóa ngoại phải tồn tại trong tập giá trị khóa chính của bảng được tham chiếu (hoặc là NULL)",
-              "Bảng chứa khóa ngoại bắt buộc phải có ít hơn 10 cột",
-              "Khóa ngoại không được phép trùng lặp trong bảng của nó"
-            ],
-            "answer": 1,
-            "explanation": "Toàn vẹn tham chiếu đảm bảo không có bản ghi \"mồ côi\" tham chiếu tới một đối tượng không tồn tại ở bảng cha."
-          }
-        },
-        {
-          "id": "ict_db_4",
-          "title": "Bài 4: Ngôn ngữ SQL & Lệnh truy vấn SELECT",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 4 (Trang 34)",
-          "priority": "Rất cao",
-          "examFormat": "Trắc nghiệm Phần I & II",
-          "summary": "Cú pháp câu lệnh SELECT căn bản, lọc dữ liệu với WHERE, toán tử so sánh, LIKE, BETWEEN, ORDER BY sắp xếp.",
-          "theory": {
-            "objectives": [
-              "Viết đúng thứ tự các mệnh đề SQL: SELECT ... FROM ... WHERE ... ORDER BY ...",
-              "Sử dụng thành thạo toán tử LIKE với ký tự đại diện % và _."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Trật tự thực thi trong SQL: FROM -> WHERE -> SELECT -> ORDER BY. Do đó không thể dùng bí danh (Alias) đặt trong SELECT để lọc ở WHERE."
-          },
-          "quiz": {
-            "question": "Để lọc các học sinh có tên bắt đầu bằng chữ cái \"N\" trong bảng HOC_SINH, mệnh đề WHERE nào sau đây là chính xác?",
-            "options": [
-              "WHERE HoTen = 'N*'",
-              "WHERE HoTen LIKE 'N%'",
-              "WHERE HoTen IN ('N')",
-              "WHERE HoTen CONTAINS 'N'"
-            ],
-            "answer": 1,
-            "explanation": "Trong chuẩn SQL, toán tử LIKE kết hợp với ký tự '%' đại diện cho chuỗi ký tự bất kỳ."
-          }
-        }
-      ]
+      "xp": 320
     },
     {
       "id": "ict_station_5",
@@ -460,6 +488,7 @@
       "priorityBadge": "high",
       "questionType": "Trắc nghiệm Phần I (2 - 3 câu)",
       "bookRef": "Trang 40 - 74",
+      "pdfUrl": "https://vxqvjffssebnuxtslghp.supabase.co/storage/v1/object/sign/KhoTaiLieuTinHocThiThu/Chuong%205/Tai_Lieu_On_Thi_THPTQG_Tin_Hoc_Chu_De_5_Tao_Trang_Web_HTML_.pdf?token=eyJraWQiOiIzMmIzYzRjYi0yYTZjLTRmYjUtOTJkNS0yNzIwNDk0NzJjOTUiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJLaG9UYWlMaWV1VGluSG9jVGhpVGh1L0NodW9uZyA1L1RhaV9MaWV1X09uX1RoaV9USFBUUUdfVGluX0hvY19DaHVfRGVfNV9UYW9fVHJhbmdfV2ViX0hUTUxfLnBkZiIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3OTMyNTIzMjgsImV4cCI6NDkxNTMxNjMyOH0.wTMG6EcLtofMwtfauGiXNuOCK9CKDIy2M9izl7eItPUOwoee3PhBCLSEswH8E82peV3naBiY1TACgi7Y2Lz9iQ",
       "description": "Cấu trúc văn bản siêu liên kết HTML, các thẻ định dạng, chèn hình ảnh, tạo bảng (table), biểu mẫu (form), danh sách, siêu liên kết và ngôn ngữ CSS định kiểu trang web.",
       "skills": [
         "Cấu trúc trang web HTML",
@@ -467,171 +496,7 @@
         "Thẻ liên kết (a) & Danh sách (ul, ol)",
         "Định kiểu CSS (Color, Font, Box Model)"
       ],
-      "xp": 350,
-      "lessons": [
-        {
-          "id": "ict_e_1",
-          "title": "Bài 1: Giới thiệu HTML & Cấu trúc trang Web",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 40)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Cấu trúc tài liệu chuẩn: <!DOCTYPE html>, <html>, <head>, <title>, <body>; sự khác biệt giữa phần tử khối và nội dòng.",
-          "theory": {
-            "objectives": [
-              "Nhận biết cấu trúc khung xương của một tệp HTML chuẩn đề thi.",
-              "Phân biệt rõ ràng nội dung trong thẻ <head> (thông tin cấu hình) và nội dung trong <body> (vùng hiển thị cho người xem)."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi Đúng/Sai: \"Nội dung thẻ <title> được hiển thị trực tiếp trong vùng nội dung bài viết của trang web\" -> SAI! Thẻ <title> nằm trong <head> và chỉ hiển thị trên thanh tiêu đề hoặc tab của trình duyệt web."
-          },
-          "quiz": {
-            "question": "Phần tử nào trong tài liệu HTML chứa nội dung sẽ được hiển thị trực tiếp lên vùng hiển thị của trình duyệt web?",
-            "options": [
-              "<head>",
-              "<body>",
-              "<title>",
-              "<meta>"
-            ],
-            "answer": 1,
-            "explanation": "Thẻ <body> chứa toàn bộ các văn bản, hình ảnh, liên kết và thành phần đồ họa hiển thị trên trang web."
-          }
-        },
-        {
-          "id": "ict_e_2",
-          "title": "Bài 2: Các thẻ định dạng văn bản & Thẻ ảnh",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 46)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Các thẻ tiêu đề <h1> đến <h6>, thẻ đoạn văn <p>, in đậm <b>, in nghiêng <i>; thẻ chèn ảnh <img src=\"...\" alt=\"...\">.",
-          "theory": {
-            "objectives": [
-              "Nắm các thuộc tính bắt buộc của thẻ ảnh <img>: src (đường dẫn nguồn) và alt (văn bản thay thế khi lỗi ảnh).",
-              "Lưu ý thẻ <img> là thẻ đơn (thẻ rỗng - không cần thẻ đóng </img>)."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy thẻ đơn HTML: Thẻ <img>, <br>, <hr>, <input> là các thẻ đơn (void element), không có thẻ đóng tương ứng như </img>."
-          },
-          "quiz": {
-            "question": "Cú pháp chèn hình ảnh nào sau đây là ĐÚNG trong chuẩn ngôn ngữ HTML?",
-            "options": [
-              "<image src=\"logo.png\" alt=\"Logo\">",
-              "<img src=\"logo.png\" alt=\"Logo\" />",
-              "<img href=\"logo.png\" title=\"Logo\"></img>",
-              "<picture url=\"logo.png\">"
-            ],
-            "answer": 1,
-            "explanation": "Thẻ HTML chuẩn là <img> với thuộc tính bắt buộc src chỉ định đường dẫn hình ảnh."
-          }
-        },
-        {
-          "id": "ict_e_3",
-          "title": "Bài 3: Thẻ tạo Bảng Table & Form nhập liệu",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 52)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Thẻ <table>, <tr> (dòng), <th> (tiêu đề cột), <td> (ô dữ liệu); Thuộc tính gộp ô rowspan, colspan; Thẻ <form>, <input type=\"text|password|radio|checkbox|submit\">.",
-          "theory": {
-            "objectives": [
-              "Phân biệt: rowspan gộp nhiều DÒNG; colspan gộp nhiều CỘT.",
-              "Đọc hiểu và truy vết chính xác các trường trong biểu mẫu form nhập liệu."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề Đúng/Sai kinh điển: \"colspan=2 gộp 2 dòng lại với nhau\" -> SAI hoàn toàn! Nhớ quy tắc: COLspan = gộp CỘT (ngang); ROWspan = gộp DÒNG (dọc)."
-          },
-          "quiz": {
-            "question": "Để gộp 3 ô trên cùng một HÀNG ngang thành một ô duy nhất trong bảng HTML, ta dùng thuộc tính nào cho thẻ <td> hoặc <th>?",
-            "options": [
-              "rowspan=\"3\"",
-              "colspan=\"3\"",
-              "mergerow=\"3\"",
-              "span=\"3\""
-            ],
-            "answer": 1,
-            "explanation": "Thuộc tính colspan (Column Span) dùng để gộp các ô theo chiều ngang của các cột."
-          }
-        },
-        {
-          "id": "ict_e_4",
-          "title": "Bài 4: Thẻ liên kết a & Danh sách ul, ol",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 58)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Thẻ tạo siêu liên kết <a href=\"...\" target=\"_blank\">; Danh sách không có thứ tự <ul><li> và danh sách có thứ tự <ol><li>.",
-          "theory": {
-            "objectives": [
-              "Thuộc tính href chỉ định địa chỉ liên kết đích.",
-              "Thuộc tính target=\"_blank\" mở liên kết trong một tab hoặc cửa sổ mới."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi: \"Mặc định nếu không chỉ định target, trình duyệt sẽ mở liên kết ở một tab mới\" -> SAI! Mặc định là target=\"_self\" (mở ngay tại tab hiện tại)."
-          },
-          "quiz": {
-            "question": "Thuộc tính nào của thẻ <a> quy định việc mở trang web liên kết trong một tab trình duyệt mới?",
-            "options": [
-              "target=\"_blank\"",
-              "target=\"_self\"",
-              "window=\"new\"",
-              "href=\"_new\""
-            ],
-            "answer": 0,
-            "explanation": "Thuộc tính target=\"_blank\" điều khiển trình duyệt mở liên kết ở một tab hoặc cửa sổ mới."
-          }
-        },
-        {
-          "id": "ict_e_5",
-          "title": "Bài 5: Ngôn ngữ CSS & Nhúng CSS vào HTML",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 64)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Ba cách nhúng CSS: Inline (trong thẻ), Internal (thẻ <style> trong <head>), External (tệp .css qua thẻ <link>); Cú pháp bộ chọn selector (tag, .class, #id).",
-          "theory": {
-            "objectives": [
-              "Phân biệt: Dấu chấm (.) đại diện cho bộ chọn class; Dấu thăng (#) đại diện cho bộ chọn id.",
-              "Hiểu thứ tự ưu tiên áp dụng style khi có xung đột định dạng CSS."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi: Dấu chấm (.) là chọn theo CLASS; Dấu thăng (#) là chọn theo ID. Nếu đề bài cho <p class=\"chu-do\"> thì trong CSS phải viết là .chu-do chứ không phải #chu-do."
-          },
-          "quiz": {
-            "question": "Để áp dụng định dạng CSS cho tất cả các phần tử có thuộc tính class=\"highlight\", bộ chọn (selector) nào được sử dụng?",
-            "options": [
-              "#highlight",
-              ".highlight",
-              "highlight",
-              "*highlight"
-            ],
-            "answer": 1,
-            "explanation": "Trong CSS, dấu chấm (.) đứng trước tên để định danh cho bộ chọn lớp (class selector)."
-          }
-        },
-        {
-          "id": "ict_e_6",
-          "title": "Bài 6: Thuộc tính CSS cơ bản (Color, Font, Margin)",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 5 (Trang 70)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Mô hình hộp (Box Model): Content -> Padding -> Border -> Margin; Các thuộc tính font-family, font-size, background-color.",
-          "theory": {
-            "objectives": [
-              "Phân biệt rõ ràng: Padding là khoảng đệm BÊN TRONG đường viền; Margin là khoảng cách BÊN NGOÀI đường viền.",
-              "Nắm chắc các thuộc tính định dạng chữ font và màu sắc."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy Box Model kinh điển: \"Margin là khoảng cách nằm giữa nội dung và đường viền\" -> SAI! Khoảng giữa nội dung và đường viền là PADDING. Margin là khoảng cách BÊN NGOÀI đường viền."
-          },
-          "quiz": {
-            "question": "Trong mô hình hộp (Box Model) của CSS, vùng khoảng cách nằm giữa nội dung (content) và đường viền (border) được gọi là:",
-            "options": [
-              "Margin",
-              "Padding",
-              "Outline",
-              "Spacing"
-            ],
-            "answer": 1,
-            "explanation": "Padding là khoảng đệm nằm bên trong bao quanh nội dung cho tới mép đường viền (Border)."
-          }
-        }
-      ]
+      "xp": 350
     },
     {
       "id": "ict_station_6",
@@ -643,6 +508,7 @@
       "priorityBadge": "low",
       "questionType": "Trắc nghiệm Phần I (1 câu)",
       "bookRef": "Trang 75 - 80",
+      "pdfUrl": "https://vxqvjffssebnuxtslghp.supabase.co/storage/v1/object/sign/KhoTaiLieuTinHocThiThu/Chuong%206/Tai_Lieu_On_Thi_THPTQG_Tin_Hoc_Chu_De_6_Huong_Nghiep_Voi_Ti.pdf?token=eyJraWQiOiIzMmIzYzRjYi0yYTZjLTRmYjUtOTJkNS0yNzIwNDk0NzJjOTUiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJLaG9UYWlMaWV1VGluSG9jVGhpVGh1L0NodW9uZyA2L1RhaV9MaWV1X09uX1RoaV9USFBUUUdfVGluX0hvY19DaHVfRGVfNl9IdW9uZ19OZ2hpZXBfVm9pX1RpLnBkZiIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3OTMyNTIzNDcsImV4cCI6NDkxNTMxNjM0N30.WBvqvoYgL2dNX0QVuk8DTo1kbMrDRAJeUWLoemNjDuHNT8gsXo6QzUbZE2W5DsVafqgd8SOH4FHnRgUOF_MNlQ",
       "description": "Các nhóm ngành nghề ứng dụng CNTT trong doanh nghiệp, quản trị web, truyền thông đa phương tiện, thiết kế đồ họa và định hướng phát triển nghề nghiệp số.",
       "skills": [
         "Nhóm ngành nghề ứng dụng CNTT",
@@ -650,62 +516,7 @@
         "Yêu cầu năng lực & Xu hướng số",
         "Định hướng nghề nghiệp tương lai"
       ],
-      "xp": 200,
-      "lessons": [
-        {
-          "id": "ict_g_1",
-          "title": "Bài 1: Các ngành nghề ứng dụng CNTT",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 6 (Trang 75)",
-          "priority": "Thấp",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Tổng quan các vị trí việc làm trong xã hội hiện đại có ứng dụng công nghệ thông tin và kỹ năng số cần trang bị.",
-          "theory": {
-            "objectives": [
-              "Hiểu các vị trí công việc phổ biến yêu cầu kỹ năng Tin học ứng dụng.",
-              "Nắm chắc các yêu cầu đạo đức nghề nghiệp và tinh thần tự học công nghệ mới."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Câu hỏi nhận biết: Quản trị viên website có nhiệm vụ bảo trì và cập nhật hệ thống web, không nhất thiết phải là người viết toàn bộ mã nguồn ban đầu."
-          },
-          "quiz": {
-            "question": "Người chịu trách nhiệm theo dõi, bảo trì tính liên tục và cập nhật nội dung cho trang web của một cơ quan được gọi là:",
-            "options": [
-              "Chuyên viên kiểm thử",
-              "Quản trị viên website (Webmaster)",
-              "Kỹ sư phần cứng máy tính",
-              "Lập trình viên nhân hệ điều hành"
-            ],
-            "answer": 1,
-            "explanation": "Webmaster (Quản trị viên website) chịu trách nhiệm vận hành, bảo dưỡng và cập nhật trang web hàng ngày."
-          }
-        },
-        {
-          "id": "ict_g_2",
-          "title": "Bài 2: Hướng nghiệp Quản trị Web & Thiết kế đồ họa",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề 6 (Trang 78)",
-          "priority": "Thấp",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Yêu cầu năng lực số, chứng chỉ nghề nghiệp quốc tế (MOS, Adobe Certified) và cơ hội học tập tại các trường đại học/cao đẳng.",
-          "theory": {
-            "objectives": [
-              "Xác định được lộ trình học tập và tích lũy kỹ năng để theo đuổi các ngành nghề công nghệ ứng dụng."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Ghi nhớ: Kỹ năng tự học và cập nhật công nghệ mới liên tục là yếu tố quan trọng hàng đầu trong ngành CNTT."
-          },
-          "quiz": {
-            "question": "Chứng chỉ quốc tế nào sau đây đánh giá trình độ sử dụng thành thạo bộ ứng dụng văn phòng của Microsoft?",
-            "options": [
-              "CCNA",
-              "MOS (Microsoft Office Specialist)",
-              "CEH",
-              "AWS Cloud Practitioner"
-            ],
-            "answer": 1,
-            "explanation": "MOS (Microsoft Office Specialist) là chứng chỉ tin học văn phòng quốc tế chuẩn của Microsoft."
-          }
-        }
-      ]
+      "xp": 200
     },
     {
       "id": "ict_station_7",
@@ -717,6 +528,7 @@
       "priorityBadge": "extreme",
       "questionType": "Trắc nghiệm Đúng/Sai Phần II (Câu 3 - 4)",
       "bookRef": "Trang 114 - 121",
+      "pdfUrl": "https://vxqvjffssebnuxtslghp.supabase.co/storage/v1/object/sign/KhoTaiLieuTinHocThiThu/Chuong%20lap%20trinh%20CS%20AND%20ICT/Tai_Lieu_On_Thi_TN_THPT_Tin_Hoc_ICT_Thuc_Hanh_CSDL.pdf?token=eyJraWQiOiIzMmIzYzRjYi0yYTZjLTRmYjUtOTJkNS0yNzIwNDk0NzJjOTUiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJLaG9UYWlMaWV1VGluSG9jVGhpVGh1L0NodW9uZyBsYXAgdHJpbmggQ1MgQU5EIElDVC9UYWlfTGlldV9Pbl9UaGlfVE5fVEhQVF9UaW5fSG9jX0lDVF9UaHVjX0hhbmhfQ1NETC5wZGYiLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzkzMjg2NjI1LCJleHAiOjQ5MTUzNTA2MjV9.CbIRLw7rWMINowpkOtXsbaHQKkCrfbsfJUfvgc9XPB60AWwow3-Z9Y7ZlGYn153IJa-8jE7miPTdX211yTH2_A",
       "description": "Thực hành tạo bảng dữ liệu, khóa chính, liên kết bảng, xử lý dữ liệu bảng tính nâng cao, các hàm Logic (IF, AND, OR), hàm tra cứu (VLOOKUP, HLOOKUP), thống kê có điều kiện (SUMIF, COUNTIF), Pivot Table và trích lọc dữ liệu.",
       "skills": [
         "Tạo bảng CSDL & Khóa chính",
@@ -724,171 +536,7 @@
         "Hàm thống kê (SUMIF, COUNTIF)",
         "Pivot Table & Lọc dữ liệu nâng cao"
       ],
-      "xp": 400,
-      "lessons": [
-        {
-          "id": "ict_c_1",
-          "title": "Bài 1: Bảng tính Excel & Địa chỉ ô tuyệt đối/tương đối",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 114)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trắc nghiệm Phần I & II",
-          "summary": "Phân biệt địa chỉ tương đối (A1), tuyệt đối ($A$1) và hỗn hợp ($A1, A$1); sự biến đổi địa chỉ khi sao chép công thức.",
-          "theory": {
-            "objectives": [
-              "Nắm chắc quy tắc: Dấu $ đứng trước thành phần nào thì thành phần đó CỐ ĐỊNH khi sao chép công thức.",
-              "Tính toán chính xác kết quả ô tính sau khi kéo fill-handle sang dòng/cột khác."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi THPTQG: Đề bài cho công thức ô B2 là =$A1*B$1, hỏi khi sao chép sang C4 công thức trở thành gì? Nhớ: Cột A có $ nên cố định A, dòng 1 có $ nên cố định 1! -> Kết quả tại C4 là =$A3*C$1."
-          },
-          "quiz": {
-            "question": "Tại ô C2 có công thức: = $A$1 + B2. Khi sao chép công thức này sang ô D3, công thức tại ô D3 sẽ trở thành:",
-            "options": [
-              "= $B$2 + C3",
-              "= $A$1 + C3",
-              "= $A$2 + B3",
-              "= $A$1 + B2"
-            ],
-            "answer": 1,
-            "explanation": "Địa chỉ $A$1 giữ nguyên. Địa chỉ tương đối B2 dịch sang phải 1 cột và xuống 1 dòng nên trở thành C3. Vậy công thức là =$A$1 + C3."
-          }
-        },
-        {
-          "id": "ict_c_2",
-          "title": "Bài 2: Các hàm Logic IF, AND, OR trong bảng tính",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 116)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Cú pháp hàm IF lồng nhau kết hợp AND(...), OR(...) để xếp loại học sinh, tính phụ cấp lương, tính tiền thưởng.",
-          "theory": {
-            "objectives": [
-              "Cú pháp chuẩn: =IF(DieuKien, GiaTriNeuDung, GiaTriNeuSai).",
-              "Biết cách lồng ghép các điều kiện logic phức hợp với AND và OR."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề Đúng/Sai: Lệnh =AND(5>3, 2>4) trả về FALSE vì 2>4 là sai. Lệnh =OR(5>3, 2>4) trả về TRUE vì 5>3 đã đúng!"
-          },
-          "quiz": {
-            "question": "Biểu thức Excel sau trả về kết quả gì: =IF(AND(10>5, 3>8), \"Đạt\", \"Hỏng\")?",
-            "options": [
-              "Đạt",
-              "Hỏng",
-              "#VALUE!",
-              "#NAME?"
-            ],
-            "answer": 1,
-            "explanation": "Hàm AND(10>5, 3>8) có điều kiện 3>8 là SAI, do đó hàm AND trả về FALSE. Hàm IF nhận FALSE nên trả về giá trị thứ 3 là \"Hỏng\"."
-          }
-        },
-        {
-          "id": "ict_c_3",
-          "title": "Bài 3: Các hàm tìm kiếm VLOOKUP, HLOOKUP",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 118)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Cú pháp tìm kiếm cột VLOOKUP và dòng HLOOKUP; ý nghĩa tham số tìm kiếm chính xác (0 / FALSE) vs tương đối (1 / TRUE).",
-          "theory": {
-            "objectives": [
-              "Cú pháp: =VLOOKUP(Lookup_value, Table_array, Col_index_num, [Range_lookup]).",
-              "Hiểu rõ nguyên lý: Cột đầu tiên trong Table_array phải chứa giá trị cần tìm."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề kinh điển: Quên khóa tuyệt đối bảng tham chiếu! Nếu viết =VLOOKUP(A2, F2:H10, 2, 0) khi sao chép công thức xuống hàng dưới, bảng F2:H10 sẽ trôi thành F3:H11 dẫn đến lỗi #N/A."
-          },
-          "quiz": {
-            "question": "Khi sử dụng hàm VLOOKUP, tham số Range_lookup nhận giá trị bằng 0 (hoặc FALSE) có ý nghĩa gì?",
-            "options": [
-              "Tìm kiếm xấp xỉ theo khoảng giá trị",
-              "Tìm kiếm chính xác tuyệt đối",
-              "Trả về kết quả là số 0",
-              "Không tìm kiếm mà bỏ qua"
-            ],
-            "answer": 1,
-            "explanation": "Tham số Range_lookup = 0 hoặc FALSE quy định chế độ tìm kiếm chính xác tuyệt đối từng ký tự."
-          }
-        },
-        {
-          "id": "ict_c_4",
-          "title": "Bài 4: Hàm thống kê điều kiện SUMIF, COUNTIF",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 119)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Cú pháp đếm có điều kiện COUNTIF(vung, dieu_kien) và tính tổng có điều kiện SUMIF(vung_dieu_kien, dieu_kien, vung_tinh_tong).",
-          "theory": {
-            "objectives": [
-              "Cú pháp hàm COUNTIF: Đếm số ô thỏa mãn tiêu chí xác định.",
-              "Cú pháp hàm SUMIF: Tính tổng các số trong vùng tính tổng ứng với các ô thỏa mãn điều kiện."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Lưu ý cú pháp điều kiện: Điều kiện dạng so sánh số học như lớn hơn hoặc bằng 500 PHẢI đặt trong dấu ngoặc kép, ví dụ: \">=500\", nếu viết >=500 không có ngoặc kép sẽ bị lỗi cú pháp."
-          },
-          "quiz": {
-            "question": "Công thức nào sau đây đếm số lượng học sinh có điểm trung bình (ở cột D từ D2 đến D30) lớn hơn hoặc bằng 8.0?",
-            "options": [
-              "=COUNTIF(D2:D30, >=8.0)",
-              "=COUNTIF(D2:D30, \">=8.0\")",
-              "=SUMIF(D2:D30, \">=8.0\")",
-              "=COUNT(D2:D30, \">=8.0\")"
-            ],
-            "answer": 1,
-            "explanation": "Hàm COUNTIF đếm theo điều kiện, và điều kiện so sánh phải được bao bọc trong cặp dấu nháy kép: \">=8.0\"."
-          }
-        },
-        {
-          "id": "ict_c_5",
-          "title": "Bài 5: Kỹ thuật Pivot Table & Báo cáo thống kê",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 120)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Tạo bảng tổng hợp dữ liệu động Pivot Table: Vùng Rows, Columns, Values, Filters; cách đổi hàm tính từ SUM sang COUNT/AVERAGE.",
-          "theory": {
-            "objectives": [
-              "Hiểu chức năng của 4 vùng cấu hình Pivot Table: Filters, Columns, Rows và Values.",
-              "Biết cách làm mới dữ liệu (Refresh) khi dữ liệu nguồn thay đổi."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy đề thi Đúng/Sai: Khi bảng dữ liệu gốc thay đổi, báo cáo Pivot Table KHÔNG tự động cập nhật ngay lập tức mà người dùng phải bấm chuột phải chọn \"Refresh\" (Làm mới)."
-          },
-          "quiz": {
-            "question": "Khi dữ liệu trong bảng nguồn ban đầu bị chỉnh sửa, muốn báo cáo Pivot Table cập nhật kết quả mới nhất ta cần làm gì?",
-            "options": [
-              "Xóa Pivot Table và tạo lại từ đầu",
-              "Nhấp chuột phải vào Pivot Table và chọn \"Refresh\"",
-              "Lưu tệp Excel và khởi động lại máy tính",
-              "Pivot Table sẽ tự động xóa các dữ liệu cũ"
-            ],
-            "answer": 1,
-            "explanation": "Nhấp chuột phải chọn \"Refresh\" để làm mới dữ liệu Pivot Table theo bảng dữ liệu nguồn mới."
-          }
-        },
-        {
-          "id": "ict_c_6",
-          "title": "Bài 6: Biểu đồ & Lọc dữ liệu Advanced Filter",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 1 (Trang 121)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Các loại biểu đồ Column, Line, Pie; Kỹ thuật trích lọc dữ liệu nâng cao (Advanced Filter) với bảng tiêu chuẩn điều kiện.",
-          "theory": {
-            "objectives": [
-              "Chọn loại biểu đồ phù hợp với mục đích trực quan hóa dữ liệu.",
-              "Nắm nguyên tắc thiết lập vùng tiêu chuẩn (Criteria Range) trong Advanced Filter."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy Advanced Filter: Điều kiện cùng hàng là AND; điều kiện khác hàng là OR. Đây là câu hỏi kinh điển trong đề thi THPTQG phần II."
-          },
-          "quiz": {
-            "question": "Để biểu diễn trực quan tỉ lệ phần trăm đóng góp của các nguồn năng lượng trong tổng sản lượng điện quốc gia, loại biểu đồ nào thích hợp nhất?",
-            "options": [
-              "Biểu đồ đường (Line Chart)",
-              "Biểu đồ tròn (Pie Chart)",
-              "Biểu đồ phân tán (Scatter)",
-              "Biểu đồ radar"
-            ],
-            "answer": 1,
-            "explanation": "Biểu đồ tròn (Pie Chart) chuyên dùng để mô tả tỉ lệ cơ cấu thành phần so với tổng thể 100%."
-          }
-        }
-      ]
+      "xp": 400
     },
     {
       "id": "ict_station_8",
@@ -900,6 +548,7 @@
       "priorityBadge": "extreme",
       "questionType": "Trắc nghiệm Đúng/Sai Phần II",
       "bookRef": "Trang 122 - 130",
+      "pdfUrl": "https://vxqvjffssebnuxtslghp.supabase.co/storage/v1/object/sign/KhoTaiLieuTinHocThiThu/Chuong%20lap%20trinh%20CS%20AND%20ICT/Tai_Lieu_On_Thi_TN_THPT_Tin_Hoc_ICT_Tao_Trang_Web.pdf?token=eyJraWQiOiIzMmIzYzRjYi0yYTZjLTRmYjUtOTJkNS0yNzIwNDk0NzJjOTUiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJLaG9UYWlMaWV1VGluSG9jVGhpVGh1L0NodW9uZyBsYXAgdHJpbmggQ1MgQU5EIElDVC9UYWlfTGlldV9Pbl9UaGlfVE5fVEhQVF9UaW5fSG9jX0lDVF9UYW9fVHJhbmdfV2ViLnBkZiIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3OTMyODY2MDIsImV4cCI6NDkxNTM1MDYwMn0.hoPB_p61IsI6e6_sPfQr_FYIdHFW14-ll1CUSb4jQ3wHB4p9RGIx1L3STDN83MDMmdnubwsHdt7gF-nePmzbcQ",
       "description": "Sử dụng phần mềm thiết kế và biên tập trang web trực quan, thiết kế bố cục giao diện đa phương tiện, tích hợp hình ảnh lớp (Layer), video clip, đóng gói và xuất bản website lên Internet.",
       "skills": [
         "Phần mềm tạo trang web trực quan",
@@ -907,90 +556,7 @@
         "Đồ họa đa phương tiện & Video cho Web",
         "Kiểm thử & Xuất bản Website"
       ],
-      "xp": 380,
-      "lessons": [
-        {
-          "id": "ict_sw_1",
-          "title": "Bài 1: Cây cấu trúc Website & Phần mềm tạo trang Web",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 2 (Trang 122)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trọng tâm Phần II Đúng/Sai",
-          "summary": "Cây thư mục trang web (root, css/, images/, js/), đường dẫn tương đối (./, ../) và quy trình đưa website lên Hosting/Server.",
-          "theory": {
-            "objectives": [
-              "Biết cách tham chiếu đường dẫn ../ để quay lại thư mục cha.",
-              "Tệp trang chủ mặc định trên máy chủ luôn đặt tên là index.html."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy tên tệp trang chủ: Tệp trang chủ mặc định luôn là index.html, không phải home.html hay default.html."
-          },
-          "quiz": {
-            "question": "Theo chuẩn thiết kế website, tệp tin nào sau đây thường được các máy chủ web cấu hình làm trang chủ mặc định khi người dùng truy cập vào thư mục gốc?",
-            "options": [
-              "home.html",
-              "main.html",
-              "index.html",
-              "default.html"
-            ],
-            "answer": 2,
-            "explanation": "index.html là tên tệp trang chủ mặc định chuẩn của hầu hết các web server."
-          }
-        },
-        {
-          "id": "ict_sw_2",
-          "title": "Bài 2: Chỉnh sửa ảnh lớp (Layer) & Đồ họa cho Web",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 2 (Trang 125)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Trắc nghiệm Phần I & II",
-          "summary": "Khái niệm Lớp (Layer), vùng chọn (Selection), chỉnh độ sáng tối, xóa phông nền và xuất ảnh định dạng JPG/PNG.",
-          "theory": {
-            "objectives": [
-              "Hiểu nguyên lý xếp chồng các layer trong phần mềm đồ họa (GIMP, Photoshop).",
-              "Phân biệt định dạng PNG (hỗ trợ nền trong suốt) vs JPG (nén mất dữ liệu)."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Bẫy định dạng ảnh: Muốn lưu ảnh có nền trong suốt (không có phông nền trắng) thì BẮT BUỘC phải xuất ra định dạng PNG hoặc GIF, định dạng JPG không hỗ trợ nền trong suốt."
-          },
-          "quiz": {
-            "question": "Định dạng hình ảnh nào sau đây hỗ trợ kênh độ trong suốt (Transparency), rất thích hợp để xuất logo chèn lên trang web?",
-            "options": [
-              "BMP",
-              "JPG",
-              "PNG",
-              "TIFF"
-            ],
-            "answer": 2,
-            "explanation": "Định dạng PNG hỗ trợ kênh Alpha (nền trong suốt), rất tối ưu cho các thành phần đồ họa web."
-          }
-        },
-        {
-          "id": "ict_sw_3",
-          "title": "Bài 3: Biên tập & Chèn Video clip vào trang Web",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Chủ đề ICT 2 (Trang 128)",
-          "priority": "Cao",
-          "examFormat": "Trắc nghiệm Phần I",
-          "summary": "Dòng thời gian (Timeline), kỹ thuật cắt ghép (Cut/Split), hiệu ứng chuyển cảnh (Transition) và xuất video định dạng MP4.",
-          "theory": {
-            "objectives": [
-              "Nắm các thao tác cơ bản trên thanh dòng thời gian Timeline của phần mềm biên tập video.",
-              "Hiểu vai trò của hiệu ứng chuyển cảnh Transition và chèn phụ đề, âm thanh nền."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Lưu ý trắc nghiệm: MP4 là định dạng video phổ biến nhất, tương thích tốt với mọi trình duyệt web và thiết bị di động."
-          },
-          "quiz": {
-            "question": "Trong phần mềm dựng video, thành phần nào là nơi người biên tập sắp xếp các đoạn phim, âm thanh và hiệu ứng theo trình tự thời gian?",
-            "options": [
-              "Hộp công cụ ToolBox",
-              "Dòng thời gian (Timeline)",
-              "Cửa sổ Preview",
-              "Bảng thuộc tính Properties"
-            ],
-            "answer": 1,
-            "explanation": "Timeline (Dòng thời gian) là không gian làm việc chính để sắp đặt các track hình ảnh và âm thanh nối tiếp nhau."
-          }
-        }
-      ]
+      "xp": 380
     },
     {
       "id": "ict_station_9",
@@ -1002,6 +568,7 @@
       "priorityBadge": "extreme",
       "questionType": "Tổng hợp 22 câu (Phần I + II)",
       "bookRef": "Trang 131 - 180",
+      "pdfUrl": "",
       "description": "Bảng năng lực và cấp độ tư duy đề ôn tập (Nhận biết, Thông hiểu, Vận dụng), chiến thuật phân bổ 50 phút cho 22 câu thi và các bộ đề ôn tập chuẩn cấu trúc đề thi Tốt nghiệp THPT Bộ GD&ĐT.",
       "skills": [
         "Ma trận năng lực & Cấp độ tư duy",
@@ -1009,64 +576,7 @@
         "Phân bổ thời gian 50 phút tối ưu",
         "Luyện đề thi thử bứt phá 9.5+ ICT"
       ],
-      "xp": 500,
-      "lessons": [
-        {
-          "id": "ict_exam_matrix",
-          "title": "Bài 1: Bảng năng lực và cấp độ tư duy đề ôn tập",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Phần II (Trang 131)",
-          "priority": "Cực kỳ quan trọng",
-          "examFormat": "Cấu trúc ma trận đề thi 2025",
-          "summary": "Phân tích bảng năng lực Tin học định hướng Tin học ứng dụng (ICT), tỷ lệ câu hỏi Nhận biết (40%), Thông hiểu (30%), Vận dụng (30%), chiến thuật 18 câu trắc nghiệm và 4 câu Đúng/Sai.",
-          "theory": {
-            "objectives": [
-              "Nắm vững 3 cấp độ tư duy: Nhận biết, Thông hiểu và Vận dụng trong đề thi Tin học ứng dụng THPTQG.",
-              "Quy tắc chấm điểm lũy tiến Phần II Đúng/Sai: 0.1đ, 0.25đ, 0.5đ và 1.0đ cho mỗi câu 4 ý.",
-              "Xác định trọng tâm kiến thức: Chủ đề 1 đến 6 (Phần I) và Chủ đề ICT 1, ICT 2 (Phần II)."
-            ],
-            "contentSections": [],
-            "examTips": "🎯 Mẹo chiến thuật: Phần I gồm 18 câu trắc nghiệm (4.5 điểm), giải quyết nhanh và chắc chắn. Dành thời gian suy luận kỹ cho câu hỏi bảng tính Excel, CSDL và Web ở Phần II."
-          },
-          "quiz": {
-            "question": "Trong đề thi Tốt nghiệp THPT môn Tin học (định hướng ICT), Phần I có tổng cộng bao nhiêu câu hỏi?",
-            "options": [
-              "12 câu hỏi trắc nghiệm.",
-              "18 câu hỏi trắc nghiệm 4 lựa chọn (chọn 1 đáp án đúng).",
-              "20 câu hỏi trắc nghiệm.",
-              "24 câu hỏi trắc nghiệm."
-            ],
-            "answer": 1,
-            "explanation": "Phần I đề thi Tin học gồm 18 câu hỏi trắc nghiệm 4 lựa chọn (mỗi câu 0.25 điểm, tổng 4.5 điểm)."
-          }
-        },
-        {
-          "id": "ict_exam_strategy",
-          "title": "Bài 2: Các đề ôn tập & Chiến thuật làm bài thi",
-          "bookRef": "Tài liệu ôn tập Tin 12 — Phần II (Trang 132)",
-          "priority": "Cực kỳ cao",
-          "examFormat": "Toàn bộ đề thi",
-          "summary": "Mẹo tối ưu điểm số lũy tiến Phần II, cách kiểm tra công thức Excel và cú pháp thẻ HTML/CSS mà không được dùng máy tính trong phòng thi.",
-          "theory": {
-            "objectives": [
-              "Nắm chắc thang điểm lũy tiến Phần II: Đúng 1 ý = 0.1đ; 2 ý = 0.25đ; 3 ý = 0.5đ; 4 ý = 1.0đ.",
-              "Luyện phản xạ đọc nhanh cú pháp lệnh trên giấy thi."
-            ],
-            "contentSections": [],
-            "examTips": "⚠️ Mẹo tối ưu điểm lũy tiến: Trong Phần II, cố gắng phán đoán chính xác cả 4 ý a, b, c, d của từng câu để nhận trọn vẹn 1.0 điểm/câu, thay vì làm rời rạc mỗi câu 1 ý chỉ được 0.1đ."
-          },
-          "quiz": {
-            "question": "Trong cấu trúc đề thi THPTQG môn Tin học, nếu thí sinh trả lời đúng được 3 trên 4 ý trong một câu hỏi Đúng/Sai (Phần II), thí sinh sẽ nhận được bao nhiêu điểm cho câu đó?",
-            "options": [
-              "0.25 điểm",
-              "0.5 điểm",
-              "0.75 điểm",
-              "1.0 điểm"
-            ],
-            "answer": 1,
-            "explanation": "Theo thang điểm lũy tiến chính thức của Bộ GD&ĐT: Đúng 1 ý = 0.1đ; Đúng 2 ý = 0.25đ; Đúng 3 ý = 0.5đ; Đúng cả 4 ý = 1.0đ."
-          }
-        }
-      ]
+      "xp": 500
     }
   ]
 }
