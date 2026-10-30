@@ -1316,7 +1316,7 @@ a {
 }
 
 /* ============================================================
-   PAGE 2: LỘ TRÌNH HỌC DẠNG DÂY XÍCH TRỰC QUAN (Roadmap Tab)
+   PAGE 2: LỘ TRÌNH HỌC TRỰC QUAN (Roadmap Tab)
    ============================================================ */
 .roadmap-container {
   display: flex;
@@ -5432,7 +5432,7 @@ a {
     justify-content: center;
   }
 
-  /* 8. Lộ Trình Dây Xích (Roadmap Tab) on Mobile */
+  /* 8. Lộ Trình Học (Roadmap Tab) on Mobile */
   .roadmap-header-card {
     flex-direction: column;
     align-items: flex-start;

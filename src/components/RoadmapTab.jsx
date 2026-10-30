@@ -27,8 +27,7 @@ import {
   RefreshCw,
   Cloud,
   Database,
-  Download,
-  ExternalLink
+  Download
 } from 'lucide-react';
 
 import {
@@ -189,9 +188,12 @@ export default function RoadmapTab({
 
   // Tính toán tiến độ học tập của từng chặng dựa trên completedLessonIds
   const getStationProgress = (station) => {
-    if (!station.lessons || station.lessons.length === 0) return 0;
-    const doneCount = station.lessons.filter((l) => completedLessonIds[l.id]).length;
-    return Math.round((doneCount / station.lessons.length) * 100);
+    if (!station) return 0;
+    if (station.lessons && station.lessons.length > 0) {
+      const doneCount = station.lessons.filter((l) => completedLessonIds[l.id]).length;
+      return Math.round((doneCount / station.lessons.length) * 100);
+    }
+    return completedLessonIds[station.id] ? 100 : 0;
   };
 
   // Tổng số bài học trong lộ trình hiện tại
@@ -233,8 +235,10 @@ export default function RoadmapTab({
       setModalTab(preferredTab);
     } else if (station?.pdfUrl) {
       setModalTab('pdf');
+    } else if (station?.quiz || getStationQuiz(station?.id)) {
+      setModalTab('quiz');
     } else {
-      setModalTab('theory');
+      setModalTab(station?.lessons && station.lessons.length > 0 ? 'theory' : 'pdf');
     }
 
     if (startImmediately) {
@@ -373,8 +377,8 @@ export default function RoadmapTab({
 
   // Bài học hiện tại trong Modal
   const currentLesson =
-    selectedStation && selectedStation.lessons
-      ? selectedStation.lessons[activeLessonIndex]
+    selectedStation && selectedStation.lessons && selectedStation.lessons.length > 0
+      ? selectedStation.lessons[activeLessonIndex] || selectedStation.lessons[0]
       : null;
 
   return (
@@ -400,10 +404,10 @@ export default function RoadmapTab({
             <ChainIcon size={14} />
             <span>KHUNG CHƯƠNG TRÌNH GDPT 2018 — ÔN THI THPTQG 2025 - 2026</span>
           </div>
-          <h2>Lộ Trình Học Dây Xích — 2 Định Hướng Chuyên Biệt</h2>
+          <h2>Lộ Trình Học — 2 Định Hướng Chuyên Biệt</h2>
           <p>
             Hệ thống hóa toàn bộ kiến thức SGK Tin học 11 & 12 theo 2 nhánh: <strong>Tin học ứng dụng (ICT)</strong> và{' '}
-            <strong>Khoa học máy tính (CS)</strong>. Mỗi chặng liên kết chặt chẽ theo dạng dây xích, bấm vào từng bài để học lý thuyết chuyên sâu!
+            <strong>Khoa học máy tính (CS)</strong>. Mỗi chặng liên kết chặt chẽ, bấm vào từng bài để học lý thuyết chuyên sâu!
           </p>
 
           {/* Thanh trạng thái đồng bộ Supabase Cloud & Tiện ích Admin (Chỉ hiển thị cho người công ty có quyền Admin) */}
@@ -492,18 +496,15 @@ export default function RoadmapTab({
             </div>
             <div className="stat-chip-lbl">Chặng hoàn thành</div>
           </div>
-          <div className="stat-chip">
-            <div className="stat-chip-num" style={{ color: currentTrackData.badgeColor }}>
-              {completedLessonsInTrack}/{totalLessonsInTrack}
+          {totalLessonsInTrack > 0 && (
+            <div className="stat-chip">
+              <div className="stat-chip-num" style={{ color: currentTrackData.badgeColor }}>
+                {completedLessonsInTrack}/{totalLessonsInTrack}
+              </div>
+              <div className="stat-chip-lbl">Bài lý thuyết đã học</div>
             </div>
-            <div className="stat-chip-lbl">Bài lý thuyết đã học</div>
-          </div>
-          <div className="stat-chip">
-            <div className="stat-chip-num" style={{ color: '#F59E0B' }}>
-              {totalEarnedXP} XP
-            </div>
-            <div className="stat-chip-lbl">Kinh nghiệm tích lũy</div>
-          </div>
+          )}
+
         </div>
       </div>
 
@@ -667,7 +668,7 @@ export default function RoadmapTab({
         </div>
       </div>
 
-      {/* 4. VISUAL CHAINED ROADMAP TRACK (LỘ TRÌNH DÂY XÍCH) */}
+      {/* 4. VISUAL CHAINED ROADMAP TRACK (LỘ TRÌNH HỌC TRỰC QUAN) */}
       <div className="chain-track">
         {stations.map((station, index) => {
           const progress = getStationProgress(station);
@@ -691,7 +692,7 @@ export default function RoadmapTab({
               {index > 0 && (
                 <div
                   className={`chain-link-connector ${isCompleted || isInProgress ? 'unlocked' : 'locked'}`}
-                  onClick={() => handleOpenStationModal(station, 0, false, station.pdfUrl ? 'pdf' : 'theory')}
+                  onClick={() => handleOpenStationModal(station, 0, false, station.pdfUrl ? 'pdf' : (station.quiz || getStationQuiz(station.id) ? 'quiz' : 'theory'))}
                   style={{ cursor: 'pointer' }}
                   title={station.pdfUrl ? `Bấm vào mắt xích để stream tài liệu PDF: ${station.title}` : `Bấm vào mắt xích để mở chặng: ${station.title}`}
                 >
@@ -767,37 +768,7 @@ export default function RoadmapTab({
                         {station.code} • {station.category}
                       </span>
 
-                      {/* Badge báo có PDF stream trực tiếp */}
-                      {station.pdfUrl && (
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.3rem',
-                            fontSize: '0.72rem',
-                            fontWeight: 800,
-                            padding: '0.15rem 0.55rem',
-                            borderRadius: '6px',
-                            background: '#FEF2F2',
-                            color: '#DC2626',
-                            border: '1px solid #FECACA'
-                          }}
-                        >
-                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#EF4444' }} />
-                          PDF LIVE
-                        </span>
-                      )}
 
-                      {/* Badge mức độ ưu tiên ôn luyện */}
-                      <span className={priorityClass}>
-                        {station.priorityBadge === 'extreme' && <Flame size={12} />}
-                        Mức độ: {station.priority}
-                      </span>
-
-                      {/* Dạng câu hỏi */}
-                      <span className="badge-exam-format">
-                        {station.questionType}
-                      </span>
                     </div>
 
                     <h3>
@@ -806,9 +777,9 @@ export default function RoadmapTab({
                     <p className="node-desc">{station.description}</p>
 
                     {/* Danh sách bài học nhỏ trong chặng */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '0.5rem' }}>
-                      {station.lessons &&
-                        station.lessons.map((lesson, lIdx) => {
+                    {station.lessons && station.lessons.length > 0 && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '0.5rem' }}>
+                        {station.lessons.map((lesson, lIdx) => {
                           const isLessonDone = !!completedLessonIds[lesson.id];
                           return (
                             <span
@@ -838,7 +809,8 @@ export default function RoadmapTab({
                             </span>
                           );
                         })}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -847,9 +819,11 @@ export default function RoadmapTab({
                   <div style={{ fontSize: '0.78rem', fontWeight: 800, color: isCompleted ? '#16A34A' : 'var(--color-text-muted)' }}>
                     {isCompleted
                       ? '✓ Đã hoàn thành'
-                      : progress > 0
-                      ? `${progress}% Đang học (${station.lessons.filter((l) => completedLessonIds[l.id]).length}/${station.lessons.length} bài)`
-                      : `Chưa học (0/${station.lessons.length} bài)`}
+                      : station.lessons && station.lessons.length > 0
+                      ? (progress > 0
+                          ? `${progress}% Đang học (${station.lessons.filter((l) => completedLessonIds[l.id]).length}/${station.lessons.length} bài)`
+                          : `Chưa học (0/${station.lessons.length} bài)`)
+                      : 'Chưa hoàn thành'}
                   </div>
 
                   <div className="progress-bar-shell">
@@ -866,6 +840,14 @@ export default function RoadmapTab({
                   {(() => {
                     const stQuiz = station?.quiz || getStationQuiz(station.id);
                     if (!stQuiz) return null;
+                    const isCs = activeTrack === TRACK_TYPES.CS;
+                    const accentColor = isCs ? '#EA580C' : '#0284C7';
+                    const bgLight = isCs ? '#FFF7ED' : '#F0F9FF';
+                    const textColor = isCs ? '#C2410C' : '#0369A1';
+                    const borderColor = isCs ? '#FED7AA' : '#BAE6FD';
+                    const badgeBg = isCs ? 'rgba(234, 88, 12, 0.14)' : 'rgba(2, 132, 199, 0.14)';
+                    const count = stQuiz.totalItems || (stQuiz.questions ? stQuiz.questions.length : 24);
+
                     return (
                       <button
                         className="btn-quiz-station"
@@ -881,20 +863,45 @@ export default function RoadmapTab({
                           width: '100%',
                           padding: '0.55rem 0.85rem',
                           borderRadius: 'var(--radius-md)',
-                          background: '#1E293B',
-                          color: '#FDBA74',
-                          border: '1.5px solid #EA580C',
+                          background: bgLight,
+                          color: textColor,
+                          border: `1.5px solid ${borderColor}`,
                           fontWeight: 800,
                           fontSize: '0.82rem',
                           cursor: 'pointer',
-                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-                          transition: 'all 0.15s ease',
+                          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+                          transition: 'all 0.18s ease',
                           marginBottom: '0.45rem'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = isCs ? '#FFEDD5' : '#E0F2FE';
+                          e.currentTarget.style.borderColor = accentColor;
+                          e.currentTarget.style.transform = 'translateY(-1px)';
+                          e.currentTarget.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.08)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = bgLight;
+                          e.currentTarget.style.borderColor = borderColor;
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.04)';
                         }}
                         title={`Luyện tập câu hỏi ôn tập: ${station.title}`}
                       >
-                        <Sparkles size={15} color="#EA580C" />
-                        <span>Luyện tập câu hỏi (${stQuiz.totalItems || 24} câu)</span>
+                        <Sparkles size={15} color={accentColor} />
+                        <span>Luyện tập câu hỏi</span>
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: 800,
+                            padding: '0.1rem 0.45rem',
+                            borderRadius: '999px',
+                            background: badgeBg,
+                            color: textColor,
+                            marginLeft: '0.15rem'
+                          }}
+                        >
+                          {count} câu
+                        </span>
                       </button>
                     );
                   })()}
@@ -929,23 +936,27 @@ export default function RoadmapTab({
                       }}
                       title={`Stream trực tiếp tài liệu PDF của ${station.title} trên web`}
                     >
-                      <span style={{ display: 'inline-block', width: '7px', height: '7px', borderRadius: '50%', background: '#4ADE80' }} />
-                      <FileText size={15} />
-                      <span>Stream PDF Trực Tiếp</span>
+                      <span>Bắt đầu học</span>
                     </button>
                   )}
 
-                  <button
-                    className="btn-open-station"
-                    style={{
-                      background: isInProgress ? currentTrackData.badgeColor : undefined,
-                      color: isInProgress ? '#FFFFFF' : undefined,
-                      borderColor: isInProgress ? currentTrackData.badgeColor : undefined
-                    }}
-                  >
-                    <BookOpen size={15} />
-                    <span>Học lý thuyết ({station.lessons.length} bài)</span>
-                  </button>
+                  {station.lessons && station.lessons.length > 0 && (
+                    <button
+                      className="btn-open-station"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenStationModal(station, 0, false, 'theory');
+                      }}
+                      style={{
+                        background: isInProgress ? currentTrackData.badgeColor : undefined,
+                        color: isInProgress ? '#FFFFFF' : undefined,
+                        borderColor: isInProgress ? currentTrackData.badgeColor : undefined
+                      }}
+                    >
+                      <BookOpen size={15} />
+                      <span>Học lý thuyết ({station.lessons.length} bài)</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -967,9 +978,10 @@ export default function RoadmapTab({
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Container: 2 Cột (Sidebar bài học + Nội dung lý thuyết) */}
-            <div className={`theory-modal-container ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+            <div className={`theory-modal-container ${(isSidebarCollapsed || !selectedStation?.lessons || selectedStation.lessons.length === 0) ? 'sidebar-collapsed' : ''}`}>
               {/* Sidebar: Danh sách các bài học trong chặng */}
-              <div className={`theory-modal-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+              {selectedStation?.lessons && selectedStation.lessons.length > 0 && (
+                <div className={`theory-modal-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
                 <div className="theory-sidebar-header">
                   <div style={{ fontSize: '0.72rem', fontWeight: 800, color: currentTrackData.badgeColor, textTransform: 'uppercase' }}>
                     {selectedStation.code} • {currentTrackData.shortName}
@@ -1055,7 +1067,7 @@ export default function RoadmapTab({
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <FileText size={16} color={currentTrackData.badgeColor} />
-                        <span>📄 Stream PDF Trực Tiếp</span>
+                        <span>Bắt đầu học</span>
                       </div>
                       <span
                         style={{
@@ -1085,6 +1097,7 @@ export default function RoadmapTab({
                   </div>
                 )}
               </div>
+              )}
 
               {/* Main: Nội dung lý thuyết chi tiết của bài */}
               <div className="theory-modal-main">
@@ -1110,7 +1123,7 @@ export default function RoadmapTab({
                         title={isSidebarCollapsed ? "Mở danh sách bài học" : "Thu gọn mục lục bài học"}
                       >
                         <Layers size={15} />
-                        <span>{isSidebarCollapsed ? `Mục lục (${selectedStation.lessons.length} bài)` : 'Thu gọn'}</span>
+                        <span>{isSidebarCollapsed ? `Mục lục (${selectedStation.lessons?.length || 0} bài)` : 'Thu gọn'}</span>
                       </button>
                     )}
 
@@ -1170,7 +1183,7 @@ export default function RoadmapTab({
                               }}
                             >
                               <Sparkles size={14} color={modalTab === 'quiz' ? '#FFFFFF' : '#EA580C'} />
-                              <span>Luyện Tập Câu Hỏi (${currentStationQuiz.totalItems || 24} câu)</span>
+                              <span>Luyện Tập Câu Hỏi ({currentStationQuiz.totalItems || 24} câu)</span>
                             </button>
                           )}
 
@@ -1358,54 +1371,9 @@ export default function RoadmapTab({
                       </div>
 
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <a
-                          href={selectedStation.pdfUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.35rem',
-                            padding: '0.32rem 0.75rem',
-                            borderRadius: '7px',
-                            background: '#334155',
-                            color: '#F8FAFC',
-                            fontSize: '0.74rem',
-                            fontWeight: 700,
-                            textDecoration: 'none',
-                            transition: 'background 0.15s ease'
-                          }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = '#475569'}
-                          onMouseLeave={(e) => e.currentTarget.style.background = '#334155'}
-                          title="Mở tài liệu PDF trong tab riêng của trình duyệt"
-                        >
-                          <ExternalLink size={13} />
-                          <span>Mở Tab Riêng</span>
-                        </a>
+                        
 
-                        <a
-                          href={selectedStation.pdfUrl}
-                          download
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.35rem',
-                            padding: '0.32rem 0.75rem',
-                            borderRadius: '7px',
-                            background: '#334155',
-                            color: '#F8FAFC',
-                            fontSize: '0.74rem',
-                            fontWeight: 700,
-                            textDecoration: 'none',
-                            transition: 'background 0.15s ease'
-                          }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = '#475569'}
-                          onMouseLeave={(e) => e.currentTarget.style.background = '#334155'}
-                          title="Tải file PDF về máy"
-                        >
-                          <Download size={13} />
-                          <span>Tải PDF</span>
-                        </a>
+                        
 
                         <button
                           onClick={() => setIsFullScreen(!isFullScreen)}
@@ -1436,7 +1404,7 @@ export default function RoadmapTab({
                     {/* Iframe trực tiếp stream PDF */}
                     <div style={{ flex: 1, position: 'relative', width: '100%', height: '100%', minHeight: '500px' }}>
                       <iframe
-                        src={`${selectedStation.pdfUrl}#toolbar=1&navpanes=1&scrollbar=1`}
+                        src={`${selectedStation.pdfUrl}#toolbar=0&navpanes=0&scrollbar=1`}
                         title={`${selectedStation.title} - Tài liệu ôn thi`}
                         style={{
                           width: '100%',
@@ -1851,9 +1819,9 @@ export default function RoadmapTab({
                     </button>
 
                     <button
-                      disabled={activeLessonIndex === selectedStation.lessons.length - 1}
+                      disabled={activeLessonIndex === (selectedStation?.lessons?.length || 1) - 1}
                       onClick={() => {
-                        setActiveLessonIndex((prev) => Math.min(selectedStation.lessons.length - 1, prev + 1));
+                        setActiveLessonIndex((prev) => Math.min((selectedStation?.lessons?.length || 1) - 1, prev + 1));
                         setSelectedOption(null);
                         setIsAnswerSubmitted(false);
                       }}
@@ -1862,13 +1830,13 @@ export default function RoadmapTab({
                         borderRadius: '8px',
                         background: '#FFFFFF',
                         border: '1px solid var(--color-border)',
-                        color: activeLessonIndex === selectedStation.lessons.length - 1 ? '#94A3B8' : 'var(--color-deep)',
+                        color: activeLessonIndex === (selectedStation?.lessons?.length || 1) - 1 ? '#94A3B8' : 'var(--color-deep)',
                         fontWeight: 700,
                         fontSize: '0.85rem',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.35rem',
-                        cursor: activeLessonIndex === selectedStation.lessons.length - 1 ? 'not-allowed' : 'pointer'
+                        cursor: activeLessonIndex === (selectedStation?.lessons?.length || 1) - 1 ? 'not-allowed' : 'pointer'
                       }}
                     >
                       <span>Bài tiếp theo</span>

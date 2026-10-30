@@ -57,11 +57,9 @@ function renderInlineMarkdown(text, isUser = false) {
   return parts.length > 0 ? parts : text;
 }
 
-// Component format tin nhắn có cấu trúc rõ ràng: phân đoạn, danh sách gạch đầu dòng -, in đậm
+// Cấu trúc lại tin nhắn! TAO CODE CẤM ĐỤNG!
 function FormattedMessage({ text, isUser = false }) {
   if (!text) return null;
-
-  // Nếu là tin nhắn của user thì chỉ cần ngắt dòng đơn giản
   if (isUser) {
     return <span style={{ whiteSpace: 'pre-wrap' }}>{text}</span>;
   }
@@ -255,7 +253,7 @@ curl -H "Authorization: bearer $BOTPRESS_TOKEN" -H "x-bot-id: $BOTPRESS_BOT_ID" 
     }
   };
 
-    // Reset phiên hội thoại khi tắt cửa sổ chat hoặc bấm nút làm mới
+  // Reset phiên hội thoại khi tắt cửa sổ chat hoặc bấm nút làm mới
   const handleResetChat = async () => {
     setConversationId(null);
     setMessages([

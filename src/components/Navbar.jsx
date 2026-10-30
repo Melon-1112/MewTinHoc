@@ -229,7 +229,7 @@ export default function Navbar({
               )}
               <span className="nav-tab-inner">
                 <GitCommit size={17} />
-                <span className="tab-label-full">Lộ trình học (Dạng dây xích trực quan)</span>
+                <span className="tab-label-full">Lộ trình học trực quan</span>
                 <span className="tab-label-short">Lộ trình</span>
                 <span className="tab-badge-hot">Mới</span>
               </span>

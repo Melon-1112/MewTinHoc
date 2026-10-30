@@ -212,7 +212,6 @@ export default function App() {
     return (
       <>
         <LoginPage onLogin={handleLogin} />
-        <AnnouncementBanner />
         {toastMessage && (
           <div className="toast-notice">
             <Flame size={18} color="var(--color-amber)" />
@@ -359,7 +358,7 @@ export default function App() {
 
           {/* Dải highlight */}
           <div className="site-footer-highlight">
-            <span className="site-footer-highlight-item">Lộ trình dây xích trực quan</span>
+            <span className="site-footer-highlight-item">Lộ trình trực quan</span>
             <span className="site-footer-highlight-dot" />
             <span className="site-footer-highlight-item">Kho đề thi chuyên sâu</span>
             <span className="site-footer-highlight-dot" />

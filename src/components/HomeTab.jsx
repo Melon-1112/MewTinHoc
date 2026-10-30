@@ -189,7 +189,7 @@ export default function HomeTab({
                 Chào mừng, {user?.name || 'Học viên'}! 🔥
               </motion.h1>
               <motion.p variants={bannerItemVariants} className="hero-desc">
-                Bạn đang ở chuỗi phong độ cao! Hãy duy trì điểm danh hàng ngày, hoàn thành từng chặng dây xích trực quan và làm bài thi thử để sẵn sàng 9.5+ kỳ thi Tốt nghiệp THPTQG.
+                Bạn đang ở chuỗi phong độ cao! Hãy duy trì điểm danh hàng ngày, hoàn thành từng chặng trực quan và làm bài thi thử để sẵn sàng 9.5+ kỳ thi Tốt nghiệp THPTQG.
               </motion.p>
               <motion.div variants={bannerItemVariants} className="hero-actions">
                 <motion.button
@@ -198,7 +198,7 @@ export default function HomeTab({
                   className="btn-primary-glow"
                   onClick={() => onNavigateTab(TABS.ROADMAP)}
                 >
-                  <span>Vào lộ trình dây xích</span>
+                  <span>Vào lộ trình học</span>
                   <ArrowRight size={18} />
                 </motion.button>
                 <motion.button
