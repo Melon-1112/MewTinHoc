@@ -26,6 +26,8 @@ import {
 } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { isCompanyAdmin } from '../lib/roleService';
+import LoadingScreen from './LoadingScreen.jsx';
+import './loading-screen.css';
 import {
   EXAM_DOCS_CONFIG,
   DOC_TYPES,
@@ -534,9 +536,13 @@ export default function ExamRepoTab({ user }) {
 
       {/* ── Loading indicator ── */}
       {isLoading && (
-        <div className="doc-loading">
-          <Loader2 size={28} className="spin-icon" />
-          <span>Đang tải danh sách tài liệu...</span>
+        <div className="doc-loading doc-loading-animated">
+          <LoadingScreen
+            text="Đang tải kho đề thi"
+            size="sm"
+            showCredit={false}
+            fullScreen={false}
+          />
         </div>
       )}
 

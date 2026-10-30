@@ -2323,11 +2323,32 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding: 4rem 1rem;
+  min-height: 260px;
+  padding: 1rem;
   color: var(--color-text-muted);
   font-size: 0.9rem;
   font-weight: 600;
+}
+
+.doc-loading-animated > div {
+  width: 100%;
+}
+
+.doc-loading-animated img {
+  width: 150px !important;
+  max-width: 45vw !important;
+  margin-top: -4px !important;
+}
+
+.doc-loading-animated [style*="width: min(320px"] {
+  width: min(260px, 72vw) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc-loading-animated img,
+  .doc-loading-animated [style*="animation"] {
+    animation: none !important;
+  }
 }
 
 /* List & Row */
